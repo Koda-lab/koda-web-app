@@ -3,21 +3,21 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createAutomation } from "@/app/actions/automation"; // Ta Server Action existante
-import FileUpload from "@/components/FileUpload"; // Ton composant Upload existant
+import FileUpload from "@/app/components/FileUpload"; // Ton composant Upload existant
 
 // Imports UI (Design)
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/app/components/ui/button";
+import { Input } from "@/app/components/ui/input";
+import { Label } from "@/app/components/ui/label";
+import { Textarea } from "@/app/components/ui/textarea";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+} from "@/app/components/ui/select";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/app/components/ui/card";
 import { UploadCloud, Loader2 } from "lucide-react";
 
 export function SellForm() {

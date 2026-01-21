@@ -1,9 +1,9 @@
-// app/layout.tsx
+
 import type { Metadata } from "next";
 import { ClerkProvider } from '@clerk/nextjs';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layout/header"; // Import du nouveau header
+import Header from "@/app/components/layout/header";
 
 
 const geistSans = Geist({

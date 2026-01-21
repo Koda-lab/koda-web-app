@@ -1,8 +1,8 @@
 import { connectToDatabase } from "@/lib/db";
 import Automation from "@/models/Automation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ProductCard } from "@/components/products/product-card";
+import { Button } from "@/app/components/ui/button";
+import { ProductCard } from "@/app/components/products/product-card";
 import { IAutomation } from "@/types/automation";
 
 

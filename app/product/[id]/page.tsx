@@ -1,10 +1,10 @@
 import { connectToDatabase } from "@/lib/db";
 import Automation from "@/models/Automation";
 import { notFound } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/app/components/ui/badge";
+import { Button } from "@/app/components/ui/button";
+import { Card, CardContent } from "@/app/components/ui/card";
+import { Separator } from "@/app/components/ui/separator";
 import { ChevronLeft, Download, ShieldCheck, Zap, User } from "lucide-react";
 import Link from "next/link";
 import { createClerkClient } from "@clerk/nextjs/server"; // Import pour le serveur
