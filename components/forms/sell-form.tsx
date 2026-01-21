@@ -102,11 +102,11 @@ export function SellForm() {
                                     type="number"
                                     min="0"
                                     placeholder="49"
-                                    className="pl-8"
+                                    className="pr-8"
                                     required
                                     onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
                                 />
-                                <span className="absolute left-3 top-2.5 text-muted-foreground">€</span>
+                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">€</span>
                             </div>
                         </div>
                     </div>
