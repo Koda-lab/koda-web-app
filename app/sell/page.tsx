@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import FileUpload from "@/app/components/FileUpload";
+import FileUpload from "@/components/FileUpload";
 import { createAutomation } from "@/app/actions/automation";
 import { useRouter } from "next/navigation";
 

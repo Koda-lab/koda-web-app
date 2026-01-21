@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 
-export default function FileUpload({ onUploadSuccess }: { onUploadSuccess: (url: string) => void }) {
+interface FileUploadProps {
+    onUploadSuccess: (url: string) => void;
+}
+
+export default function FileUpload({ onUploadSuccess }: FileUploadProps ) {
     const [uploading, setUploading] = useState(false);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,6 +21,18 @@ export default function FileUpload({ onUploadSuccess }: { onUploadSuccess: (url:
                 method: "POST",
                 body: JSON.stringify({ fileName: file.name, fileType: file.type }),
             });
+
+            // VERIFICATION CRUCIALE
+            if (!res.ok) {
+                const errorText = await res.text(); // On lit le texte si ce n'est pas du JSON
+                try {
+                    const errorJson = JSON.parse(errorText);
+                    throw new Error(errorJson.error || "Erreur upload");
+                } catch {
+                    throw new Error(errorText || "Erreur serveur");
+                }
+            }
+
             const { uploadUrl, fileUrl } = await res.json();
 
             // 2. Envoyer le fichier directement à AWS S3
