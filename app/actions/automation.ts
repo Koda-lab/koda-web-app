@@ -4,14 +4,9 @@ import { auth } from "@clerk/nextjs/server";
 import { connectToDatabase } from "@/lib/db";
 import Automation from "@/models/Automation";
 import { revalidatePath } from "next/cache";
+import { CreateAutomationInput } from "@/types/automation";
 
-export async function createAutomation(formData: {
-    title: string;
-    description: string;
-    price: number;
-    category: string;
-    fileUrl: string;
-}) {
+export async function createAutomation(formData: CreateAutomationInput) {
     const { userId } = await auth();
 
     if (!userId) {
