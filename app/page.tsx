@@ -1,6 +1,8 @@
 import { connectToDatabase } from "@/lib/db";
 import Automation from "@/models/Automation";
 import Link from "next/link";
+import { IAutomation } from "@/types/automation";
+
 
 export default function Home() {
   async function getAutomations() {
@@ -39,7 +41,7 @@ export default function Home() {
   );
 }
 
-async function AutomationsList({ fetcher }: { fetcher: any }) {
+async function AutomationsList({ fetcher }: { fetcher: () => Promise<IAutomation[]> }) {
   const data = await fetcher();
 
   if (data.length === 0) {
