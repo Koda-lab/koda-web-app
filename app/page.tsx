@@ -28,11 +28,6 @@ export default function Home() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Affichage des tests ou message si vide */}
-        <section className="col-span-full bg-blue-50 p-4 rounded-md mb-4">
-          <h2 className="font-bold text-blue-800">Statut des Tests :</h2>
-          <p className="text-sm text-blue-600">✓ Clerk : Actif (Header)</p>
-          <p className="text-sm text-blue-600">✓ MongoDB : Tentative de lecture en cours...</p>
-        </section>
 
         {/* Liste des produits */}
         <AutomationsList fetcher={getAutomations} />
