@@ -1,40 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Koda Marketplace - Guide de Démarrage (Dev)
 
-3 ploucs sur un projet
+Bienvenue sur le projet **Koda** !  
+Ce document explique comment configurer ton environnement local pour commencer à coder.
 
-## Getting Started
+---
 
-First, run the development server:
+## 🛠 Prérequis
+
+Assure-toi d'avoir installé :
+
+- **Node.js** (version 20 ou supérieure recommandée)
+- **npm**, **yarn**, **pnpm** ou **bun**
+
+---
+
+## 📥 Installation
+
+1. Cloner le dépôt (si ce n'est pas déjà fait).
+2. Installer les dépendances :
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+# ou
+yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔐 Configuration de l'environnement (IMPORTANT)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Pour que l'application fonctionne (Authentification, Base de données, S3), tu as besoin de variables d'environnement.
 
-## Learn More
+Récupère le contenu du fichier .env.local sur notre canal Discord.
 
-To learn more about Next.js, take a look at the following resources:
+À la racine du projet, crée un fichier nommé .env.local.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Colle le contenu récupéré à l'intérieur.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+⚠️ CAUTION
+Ne jamais push le fichier .env.local !
+Ce fichier contient des clés privées (Clerk, MongoDB, AWS).
+Il est déjà listé dans le fichier .gitignore pour éviter toute fuite de données.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🏃‍♂️ Lancer l'application
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Une fois les dépendances installées et le .env.local configuré, lance le serveur de développement :
+```bash
+npm run dev
+# ou
+yarn dev
+```
+
+---
+
+L'application sera disponible sur :
+👉 http://localhost:3000
+
+## 📁 Structure du Projet
+
+- /app : Routes et pages Next.js (App Router)
+
+- /app/actions : Fonctions Server Actions pour la logique backend (ex : créer une automatisation)
+
+- /models : Schémas Mongoose pour MongoDB
+
+- /components : Composants UI réutilisables
+
+- /lib : Utilitaires et configurations (DB, S3)
+
+---
+
+## 🧪 Rappel des technos utilisées
+
+- Framework : Next.js 15+
+
+- Auth : Clerk
+
+- Base de données : MongoDB via Mongoose
+
+- Style : Tailwind CSS 4
+
+- Stockage : AWS S3
+
+---
+
+## 📦 Tester l'upload de fichiers JSON sur S3 (optionnel)
+
+Pour tester l'upload vers AWS S3 en local :
+
+Assure-toi que les variables suivantes sont bien définies dans .env.local :
+
+- AWS_ACCESS_KEY_ID
+
+- AWS_SECRET_ACCESS_KEY
+
+- AWS_REGION
+
+- AWS_BUCKET_NAME
+
+Lance l'application en local :
+```bash
+
+npm run dev
+
+```
+
+Utilise l'interface prévue ou une route API pour envoyer un fichier .json.
+
+Vérifie dans la console AWS S3 que le fichier est bien présent dans le bucket.
+
+💡 Astuce : tu peux activer les logs côté serveur pour afficher la réponse S3 et déboguer plus facilement.
 
 
