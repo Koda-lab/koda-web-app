@@ -4,9 +4,11 @@ import { useState } from "react";
 
 interface FileUploadProps {
     onUploadSuccess: (url: string) => void;
+    accept?: string;
+    label?: string;
 }
 
-export default function FileUpload({ onUploadSuccess }: FileUploadProps ) {
+export default function FileUpload({ onUploadSuccess, accept, label = "Fichier JSON de l'automatisation" }: FileUploadProps) {
     const [uploading, setUploading] = useState(false);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,14 +54,30 @@ export default function FileUpload({ onUploadSuccess }: FileUploadProps ) {
     };
 
     return (
-        <div className="border-2 border-dashed border-gray-300 p-6 rounded-lg text-center">
-            <input
-                type="file"
-                onChange={handleFileChange}
-                disabled={uploading}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
-            />
-            {uploading && <p className="mt-2 text-blue-500">Téléchargement en cours...</p>}
+        <div className="border-2 border-dashed border-gray-300 p-6 rounded-lg text-center hover:bg-muted/50 transition-colors">
+            {uploading ? (
+                <p className="text-blue-500 font-medium animate-pulse">Téléchargement en cours...</p>
+            ) : (
+                <>
+                    <input
+                        type="file"
+                        id={`file-upload-${label}`}
+                        onChange={handleFileChange}
+                        disabled={uploading}
+                        accept={accept}
+                        className="hidden"
+                    />
+                    <label
+                        htmlFor={`file-upload-${label}`}
+                        className="cursor-pointer flex flex-col items-center justify-center w-full h-full"
+                    >
+                        <p className="text-sm font-medium text-muted-foreground mb-2">{label}</p>
+                        <span className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors text-sm">
+                            Choisir un fichier
+                        </span>
+                    </label>
+                </>
+            )}
         </div>
     );
 }

@@ -24,8 +24,14 @@ export function SellForm() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [fileUrl, setFileUrl] = useState("");
+    const [previewImageUrl, setPreviewImageUrl] = useState("");
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<{
+        title: string;
+        description: string;
+        price: number;
+        category: "n8n" | "Make" | "Zapier" | "Autre";
+    }>({
         title: "",
         description: "",
         price: 0,
@@ -39,7 +45,7 @@ export function SellForm() {
 
         setLoading(true);
         try {
-            await createAutomation({ ...formData, fileUrl });
+            await createAutomation({ ...formData, fileUrl, previewImageUrl });
             alert("Produit mis en ligne !");
             router.push("/");
         } catch (error) {
@@ -64,7 +70,7 @@ export function SellForm() {
 
                     {/* Titre */}
                     <div className="space-y-2">
-                        <Label htmlFor="title">Titre de l'automatisation</Label>
+                        <Label htmlFor="title">Titre de l'automatisation <span className="text-destructive">*</span></Label>
                         <Input
                             id="title"
                             placeholder="Ex: LinkedIn Scraper Pro v2"
@@ -77,11 +83,11 @@ export function SellForm() {
                     {/* Catégorie & Prix */}
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label htmlFor="category">Catégorie</Label>
+                            <Label htmlFor="category">Catégorie <span className="text-destructive">*</span></Label>
                             {/* Attention: Shadcn Select fonctionne avec onValueChange, pas onChange */}
                             <Select
                                 defaultValue={formData.category}
-                                onValueChange={(value) => setFormData({ ...formData, category: value })}
+                                onValueChange={(value) => setFormData({ ...formData, category: value as "n8n" | "Make" | "Zapier" | "Autre" })}
                             >
                                 <SelectTrigger>
                                     <SelectValue placeholder="Choisir..." />
@@ -90,12 +96,13 @@ export function SellForm() {
                                     <SelectItem value="n8n">n8n</SelectItem>
                                     <SelectItem value="Make">Make</SelectItem>
                                     <SelectItem value="Zapier">Zapier</SelectItem>
+                                    <SelectItem value="Autre">Autre</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="price">Prix (€)</Label>
+                            <Label htmlFor="price">Prix (€) <span className="text-destructive">*</span></Label>
                             <div className="relative">
                                 <Input
                                     id="price"
@@ -113,7 +120,7 @@ export function SellForm() {
 
                     {/* Description */}
                     <div className="space-y-2">
-                        <Label htmlFor="description">Description</Label>
+                        <Label htmlFor="description">Description <span className="text-destructive">*</span></Label>
                         <Textarea
                             id="description"
                             placeholder="Décrivez ce que fait votre script..."
@@ -124,15 +131,40 @@ export function SellForm() {
                         />
                     </div>
 
+                    {/* Zone d'upload Image de Démo */}
+                    <div className="space-y-2">
+                        <Label>Image de prévisualisation <span className="text-muted-foreground font-normal">(Optionnel)</span></Label>
+                        <div className="border-2 border-dashed rounded-lg p-2 hover:bg-muted/50 transition-colors">
+                            {!previewImageUrl ? (
+                                <FileUpload
+                                    onUploadSuccess={(url) => setPreviewImageUrl(url)}
+                                    accept="image/*"
+                                    label="Uploader une image de couverture"
+                                />
+                            ) : (
+                                <div className="space-y-2">
+                                    <img src={previewImageUrl} alt="Preview" className="w-full h-48 object-cover rounded-md" />
+                                    <Button variant="destructive" size="sm" onClick={() => setPreviewImageUrl("")} className="w-full">
+                                        Supprimer l'image
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
                     {/* Zone d'upload */}
                     <div className="space-y-2">
-                        <Label>Fichier JSON de l'automatisation</Label>
+                        <Label>Fichier JSON de l'automatisation <span className="text-destructive">*</span></Label>
                         <div className="border-2 border-dashed rounded-lg p-6 hover:bg-muted/50 transition-colors">
                             {!fileUrl ? (
                                 <div className="flex flex-col items-center justify-center text-center">
                                     <UploadCloud className="h-10 w-10 text-muted-foreground mb-4" />
                                     {/* Ton composant FileUpload est ici */}
-                                    <FileUpload onUploadSuccess={(url) => setFileUrl(url)} />
+                                    <FileUpload
+                                        onUploadSuccess={(url) => setFileUrl(url)}
+                                        accept=".json"
+                                        label="Uploader le fichier .JSON"
+                                    />
                                 </div>
                             ) : (
                                 <div className="flex items-center justify-center text-green-600 font-medium bg-green-50 p-4 rounded-md border border-green-200">
@@ -148,8 +180,7 @@ export function SellForm() {
                     <Button variant="ghost" type="button" onClick={() => router.back()}>
                         Annuler
                     </Button>
-                    {/* rajouter || !fileUrl dans disabled plus tard */}
-                    <Button type="submit" size="lg" disabled={loading}>
+                    <Button type="submit" size="lg" disabled={loading || !fileUrl}>
                         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         {loading ? "Publication..." : "Publier sur Koda"}
                     </Button>

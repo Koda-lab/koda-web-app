@@ -8,7 +8,7 @@ import User from "@/models/User";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function getStripeOnboardingLink() {
-    try{
+    try {
         const { userId } = await auth();
         if (!userId) throw new Error("Non autorisé");
 
@@ -59,3 +59,23 @@ export async function getStripeOnboardingLink() {
 
 }
 
+
+export async function getStripeLoginLink() {
+    try {
+        const { userId } = await auth();
+        if (!userId) throw new Error("Non autorisé");
+
+        await connectToDatabase();
+        const user = await User.findOne({ clerkId: userId });
+
+        if (!user || !user.stripeConnectId) {
+            throw new Error("Compte Stripe non trouvé");
+        }
+
+        const loginLink = await stripe.accounts.createLoginLink(user.stripeConnectId);
+        return loginLink.url;
+    } catch (error: any) {
+        console.error("Erreur login link:", error.message);
+        throw new Error("Impossible d'accéder au dashboard Stripe.");
+    }
+}

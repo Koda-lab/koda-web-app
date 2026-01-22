@@ -8,6 +8,8 @@ import { Separator } from "@/app/components/ui/separator";
 import { ChevronLeft, Download, ShieldCheck, Zap, User } from "lucide-react";
 import Link from "next/link";
 import { createClerkClient } from "@clerk/nextjs/server"; // Import pour le serveur
+import { createCheckoutSession } from "@/app/actions/transaction"; // Import de l'action de transaction
+import { redirect } from "next/navigation";
 
 const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
 
@@ -15,14 +17,41 @@ interface ProductPageProps {
     params: Promise<{ id: string }>;
 }
 
+import { auth } from "@clerk/nextjs/server";
+import { getDownloadUrl } from "@/lib/s3";
+import Purchase from "@/models/Purchase";
+
 export default async function ProductPage({ params }: ProductPageProps) {
     const { id } = await params;
+    const { userId } = await auth();
 
     await connectToDatabase();
     const product = await Automation.findById(id).lean();
 
     if (!product) {
         notFound();
+    }
+
+    // VÉRIFICATION DE L'ACHAT
+    let hasPurchased = false;
+    let secureDownloadUrl = "#";
+
+    if (userId) {
+        const purchase = await Purchase.findOne({
+            buyerId: userId,
+            productId: id
+        });
+
+        if (purchase) {
+            hasPurchased = true;
+            try {
+                // Générer le lien S3 sécurisé
+                const fileKey = product.fileUrl.split('.com/')[1];
+                secureDownloadUrl = await getDownloadUrl(fileKey);
+            } catch (e) {
+                console.error("Erreur génération lien S3:", e);
+            }
+        }
     }
 
     // RÉCUPÉRATION DES INFOS DU VENDEUR VIA CLERK
@@ -70,6 +99,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                     <Badge variant="outline" className="capitalize">
                                         {product.category}
                                     </Badge>
+                                    {hasPurchased && (
+                                        <Badge className="bg-green-600 hover:bg-green-700 text-white gap-1">
+                                            <ShieldCheck className="h-3 w-3" />
+                                            Acheté
+                                        </Badge>
+                                    )}
                                 </div>
 
                                 <h1 className="text-4xl font-extrabold tracking-tight mb-6 italic">
@@ -127,9 +162,39 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                 <Separator />
 
                                 <div className="space-y-4">
-                                    <Button className="w-full text-lg h-14 shadow-lg shadow-primary/20" size="lg">
-                                        Acheter maintenant
-                                    </Button>
+                                    {hasPurchased ? (
+                                        <div className="space-y-3">
+                                            <Button
+                                                asChild
+                                                className="w-full text-lg h-14 shadow-lg shadow-green-500/20 bg-green-600 hover:bg-green-700 text-white"
+                                                size="lg"
+                                            >
+                                                <a href={secureDownloadUrl} download={`${product.title}.json`}>
+                                                    <Download className="mr-3 h-6 w-6" />
+                                                    Télécharger maintenant
+                                                </a>
+                                            </Button>
+                                            <p className="text-xs text-center text-muted-foreground">
+                                                Vous possédez déjà ce produit ✅
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <form
+                                            action={async () => {
+                                                "use server";
+                                                const url = await createCheckoutSession(id);
+                                                if (url) redirect(url);
+                                            }}
+                                        >
+                                            <Button
+                                                type="submit"
+                                                className="w-full text-lg h-14 shadow-lg shadow-primary/20"
+                                                size="lg"
+                                            >
+                                                Acheter maintenant
+                                            </Button>
+                                        </form>
+                                    )}
                                 </div>
 
                                 {/* BLOC VENDEUR AMÉLIORÉ */}
