@@ -3,6 +3,8 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/app/components/ui/c
 import { Badge } from "@/app/components/ui/badge";
 import { Button } from "@/app/components/ui/button";
 
+//component pour afficher les produits sur la page d'accueil en format de carte. 
+
 interface ProductCardProps {
     id: string;
     title: string;
