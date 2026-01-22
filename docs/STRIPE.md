@@ -12,7 +12,7 @@ Pour vendre sur Koda, un utilisateur doit connecter un compte Stripe.
 1. **Vérification** : À chaque tentative d'accès à `/sell` ou publication d'un produit, on vérifie si le champ `stripeConnectId` est présent dans le profil `User` (MongoDB).
 2. **Création du Compte** : Si absent, on appelle l'API Stripe pour créer un `account` de type `express`.
 3. **Lien d'Onboarding** : On génère un `accountLink` pour rediriger l'utilisateur vers le formulaire hébergé par Stripe (KYC, RIB).
-4. **Validation** : Une fois le formulaire rempli, Stripe renvoie l'utilisateur vers `/return`. Un webhook `account.updated` confirme que le compte est `details_submitted: true`.
+4. **Validation** : Une fois le formulaire rempli, Stripe renvoie l'utilisateur vers `/stripe/return`. La page vérifie directement le statut du compte Stripe et met à jour la base de données avant de rediriger vers `/sell`.
 
 ---
 
@@ -51,14 +51,16 @@ Cette méthode assure que :
 
 L'application écoute les événements Stripe via la route `/app/api/webhooks/stripe`.
 
-### `checkout.session.completed`
+### Événements écoutés
+
+#### `checkout.session.completed`
 Déclenché après un paiement réussi.
 - **Action** :
   1. Récupère `productId` et `userId` dans les métadonnées de la session.
   2. Crée un enregistrement `Purchase` dans MongoDB.
   3. Débloque l'accès au téléchargement pour l'acheteur.
 
-### `account.updated`
+#### `account.updated`
 Déclenché quand un vendeur met à jour ses infos.
 - **Action** :
   1. Vérifie si `details_submitted` est passé à `true`.
@@ -66,7 +68,63 @@ Déclenché quand un vendeur met à jour ses infos.
 
 ---
 
+## ⚙️ Configuration des Webhooks
+
+### Développement Local (Stripe CLI)
+
+**1. Installez et connectez-vous au Stripe CLI**
+```bash
+stripe login
+```
+
+**2. Lancez le listener de webhooks**
+```bash
+stripe listen --forward-to localhost:3000/api/webhooks/stripe
+```
+
+**3. Copiez le signing secret** (commence par `whsec_...`)
+
+**4. Ajoutez-le dans `.env.local`**
+```bash
+STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxxxxxxx
+```
+
+**5. Lancez votre application**
+```bash
+npm run dev
+```
+
+**Important** : Laissez `stripe listen` tourner pendant vos tests. Vous verrez tous les webhooks en temps réel dans le terminal.
+
+---
+
+### Production
+
+**1. Allez sur le [Dashboard Stripe](https://dashboard.stripe.com)**
+
+**2. Accédez à Developers → Webhooks**
+
+**3. Cliquez sur "Add endpoint"**
+
+**4. Configurez l'endpoint**
+- **Endpoint URL** : `https://votre-domaine.com/api/webhooks/stripe`
+- **Events from** : Your account
+- **API version** : 2025-12-15.clover (ou la plus récente)
+- **Events to listen** : 
+  - `account.updated`
+  - `checkout.session.completed`
+
+**5. Récupérez le signing secret**
+
+Après création, copiez le signing secret et ajoutez-le à vos variables d'environnement de production (Vercel, Netlify, etc.) :
+```bash
+STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxxxxxxx
+```
+
+---
+
 ## 🛡 Sécurité
 
 - **Stripe Express** : Les vendeurs n'ont pas accès aux données de la plateforme, uniquement à leur dashboard isolé.
 - **Liens de Connexion** : Les liens "Voir mon Dashboard" sont générés dynamiquement (Tokens temporaires) et ne sont jamais stockés.
+- **Validation des Webhooks** : Tous les webhooks sont vérifiés avec le signing secret pour garantir qu'ils proviennent bien de Stripe.
