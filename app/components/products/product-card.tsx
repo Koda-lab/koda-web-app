@@ -10,10 +10,13 @@ import { IAutomation } from "@/types/automation";
 
 interface ProductCardProps {
     product: IAutomation; // On passe l'objet entier pour le panier
+    userId?: string | null;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, userId }: ProductCardProps) {
     const cart = useCart();
+
+    const isOwner = userId === product.sellerId;
 
     // Gestion du clic "Ajouter au panier"
     const onAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -61,9 +64,19 @@ export function ProductCard({ product }: ProductCardProps) {
                     onClick={onAddToCart}
                     className="flex-1 bg-primary/90 hover:bg-primary"
                     size="lg"
+                    disabled={isOwner}
                 >
-                    <ShoppingCart className="mr-2 h-4 w-4" />
-                    Ajouter
+                    {isOwner ? (
+                        <>
+                            <ShoppingCart className="mr-2 h-4 w-4 opacity-50" />
+                            Votre produit
+                        </>
+                    ) : (
+                        <>
+                            <ShoppingCart className="mr-2 h-4 w-4" />
+                            Ajouter
+                        </>
+                    )}
                 </Button>
             </CardFooter>
         </Card>

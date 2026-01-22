@@ -59,6 +59,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
         notFound();
     }
 
+    const isOwner = userId === product.sellerId;
+
     // VÉRIFICATION DE L'ACHAT
     let hasPurchased = false;
     let secureDownloadUrl = "#";
@@ -217,9 +219,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                                 Vous possédez déjà ce produit ✅
                                             </p>
                                         </div>
-                                    ) : isOwnProduct ? (
+                                    ) : isOwner ? (
                                         <div className="space-y-3">
-                                            <div className="w-full text-lg h-14 flex items-center justify-center bg-muted-foreground/10 rounded-lg border-2 border-primary/20">
+                                            <div className="w-full text-lg h-14 flex items-center justify-center bg-muted/50 rounded-lg border-2 border-primary/20 cursor-not-allowed">
                                                 <Package className="mr-2 h-5 w-5 text-primary" />
                                                 <span className="font-semibold text-primary">Votre produit</span>
                                             </div>
@@ -250,6 +252,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                                 className="w-full text-lg h-14 shadow-lg shadow-primary/20"
                                                 size="lg"
                                             >
+                                                <Zap className="mr-2 h-5 w-5" />
                                                 Acheter maintenant
                                             </Button>
                                         </form>
@@ -274,8 +277,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                             </CardContent>
                         </Card>
                     </div>
-                </div>
-            </div>
+                </div >
+            </div >
         </div >
     );
 }

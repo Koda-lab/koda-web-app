@@ -6,6 +6,7 @@ import { Button } from "@/app/components/ui/button";
 import { ProductCard } from "@/app/components/products/product-card";
 import { SearchBar } from "@/app/components/search/search-bar";
 import { Metadata } from "next";
+import { auth } from "@clerk/nextjs/server"; // Import auth
 
 export const metadata: Metadata = {
   title: 'Koda - Marketplace d\'Automations No-Code',
@@ -103,6 +104,7 @@ interface HomeProps {
 }
 
 export default async function Home(props: HomeProps) {
+  const { userId } = await auth(); // Récupération de l'utilisateur connecté
   const searchParams = await props.searchParams;
   const query = searchParams.q || "";
   const platform = searchParams.platform || "all";
@@ -156,6 +158,7 @@ export default async function Home(props: HomeProps) {
               <ProductCard
                 key={item._id}
                 product={item}
+                userId={userId} // On passe l'ID de l'utilisateur connecté
               />
             ))}
           </div>
