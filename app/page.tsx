@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Button } from "@/app/components/ui/button";
 import { ProductCard } from "@/app/components/products/product-card";
 import { SearchBar } from "@/app/components/search/search-bar";
-import { CategoryFilter } from "@/app/components/search/category-filter";
 import { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 
@@ -134,11 +133,6 @@ export default async function Home(props: HomeProps) {
             {/* Barre de recherche centrée */}
             <div className="w-full flex justify-center">
               <SearchBar sellers={sellers} />
-            </div>
-
-            {/* Filtres par catégorie */}
-            <div className="w-full max-w-2xl">
-              <CategoryFilter />
             </div>
           </div>
         </div>
