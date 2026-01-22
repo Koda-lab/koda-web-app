@@ -13,7 +13,7 @@ export async function createCheckoutSession(automationId: string) {
     const { userId } = await auth();
 
     if (!userId) {
-        throw new Error("Vous devez être connecté pour acheter ce produit.");
+        redirect("/sign-in");
     }
 
     await connectToDatabase();

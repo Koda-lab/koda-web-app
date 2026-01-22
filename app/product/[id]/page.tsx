@@ -179,6 +179,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                                 Vous possédez déjà ce produit ✅
                                             </p>
                                         </div>
+                                    ) : !userId ? (
+                                        <Button
+                                            asChild
+                                            className="w-full text-lg h-14 shadow-lg shadow-primary/20"
+                                            size="lg"
+                                        >
+                                            <Link href="/sign-in">
+                                                Se connecter pour acheter
+                                            </Link>
+                                        </Button>
                                     ) : (
                                         <form
                                             action={async () => {
