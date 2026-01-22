@@ -1,13 +1,14 @@
 import Link from 'next/link';
-import { Button } from '@/app/components/ui/button'; // Ajusté selon votre arborescence
+import { Button } from '@/app/components/ui/button';
 import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { LayoutDashboard } from "lucide-react";
+import CartSheet from '@/app/components/cart/cart-sheet';
 
 export default function Header() {
     return (
         <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
             <div className="container mx-auto flex h-16 items-center justify-between px-4">
-                {/* Logo (Inchangé) */}
+                {/* Logo */}
                 <Link href="/" className="text-xl font-bold tracking-tight">
                     Koda.
                 </Link>
@@ -20,7 +21,6 @@ export default function Header() {
                         </Link>
 
                         <SignedIn>
-                            {/* Nouveau lien Dashboard pour les utilisateurs connectés */}
                             <Link href="/dashboard" className="transition-colors hover:text-primary flex items-center gap-1">
                                 <LayoutDashboard className="h-4 w-4" />
                                 Dashboard
@@ -33,6 +33,9 @@ export default function Header() {
                     </nav>
 
                     <div className="flex items-center gap-2">
+
+                        <CartSheet /> {/*Panier*/}
+
                         <SignedOut>
                             <SignInButton mode="modal">
                                 <Button variant="ghost">Connexion</Button>
