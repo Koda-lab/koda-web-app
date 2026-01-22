@@ -4,6 +4,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/app/components/layout/header";
+import { Toaster } from "sonner";
 
 
 const geistSans = Geist({
@@ -34,6 +35,7 @@ export default function RootLayout({
           <main className="flex-1">
             {children}
           </main>
+          <Toaster position="top-center" richColors />
         </body>
       </html>
     </ClerkProvider>

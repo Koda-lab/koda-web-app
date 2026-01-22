@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createAutomation } from "@/app/actions/automation"; // Ta Server Action existante
 import FileUpload from "@/app/components/FileUpload"; // Ton composant Upload existant
+import { getPublicImageUrl } from "@/lib/image-helper";
+import { toast } from "sonner";
 
 // Imports UI (Design)
 import { Button } from "@/app/components/ui/button";
@@ -44,15 +46,17 @@ export function SellForm() {
         // if (!fileUrl) return alert("Veuillez uploader votre fichier d'automatisation"); 
 
         setLoading(true);
+        const toastId = toast.loading("Publication en cours...");
         try {
             await createAutomation({ ...formData, fileUrl, previewImageUrl });
-            alert("Produit mis en ligne !");
+            toast.success("Produit mis en ligne avec succès !");
             router.push("/");
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            alert("Erreur lors de la mise en vente");
+            toast.error(error.message || "Erreur lors de la mise en vente");
         } finally {
             setLoading(false);
+            toast.dismiss(toastId);
         }
     };
 
@@ -139,11 +143,10 @@ export function SellForm() {
                                 <FileUpload
                                     onUploadSuccess={(url) => setPreviewImageUrl(url)}
                                     accept="image/*"
-                                    label="Uploader une image de couverture"
                                 />
                             ) : (
                                 <div className="space-y-2">
-                                    <img src={previewImageUrl} alt="Preview" className="w-full h-48 object-cover rounded-md" />
+                                    <img src={getPublicImageUrl(previewImageUrl)} alt="Preview" className="w-full h-48 object-cover rounded-md" />
                                     <Button variant="destructive" size="sm" onClick={() => setPreviewImageUrl("")} className="w-full">
                                         Supprimer l'image
                                     </Button>

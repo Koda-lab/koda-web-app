@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface FileUploadProps {
     onUploadSuccess: (url: string) => void;
@@ -16,6 +17,7 @@ export default function FileUpload({ onUploadSuccess, accept, label = "Fichier J
         if (!file) return;
 
         setUploading(true);
+        const toastId = toast.loading("Envoi en cour...");
 
         try {
             // 1. Demander l'URL présignée à notre API
@@ -45,11 +47,13 @@ export default function FileUpload({ onUploadSuccess, accept, label = "Fichier J
             });
 
             onUploadSuccess(fileUrl);
-            alert("Fichier envoyé avec succès !");
+            toast.success("Fichier envoyé avec succès !");
         } catch (error) {
             console.error("Upload failed", error);
+            toast.error("Échec de l'envoi du fichier.");
         } finally {
             setUploading(false);
+            toast.dismiss(toastId);
         }
     };
 

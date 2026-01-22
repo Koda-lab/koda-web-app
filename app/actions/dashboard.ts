@@ -6,13 +6,14 @@ import Automation from "@/models/Automation";
 import Purchase from "@/models/Purchase";
 import User from "@/models/User";
 import Stripe from "stripe";
+import { IAutomation } from "@/types/automation";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 /**
  * Récupère les produits mis en vente par le vendeur connecté.
  */
-export async function getMyProducts() {
+export async function getMyProducts(): Promise<IAutomation[]> {
     const { userId } = await auth();
     if (!userId) return [];
 
@@ -22,11 +23,12 @@ export async function getMyProducts() {
     const products = await Automation.find({ sellerId: userId }).sort({ createdAt: -1 }).lean();
 
     // Conversion manuelle des IDs en string pour éviter les erreurs "Only plain objects..."
-    return products.map(product => ({
+    return products.map((product: any) => ({
         ...product,
         _id: product._id.toString(),
-        price: product.price,
-    }));
+        createdAt: product.createdAt, // Ensure date is preserved or handled as needed (Next.js handles Date now, or convert to ISO string if preferred)
+        // Casting to ensure compatibility with IAutomation
+    })) as IAutomation[];
 }
 
 /**
@@ -43,10 +45,10 @@ export async function getSalesHistory() {
         .sort({ createdAt: -1 })
         .lean();
 
-    return purchases.map(purchase => ({
+    return purchases.map((purchase: any) => ({
         ...purchase,
         _id: purchase._id.toString(),
-        productId: purchase.productId ? { title: (purchase.productId as any).title } : { title: "Produit supprimé" },
+        productId: purchase.productId ? { title: purchase.productId.title } : { title: "Produit supprimé" },
         createdAt: purchase.createdAt.toISOString(),
     }));
 }
@@ -75,7 +77,7 @@ export async function getSellerBalance() {
         };
     } catch (error) {
         console.error("Erreur lors de la récupération de la balance Stripe:", error);
-        return null;
+        return null; // Fail gracefully
     }
 }
 
@@ -93,14 +95,14 @@ export async function getMyOrders() {
         .sort({ createdAt: -1 })
         .lean();
 
-    return orders.map(order => ({
+    return orders.map((order: any) => ({
         ...order,
         _id: order._id.toString(),
         productId: order.productId ? {
-            _id: (order.productId as any)._id.toString(),
-            title: (order.productId as any).title,
-            price: (order.productId as any).price,
-            previewImageUrl: (order.productId as any).previewImageUrl,
+            _id: order.productId._id.toString(),
+            title: order.productId.title,
+            price: order.productId.price,
+            previewImageUrl: order.productId.previewImageUrl,
         } : null,
         createdAt: order.createdAt.toISOString(),
     }));

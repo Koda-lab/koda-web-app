@@ -11,7 +11,7 @@ export const s3Client = new S3Client({
 
 export async function getDownloadUrl(fileKey: string) {
     const command = new GetObjectCommand({
-        Bucket: process.env.AWS_BUCKET_NAME!,
+        Bucket: process.env.AWS_S3_BUCKET_NAME!,
         Key: fileKey, // Le nom du fichier dans S3
     });
 

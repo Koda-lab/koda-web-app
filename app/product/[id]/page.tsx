@@ -5,6 +5,7 @@ import { Badge } from "@/app/components/ui/badge";
 import { Button } from "@/app/components/ui/button";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Separator } from "@/app/components/ui/separator";
+import { getPublicImageUrl } from "@/lib/image-helper";
 import { ChevronLeft, Download, ShieldCheck, Zap, User } from "lucide-react";
 import Link from "next/link";
 import { createClerkClient } from "@clerk/nextjs/server"; // Import pour le serveur
@@ -83,7 +84,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                             <div className="aspect-video bg-muted flex items-center justify-center border-b relative group">
                                 {product.previewImageUrl ? (
                                     <img
-                                        src={product.previewImageUrl}
+                                        src={getPublicImageUrl(product.previewImageUrl)}
                                         alt={product.title}
                                         className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                                     />
@@ -205,8 +206,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                         <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center">
                                             <User size={20} className="text-muted-foreground" />
                                         </div>
-                                    )}
-                                    <div className="flex flex-col">
+                                    )
+                                    }
+                                    < div className="flex flex-col">
                                         <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter">Vendu par</span>
                                         <span className="text-sm font-semibold text-primary">{sellerName}</span>
                                     </div>
@@ -216,6 +218,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

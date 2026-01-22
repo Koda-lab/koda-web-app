@@ -10,6 +10,8 @@ import { Textarea } from "@/app/components/ui/textarea";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { Loader2 } from "lucide-react";
 import FileUpload from "@/app/components/FileUpload"; // Import du composant Upload
+import { getPublicImageUrl } from "@/lib/image-helper";
+import { toast } from "sonner";
 
 interface EditFormProps {
     product: {
@@ -36,16 +38,18 @@ export function EditForm({ product }: EditFormProps) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        const toastId = toast.loading("Mise à jour en cours...");
 
         try {
             await updateProduct(product._id, formData);
-            alert("Produit mis à jour !");
+            toast.success("Produit mis à jour avec succès !");
             router.push("/dashboard");
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            alert("Erreur lors de la mise à jour");
+            toast.error(error.message || "Erreur lors de la mise à jour");
         } finally {
             setLoading(false);
+            toast.dismiss(toastId);
         }
     };
 
@@ -89,7 +93,7 @@ export function EditForm({ product }: EditFormProps) {
                                 />
                             ) : (
                                 <div className="space-y-2">
-                                    <img src={formData.previewImageUrl} alt="Preview" className="w-full h-48 object-cover rounded-md" />
+                                    <img src={getPublicImageUrl(formData.previewImageUrl)} alt="Preview" className="w-full h-48 object-cover rounded-md" />
                                     <Button
                                         variant="destructive"
                                         size="sm"

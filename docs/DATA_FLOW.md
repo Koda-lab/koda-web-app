@@ -24,7 +24,7 @@ C'est le flux le plus critique de l'application, permettant aux vendeurs de mett
 
 L'authentification est gérée entièrement par **Clerk**.
 
--   **Middleware** : Le fichier `middleware.ts` protège les routes sensibles.
+-   **Middleware** : Le fichier `proxy.ts` protège les routes sensibles.
 -   **Client** : Les composants `<SignIn />`, `<SignUp />`, `<UserButton />` gèrent l'UI.
 -   **Serveur** : `auth()` et `currentUser()` permettent de récupérer l'ID et les infos de l'utilisateur connecté dans les Server Components et Server Actions.
 
