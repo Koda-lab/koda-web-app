@@ -7,12 +7,19 @@ import User from "@/models/User";
 import { revalidatePath } from "next/cache";
 import { CreateAutomationInput } from "@/types/automation";
 import { ProductSchema } from "@/lib/validations";
+import { checkRateLimit } from "@/lib/ratelimit";
 
 export async function createAutomation(formData: CreateAutomationInput) {
     const { userId } = await auth();
 
     if (!userId) {
         throw new Error("Vous devez être connecté pour vendre un produit.");
+    }
+
+    // Rate Limiting
+    const { success } = await checkRateLimit(userId);
+    if (!success) {
+        throw new Error("Trop de requêtes. Veuillez réessayer dans quelques secondes.");
     }
 
     // Validation Zod
