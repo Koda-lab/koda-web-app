@@ -7,7 +7,7 @@ import { Button } from "@/app/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/app/components/ui/sheet";
 import { Separator } from "@/app/components/ui/separator";
 import { useEffect, useState, useTransition } from "react";
-// 👇 Import de notre nouvelle action serveur
+// Import de notre nouvelle action serveur
 import { createCheckoutSession } from "@/app/actions/transaction";
 import { toast } from "sonner";
 
@@ -24,7 +24,7 @@ export default function CartSheet() {
 
     const total = cart.items.reduce((total, item) => total + Number(item.price), 0);
 
-    // 👇 La fonction qui déclenche le paiement
+    // La fonction qui déclenche le paiement
     const onCheckout = async () => {
         startTransition(async () => {
             try {
@@ -48,12 +48,12 @@ export default function CartSheet() {
                     <ShoppingCart size={20} />
                     {cart.items.length > 0 && (
                         <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 text-[10px] font-bold text-white flex items-center justify-center">
-              {cart.items.length}
-            </span>
+                            {cart.items.length}
+                        </span>
                     )}
                 </Button>
             </SheetTrigger>
-            {/* 👇 Ajout de z-[100] pour être sûr qu'il passe au dessus du header */}
+            {/*  Ajout de z-[100] pour être sûr qu'il passe au dessus du header */}
             <SheetContent className="z-[100] flex flex-col h-full">
                 <SheetHeader>
                     <SheetTitle>Mon Panier ({cart.items.length})</SheetTitle>
@@ -90,7 +90,7 @@ export default function CartSheet() {
                             <span className="font-bold text-lg">{total.toFixed(2)} €</span>
                         </div>
 
-                        {/* 👇 Bouton mis à jour */}
+                        {/* Bouton mis à jour */}
                         <Button
                             className="w-full"
                             onClick={onCheckout}
