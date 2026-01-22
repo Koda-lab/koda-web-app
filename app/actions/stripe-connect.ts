@@ -44,8 +44,8 @@ export async function getStripeOnboardingLink() {
 
         const accountLink = await stripe.accountLinks.create({
             account: stripeAccountId,
-            refresh_url: `${baseUrl}/dashboard`,
-            return_url: `${baseUrl}/dashboard`,
+            refresh_url: `${baseUrl}/stripe/return`,
+            return_url: `${baseUrl}/stripe/return`,
             type: "account_onboarding",
         });
 
