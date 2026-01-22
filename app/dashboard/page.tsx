@@ -214,8 +214,8 @@ export default async function DashboardPage() {
 
                 {/* --- SECTION MES PRODUITS --- */}
                 <TabsContent value="products" className="space-y-6">
-                    <div className="flex justify-between items-center">
-                        <h2 className="text-xl font-semibold">Vos Automatisations</h2>
+                    <div className="flex justify-between items-center bg-muted/20 p-4 rounded-xl">
+                        <h2 className="text-xl font-semibold">Mes Produits</h2>
                         <Button asChild>
                             <Link href="/sell">
                                 <Plus className="mr-2 h-4 w-4" />
@@ -227,42 +227,43 @@ export default async function DashboardPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {products.length > 0 ? (
                             products.map((product) => (
-                                <Card key={product._id} className="overflow-hidden group">
-                                    <div className="aspect-video bg-muted relative">
+                                <Card key={product._id} className="overflow-hidden group flex flex-col h-full hover:shadow-lg transition-shadow duration-200">
+                                    <div className="aspect-video bg-muted relative w-full overflow-hidden">
                                         {product.previewImageUrl ? (
                                             <Image
                                                 src={getPublicImageUrl(product.previewImageUrl)}
                                                 alt={product.title}
-                                                width={400}
-                                                height={225}
-                                                className="object-cover w-full h-full"
+                                                fill
+                                                className="object-cover transition-transform duration-300 group-hover:scale-105"
                                             />
                                         ) : (
-                                            <div className="flex items-center justify-center w-full h-full text-muted-foreground">
-                                                <Package className="h-10 w-10 opacity-20" />
+                                            <div className="flex flex-col items-center justify-center w-full h-full text-muted-foreground bg-muted/50">
+                                                <Package className="h-12 w-12 opacity-20 mb-2" />
+                                                <span className="text-xs text-muted-foreground/50 font-medium">Aucune image</span>
                                             </div>
                                         )}
                                     </div>
-                                    <CardContent className="p-4">
-                                        <h3 className="font-semibold truncate mb-1">{product.title}</h3>
-                                        <div className="text-sm font-medium text-primary mb-4">{product.price} €</div>
+                                    <div className="p-5 flex flex-col flex-1">
+                                        <div className="flex justify-between items-start gap-4 mb-2">
+                                            <h3 className="font-semibold text-base line-clamp-2 leading-tight" title={product.title}>{product.title}</h3>
+                                            <div className="text-lg font-bold text-primary whitespace-nowrap">{product.price.toFixed(2)} €</div>
+                                        </div>
 
-                                        <div className="flex gap-2">
-                                            <Button variant="outline" size="sm" className="flex-1" asChild>
+                                        <div className="mt-auto pt-4 flex gap-2">
+                                            <Button variant="outline" size="default" className="flex-1 bg-background hover:bg-muted" asChild>
                                                 <Link href={`/dashboard/edit/${product._id}`}>
                                                     <Edit className="mr-2 h-4 w-4" />
                                                     Modifier
                                                 </Link>
                                             </Button>
 
-                                            {/* Formulaire de suppression avec Server Action */}
                                             <form action={handleDelete.bind(null, product._id)}>
-                                                <Button variant="destructive" size="sm" className="px-3" type="submit">
+                                                <Button variant="destructive" size="icon" type="submit" title="Supprimer le produit">
                                                     <Trash2 className="h-4 w-4" />
                                                 </Button>
                                             </form>
                                         </div>
-                                    </CardContent>
+                                    </div>
                                 </Card>
                             ))
                         ) : (
