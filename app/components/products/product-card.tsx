@@ -4,12 +4,14 @@ import Link from "next/link";
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
 import { Button } from "@/app/components/ui/button";
-import { ShoppingCart, Eye } from "lucide-react"; // Icône pour le panier
-import { useCart } from "@/hooks/use-cart";   // Ton hook panier
+import { ShoppingCart, Eye } from "lucide-react";
+import { useCart } from "@/hooks/use-cart";
 import { IAutomation } from "@/types/automation";
+// 1. On importe ton nouveau composant Icon
+import { PlatformIcon } from "@/app/components/icons/platform-icon";
 
 interface ProductCardProps {
-    product: IAutomation; // On passe l'objet entier pour le panier
+    product: IAutomation;
     userId?: string | null;
 }
 
@@ -17,22 +19,10 @@ export function ProductCard({ product, userId }: ProductCardProps) {
     const cart = useCart();
     const isOwner = userId === product.sellerId;
 
-    // Gestion du clic "Ajouter au panier"
     const onAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         e.stopPropagation();
         cart.addItem(product);
-    };
-
-    // Platform Icon Map (Simple fallback for now)
-    const getPlatformIcon = (platform: string) => {
-        switch (platform) {
-            case "n8n": return <span className="font-bold text-orange-500">n8n</span>;
-            case "Make": return <span className="font-bold text-purple-600">Make</span>;
-            case "Zapier": return <span className="font-bold text-orange-600">Zapier</span>;
-            case "Python": return <span className="font-bold text-blue-500">Python</span>;
-            default: return <span className="font-medium text-foreground">{platform}</span>;
-        }
     };
 
     return (
@@ -48,13 +38,13 @@ export function ProductCard({ product, userId }: ProductCardProps) {
                     />
                 ) : (
                     <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/30 flex items-center justify-center">
-                        <span className="text-4xl opacity-20 font-black tracking-tighter">KODA</span>
+                        <span className="text-4xl opacity-20 font-black tracking-tighter select-none">KODA</span>
                     </div>
                 )}
 
                 {/* Quick View Overlay Button */}
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <Button asChild variant="secondary" size="sm" className="translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    <Button asChild variant="secondary" size="sm" className="translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg">
                         <Link href={`/product/${product._id}`}>
                             <Eye className="mr-2 h-4 w-4" />
                             Aperçu rapide
@@ -64,18 +54,27 @@ export function ProductCard({ product, userId }: ProductCardProps) {
 
                 {/* Badge Category (Top Left) */}
                 <div className="absolute top-2 left-2">
-                    <Badge variant="secondary" className="backdrop-blur-md bg-background/80 hover:bg-background/90">
+                    <Badge variant="secondary" className="backdrop-blur-md bg-background/80 hover:bg-background/90 shadow-sm">
                         {product.category}
                     </Badge>
                 </div>
             </div>
 
             <CardHeader className="p-4 pb-2">
-                <div className="flex justify-between items-center mb-1">
+                <div className="flex justify-between items-center mb-2">
+                    {/* 2. Intégration du Logo Dynamique */}
                     <div className="flex items-center gap-2">
-                        {/* Dynamic Platform Icon */}
-                        {getPlatformIcon(product.platform)}
+                        {/* L'icône gère sa propre couleur au survol via group-hover */}
+                        <PlatformIcon
+                            platform={product.platform}
+                            className="w-5 h-5 text-muted-foreground"
+                        />
+                        {/* Le nom de la plateforme s'assombrit aussi au survol */}
+                        <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                            {product.platform}
+                        </span>
                     </div>
+
                     <span className="font-bold text-lg text-primary">{product.price} €</span>
                 </div>
 
@@ -84,15 +83,16 @@ export function ProductCard({ product, userId }: ProductCardProps) {
                 </h3>
 
                 {/* Seller Info */}
-                <div className="text-xs text-muted-foreground mt-1">
-                    Proposé par <span className="font-medium text-foreground">
-                        {product.seller?.username || product.seller?.firstName || "Vendeur"}
+                <div className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                    <span>Proposé par</span>
+                    <span className="font-medium text-foreground hover:underline cursor-pointer">
+                        {product.seller?.username || "Vendeur"}
                     </span>
                 </div>
             </CardHeader>
 
             <CardContent className="p-4 pt-2 flex-grow">
-                <p className="text-muted-foreground text-sm line-clamp-2">
+                <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">
                     {product.description}
                 </p>
             </CardContent>
@@ -100,7 +100,7 @@ export function ProductCard({ product, userId }: ProductCardProps) {
             <CardFooter className="p-4 pt-0 mt-auto">
                 <Button
                     onClick={onAddToCart}
-                    className="w-full bg-primary/90 hover:bg-primary"
+                    className="w-full bg-primary/90 hover:bg-primary shadow-sm transition-all"
                     disabled={isOwner}
                 >
                     {isOwner ? (
