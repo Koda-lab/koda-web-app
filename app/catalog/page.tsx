@@ -8,11 +8,11 @@ import { Search, Loader2 } from "lucide-react";
 import { IProduct } from "@/types/product"; // Utilisation de l'interface de base
 
 interface CatalogPageProps {
-    searchParams?: { [key: string]: string | string[] | undefined };
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export default async function CatalogPage({ searchParams }: CatalogPageProps) {
-    const params = searchParams ?? {};
+export default async function CatalogPage(props: CatalogPageProps) {
+    const params = await props.searchParams;
 
     // Normalisation des paramètres pour l'action
     const filters = {
