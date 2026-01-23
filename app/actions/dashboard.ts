@@ -7,28 +7,29 @@ import Purchase from "@/models/Purchase";
 import User from "@/models/User";
 import Stripe from "stripe";
 import { IAutomation } from "@/types/automation";
+import {IProduct} from "@/types/product";
+import {Product} from "@/models/Product";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 /**
  * Récupère les produits mis en vente par le vendeur connecté.
  */
-export async function getMyProducts(): Promise<IAutomation[]> {
+export async function getMyProducts(): Promise<IProduct[]> {
     const { userId } = await auth();
     if (!userId) return [];
 
     await connectToDatabase();
 
     // On convertit en objets JS simples avec lean() pour éviter les problèmes de sérialisation
-    const products = await Automation.find({ sellerId: userId }).sort({ createdAt: -1 }).lean();
+    const products = await Product.find({ sellerId: userId }).sort({ createdAt: -1 }).lean();
 
     // Conversion manuelle des IDs en string pour éviter les erreurs "Only plain objects..."
     return products.map((product: any) => ({
         ...product,
         _id: product._id.toString(),
-        createdAt: product.createdAt, // Ensure date is preserved or handled as needed (Next.js handles Date now, or convert to ISO string if preferred)
-        // Casting to ensure compatibility with IAutomation
-    })) as IAutomation[];
+        createdAt: product.createdAt,
+    })) as IProduct[];
 }
 
 /**

@@ -5,13 +5,17 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/app/components/ui/input";
 import { Search, Loader2 } from "lucide-react";
 
-export function SidebarSearch() {
+type SidebarSearchProps = {
+    defaultValue?: string;
+};
+
+export function SidebarSearch({ defaultValue }: SidebarSearchProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
 
-    // Initialize from URL
-    const initialQuery = searchParams.get("query") || "";
+    // Initialize from prop (server-derived) or fallback to URL
+    const initialQuery = defaultValue ?? searchParams.get("query") ?? "";
     const [value, setValue] = useState(initialQuery);
 
     const [debouncedValue, setDebouncedValue] = useState(value);
