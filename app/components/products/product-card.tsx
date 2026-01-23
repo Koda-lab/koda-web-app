@@ -7,7 +7,6 @@ import { Button } from "@/app/components/ui/button";
 import { ShoppingCart, Eye } from "lucide-react";
 import { useCart } from "@/hooks/use-cart";
 import { IAutomation } from "@/types/automation";
-// 1. On importe ton nouveau composant Icon
 import { PlatformIcon } from "@/app/components/icons/platform-icon";
 
 interface ProductCardProps {
@@ -38,7 +37,7 @@ export function ProductCard({ product, userId }: ProductCardProps) {
                     />
                 ) : (
                     <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/30 flex items-center justify-center">
-                        <span className="text-4xl opacity-20 font-black tracking-tighter select-none">KODA</span>
+                        <span className="text-4xl opacity-20 font-black tracking-tighter select-none">Koda<span className="text-orange-500">.</span></span>
                     </div>
                 )}
 
