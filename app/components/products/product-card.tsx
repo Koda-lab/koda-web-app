@@ -16,13 +16,14 @@ type ProductLike = IProduct | IAutomation;
 interface ProductCardProps {
     product: ProductLike;
     userId?: string | null;
+    isPurchased?: boolean;
 }
 
 function isAutomation(p: ProductLike): p is IAutomation {
     return "platform" in p && "fileUrl" in p;
 }
 
-export function ProductCard({ product, userId }: ProductCardProps) {
+export function ProductCard({ product, userId, isPurchased = false }: ProductCardProps) {
     const cart = useCart();
     const isOwner = userId === product.sellerId;
     const automation = isAutomation(product);
@@ -33,6 +34,11 @@ export function ProductCard({ product, userId }: ProductCardProps) {
 
         if (!automation) {
             toast.error("Ce produit ne peut pas être ajouté au panier.");
+            return;
+        }
+
+        if (isPurchased) {
+            toast.error("Vous possédez déjà ce produit.");
             return;
         }
 
@@ -118,12 +124,18 @@ export function ProductCard({ product, userId }: ProductCardProps) {
                 <Button
                     onClick={onAddToCart}
                     className="w-full bg-primary/90 hover:bg-primary shadow-sm transition-all"
-                    disabled={isOwner || !automation}
+                    disabled={isOwner || !automation || isPurchased}
+                    variant={isPurchased ? "outline" : "default"}
                 >
                     {isOwner ? (
                         <>
                             <ShoppingCart className="mr-2 h-4 w-4 opacity-50" />
                             Votre produit
+                        </>
+                    ) : isPurchased ? (
+                        <>
+                            <ShoppingCart className="mr-2 h-4 w-4 opacity-50" />
+                            Déjà acheté
                         </>
                     ) : !automation ? (
                         <>

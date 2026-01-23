@@ -102,6 +102,10 @@ interface HomeProps {
   }>;
 }
 
+import Purchase from "@/models/Purchase";
+
+// ... existing imports ...
+
 export default async function Home(props: HomeProps) {
   const { userId } = await auth(); // Récupération de l'utilisateur connecté
   const searchParams = await props.searchParams;
@@ -115,6 +119,14 @@ export default async function Home(props: HomeProps) {
     getAutomations(query, platform, category, seller),
     getActiveSellers()
   ]);
+
+  // Récupération des achats de l'utilisateur
+  const purchasedProductIds = new Set<string>();
+  if (userId) {
+    await connectToDatabase();
+    const purchases = await Purchase.find({ buyerId: userId }).select("productId");
+    purchases.forEach(p => purchasedProductIds.add(p.productId.toString()));
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -158,6 +170,7 @@ export default async function Home(props: HomeProps) {
                 key={item._id}
                 product={item}
                 userId={userId}
+                isPurchased={purchasedProductIds.has(item._id.toString())}
               />
             ))}
           </div>

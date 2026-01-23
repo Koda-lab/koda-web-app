@@ -60,9 +60,24 @@ export default async function CatalogPage(props: CatalogPageProps) {
     );
 }
 
+import { auth } from "@clerk/nextjs/server";
+import Purchase from "@/models/Purchase";
+import { connectToDatabase } from "@/lib/db";
+
+// ... existing imports ...
+
 // Composant interne pour gérer l'affichage des produits
 async function ProductList({ filters }: { filters: any }) {
     const products = await getFilteredProducts(filters);
+    const { userId } = await auth();
+    const purchasedProductIds = new Set<string>();
+
+    if (userId) {
+        await connectToDatabase();
+        // On récupère uniquement les IDs des produits achetés par l'utilisateur
+        const purchases = await Purchase.find({ buyerId: userId }).select("productId");
+        purchases.forEach(p => purchasedProductIds.add(p.productId.toString()));
+    }
 
     if (products.length === 0) {
         return (
@@ -77,7 +92,12 @@ async function ProductList({ filters }: { filters: any }) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product: IProduct) => (
-                <ProductCard key={product._id} product={product} />
+                <ProductCard
+                    key={product._id}
+                    product={product}
+                    userId={userId}
+                    isPurchased={purchasedProductIds.has(product._id.toString())}
+                />
             ))}
         </div>
     );

@@ -7,7 +7,11 @@ if (!MONGODB_URI) {
     throw new Error("Veuillez définir la variable d'environnement MONGODB_URI");
 }
 
-let cached = (global as any).mongoose || { conn: null, promise: null };
+let cached = (global as any).mongoose;
+
+if (!cached) {
+    cached = (global as any).mongoose = { conn: null, promise: null };
+}
 
 export const connectToDatabase = async () => {
     if (cached.conn) return cached.conn;
