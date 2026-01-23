@@ -74,9 +74,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
         if (purchase) {
             hasPurchased = true;
             try {
-                // Générer le lien S3 sécurisé
+                // Générer le lien S3 sécurisé avec le nom du produit
                 const fileKey = product.fileUrl.split('.com/')[1];
-                secureDownloadUrl = await getDownloadUrl(fileKey);
+                // On nettoie le titre pour qu'il soit un nom de fichier valide
+                const filename = `${product.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.json`;
+                secureDownloadUrl = await getDownloadUrl(fileKey, filename);
             } catch (e) {
                 console.error("Erreur génération lien S3:", e);
             }

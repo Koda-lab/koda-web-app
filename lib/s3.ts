@@ -9,10 +9,14 @@ export const s3Client = new S3Client({
     },
 });
 
-export async function getDownloadUrl(fileKey: string) {
+export async function getDownloadUrl(fileKey: string, filename?: string) {
     const command = new GetObjectCommand({
         Bucket: process.env.AWS_S3_BUCKET_NAME!,
-        Key: fileKey, // Le nom du fichier dans S3
+        Key: fileKey,
+        // Force le téléchargement avec le bon nom de fichier
+        ResponseContentDisposition: filename
+            ? `attachment; filename="${encodeURIComponent(filename)}"`
+            : 'attachment',
     });
 
     // Génère un lien valide pendant 300 secondes (5 minutes)
