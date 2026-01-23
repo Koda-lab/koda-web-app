@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { Button } from '@/app/components/ui/button';
-import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { SignInButton, SignUpButton, SignedIn, SignedOut } from '@clerk/nextjs';
 import { LayoutDashboard } from "lucide-react";
-import CartSheet from '@/app/components/cart/cart-sheet';
+import CartSheetWrapper from '@/app/components/cart/cart-sheet-wrapper';
+import UserButtonWrapper from '@/app/components/auth/user-button-wrapper';
 
 export default function Header() {
     return (
@@ -34,7 +35,7 @@ export default function Header() {
 
                     <div className="flex items-center gap-2">
 
-                        <CartSheet /> {/*Panier*/}
+                        <CartSheetWrapper /> {/*Panier*/}
 
                         <SignedOut>
                             <SignInButton mode="modal">
@@ -46,7 +47,7 @@ export default function Header() {
                         </SignedOut>
 
                         <SignedIn>
-                            <UserButton afterSignOutUrl="/" />
+                            <UserButtonWrapper />
                         </SignedIn>
                     </div>
                 </div>
