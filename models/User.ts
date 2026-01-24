@@ -9,6 +9,8 @@ export interface IUser extends Document {
     imageUrl?: string;
     stripeConnectId?: string;
     onboardingComplete: boolean;
+    role: 'user' | 'admin';
+    isBanned: boolean; // Field for soft ban
     cart: mongoose.Types.ObjectId[];
     createdAt: Date;
     updatedAt: Date;
@@ -23,6 +25,8 @@ const UserSchema = new mongoose.Schema({
     imageUrl: { type: String },
     stripeConnectId: { type: String },
     onboardingComplete: { type: Boolean, default: false },
+    role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    isBanned: { type: Boolean, default: false }, // Default to not banned
     cart: [{ type: Schema.Types.ObjectId, ref: "Automation" }],
 }, { timestamps: true });
 
