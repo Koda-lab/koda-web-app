@@ -15,6 +15,22 @@ export default clerkMiddleware(async (auth, req) => {
 
     // Si c'est une route API, on ne l'internationalise pas
     if (req.nextUrl.pathname.startsWith('/api')) {
+        // Rate Limiting (Protection DDoS / Billing)
+        // On ne limite que l'API, pas les assets ni les pages
+        try {
+            const { ratelimit } = await import("@/lib/ratelimit");
+            const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+            const { success } = await ratelimit.limit(ip);
+
+            if (!success) {
+                return new Response("Too Many Requests", { status: 429 });
+            }
+        } catch (err) {
+            console.error("Rate limit error", err);
+            // En cas d'erreur Redis (ex: pas de clés), on laisse passer pour ne pas bloquer le site
+            // sauf si on veut être strict. Ici on log juste.
+        }
+
         return;
     }
 

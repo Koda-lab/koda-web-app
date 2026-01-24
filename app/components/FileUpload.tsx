@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import * as Sentry from "@sentry/nextjs";
 
 interface FileUploadProps {
     onUploadSuccess: (url: string) => void;
@@ -50,6 +51,7 @@ export default function FileUpload({ onUploadSuccess, accept, label = "Fichier J
             toast.success("Fichier envoyé avec succès !");
         } catch (error) {
             console.error("Upload failed", error);
+            Sentry.captureException(error);
             toast.error("Échec de l'envoi du fichier.");
         } finally {
             setUploading(false);
