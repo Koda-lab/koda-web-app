@@ -36,5 +36,49 @@
         "search": "Search",
         "activeFilters": "Active filters:",
         "clearAll": "Clear all"
+    },
+    "Footer": {
+        "description": "The trusted marketplace to automate your business with n8n, Make, and Zapier etc...",
+        "marketplace": "Marketplace",
+        "legal": "Legal",
+        "support": "Support",
+        "links": {
+            "catalog": "Catalog",
+            "sellWorkflow": "Sell a workflow",
+            "myAccount": "My account",
+            "terms": "Terms & Conditions",
+            "privacy": "Privacy Policy",
+            "legalMentions": "Legal Mentions",
+            "contactUs": "Contact us",
+            "reportBug": "Report a bug",
+            "faq": "FAQ"
+        },
+        "copyright": "© {year} Koda. All rights reserved."
+    },
+    "Feedback": {
+        "success": {
+            "title": "Message sent!",
+            "message": "Thanks for helping us improve Koda. We will get back to you shortly.",
+            "back": "Back"
+        },
+        "form": {
+            "title": "Contact the Koda Team",
+            "description": "A bug? A suggestion? Or just want to chat?",
+            "typeLabel": "What is this about?",
+            "typePlaceholder": "Select a subject",
+            "types": {
+                "bug": "Report a bug",
+                "feature": "Suggest a feature",
+                "contact": "General question / Contact"
+            },
+            "emailLabel": "Your email",
+            "emailPlaceholder": "you@example.com",
+            "subjectLabel": "Subject",
+            "subjectPlaceholder": "Ex: Payment error...",
+            "messageLabel": "Message",
+            "messagePlaceholder": "Tell us everything...",
+            "submit": "Send message",
+            "sending": "Sending..."
+        }
     }
 }

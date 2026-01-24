@@ -1,0 +1,84 @@
+{
+    "HomePage": {
+        "title": "Bienvenido a Koda",
+        "subtitle": "El mercado de datos"
+    },
+    "Navigation": {
+        "catalog": "Catálogo",
+        "dashboard": "Panel",
+        "sell": "Vender"
+    },
+    "Auth": {
+        "login": "Iniciar sesión",
+        "signup": "Registrarse"
+    },
+    "ProductCard": {
+        "quickView": "Vista rápida",
+        "offeredBy": "Ofrecido por",
+        "yourProduct": "Tu producto",
+        "alreadyPurchased": "Ya comprado",
+        "unavailable": "No disponible",
+        "addToCart": "Añadir al carrito",
+        "toast": {
+            "cannotAdd": "Este producto no se puede añadir al carrito.",
+            "alreadyOwned": "Ya posees este producto."
+        }
+    },
+    "Search": {
+        "placeholder": "Buscar una automatización...",
+        "allPlatforms": "Todas las plataformas",
+        "allCategories": "Todas las categorías",
+        "allSellers": "Todos los vendedores",
+        "platform": "Plataforma",
+        "category": "Categoría",
+        "seller": "Vendedor",
+        "other": "Otro",
+        "search": "Buscar",
+        "activeFilters": "Filtros activos:",
+        "clearAll": "Borrar todo"
+    },
+    "Footer": {
+        "description": "El mercado de confianza para automatizar tu negocio con n8n, Make, Zapier, etc...",
+        "marketplace": "Mercado",
+        "legal": "Legal",
+        "support": "Soporte",
+        "links": {
+            "catalog": "Catálogo",
+            "sellWorkflow": "Vender un flujo de trabajo",
+            "myAccount": "Mi cuenta",
+            "terms": "Términos y condiciones",
+            "privacy": "Política de privacidad",
+            "legalMentions": "Menciones legales",
+            "contactUs": "Contáctanos",
+            "reportBug": "Reportar un error",
+            "faq": "PREGUNTAS FRECUENTES"
+        },
+        "copyright": "© {year} Koda. Todos los derechos reservados."
+    },
+    "Feedback": {
+        "success": {
+            "title": "¡Mensaje enviado!",
+            "message": "Gracias por ayudarnos a mejorar Koda. Te responderemos muy pronto.",
+            "back": "Volver"
+        },
+        "form": {
+            "title": "Contacta con el equipo de Koda",
+            "description": "¿Un error? ¿Una sugerencia? ¿O simplemente quieres charlar?",
+            "typeLabel": "¿De qué se trata?",
+            "typePlaceholder": "Selecciona un asunto",
+            "types": {
+                "bug": "Reportar un error",
+                "feature": "Sugerir una funcionalidad",
+                "contact": "Pregunta general / Contacto"
+            },
+            "emailLabel": "Tu correo electrónico",
+            "emailPlaceholder": "tu@ejemplo.com",
+            "subjectLabel": "Asunto",
+            "subjectPlaceholder": "Ej: Error durante el pago...",
+            "messageLabel": "Mensaje",
+            "messagePlaceholder": "Cuéntanoslo todo...",
+            "submit": "Enviar mensaje",
+            "sending": "Enviando..."
+        }
+    }
+}

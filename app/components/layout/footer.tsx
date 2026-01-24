@@ -1,8 +1,10 @@
-import { Link } from '@/i18n/routing'; // On utilise le lien i18n
+import { Link } from '@/i18n/routing';
 import { Separator } from "@/app/components/ui/separator";
 import { Mail, Bug } from "lucide-react";
+import { useTranslations } from 'next-intl';
 
 export default function Footer() {
+    const t = useTranslations('Footer');
     const currentYear = new Date().getFullYear();
 
     return (
@@ -14,33 +16,33 @@ export default function Footer() {
                     <div className="space-y-4">
                         <h3 className="font-bold text-lg tracking-tight">Koda.</h3>
                         <p className="text-sm text-muted-foreground leading-relaxed">
-                            La marketplace de confiance pour automatiser votre business avec n8n, Make et Zapier etc...
+                            {t('description')}
                         </p>
                     </div>
 
                     {/* Colonne 2 : Marketplace */}
                     <div className="space-y-4">
-                        <h4 className="font-semibold text-sm uppercase tracking-wider">Marketplace</h4>
+                        <h4 className="font-semibold text-sm uppercase tracking-wider">{t('marketplace')}</h4>
                         <ul className="space-y-2 text-sm text-muted-foreground">
-                            <li><Link href="/catalog" className="hover:text-primary transition-colors">Catalogue</Link></li>
-                            <li><Link href="/sell" className="hover:text-primary transition-colors">Vendre un workflow</Link></li>
-                            <li><Link href="/dashboard" className="hover:text-primary transition-colors">Mon compte</Link></li>
+                            <li><Link href="/catalog" className="hover:text-primary transition-colors">{t('links.catalog')}</Link></li>
+                            <li><Link href="/sell" className="hover:text-primary transition-colors">{t('links.sellWorkflow')}</Link></li>
+                            <li><Link href="/dashboard" className="hover:text-primary transition-colors">{t('links.myAccount')}</Link></li>
                         </ul>
                     </div>
 
                     {/* Colonne 3 : Légal */}
                     <div className="space-y-4">
-                        <h4 className="font-semibold text-sm uppercase tracking-wider">Légal</h4>
+                        <h4 className="font-semibold text-sm uppercase tracking-wider">{t('legal')}</h4>
                         <ul className="space-y-2 text-sm text-muted-foreground">
-                            <li><Link href="/terms" className="hover:text-primary transition-colors">Conditions Générales</Link></li>
-                            <li><Link href="/privacy" className="hover:text-primary transition-colors">Confidentialité</Link></li>
-                            <li><Link href="/legal" className="hover:text-primary transition-colors">Mentions Légales</Link></li>
+                            <li><Link href="/terms" className="hover:text-primary transition-colors">{t('links.terms')}</Link></li>
+                            <li><Link href="/privacy" className="hover:text-primary transition-colors">{t('links.privacy')}</Link></li>
+                            <li><Link href="/legal" className="hover:text-primary transition-colors">{t('links.legalMentions')}</Link></li>
                         </ul>
                     </div>
 
                     {/* Colonne 4 : Support & Bugs */}
                     <div className="space-y-4">
-                        <h4 className="font-semibold text-sm uppercase tracking-wider">Support</h4>
+                        <h4 className="font-semibold text-sm uppercase tracking-wider">{t('support')}</h4>
                         <ul className="space-y-3 text-sm text-muted-foreground">
 
                             {/* Lien Contact vers la page */}
@@ -50,7 +52,7 @@ export default function Footer() {
                                     className="hover:text-primary transition-colors flex items-center gap-2"
                                 >
                                     <Mail className="h-4 w-4" />
-                                    Nous contacter
+                                    {t('links.contactUs')}
                                 </Link>
                             </li>
 
@@ -61,11 +63,11 @@ export default function Footer() {
                                     className="hover:text-destructive transition-colors flex items-center gap-2"
                                 >
                                     <Bug className="h-4 w-4" />
-                                    Signaler un bug
+                                    {t('links.reportBug')}
                                 </Link>
                             </li>
 
-                            <li><Link href="/faq" className="hover:text-primary transition-colors">FAQ</Link></li>
+                            <li><Link href="/faq" className="hover:text-primary transition-colors">{t('links.faq')}</Link></li>
                         </ul>
                     </div>
                 </div>
@@ -73,7 +75,7 @@ export default function Footer() {
                 <Separator className="my-8" />
 
                 <div className="flex flex-col md:flex-row justify-between items-center text-xs text-muted-foreground">
-                    <p>© {currentYear} Koda. Tous droits réservés.</p>
+                    <p>{t('copyright', { year: currentYear })}</p>
                 </div>
             </div>
         </footer>

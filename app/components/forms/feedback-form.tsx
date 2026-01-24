@@ -12,8 +12,10 @@ import { AlertCircle, CheckCircle2, Loader2, Send } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export function FeedbackForm() {
+    const t = useTranslations('Feedback');
     const searchParams = useSearchParams();
     const defaultType = searchParams.get("type") || "contact"; // Récupère ?type=bug depuis l'URL
 
@@ -37,12 +39,12 @@ export function FeedbackForm() {
                             <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-500" />
                         </div>
                     </div>
-                    <h3 className="text-xl font-semibold">Message envoyé !</h3>
+                    <h3 className="text-xl font-semibold">{t('success.title')}</h3>
                     <p className="text-muted-foreground">
-                        Merci de nous aider à améliorer Koda. Nous vous répondrons très vite.
+                        {t('success.message')}
                     </p>
                     <Button variant="outline" onClick={() => window.history.back()}>
-                        Retour
+                        {t('success.back')}
                     </Button>
                 </CardContent>
             </Card>
@@ -52,9 +54,9 @@ export function FeedbackForm() {
     return (
         <Card className="w-full max-w-lg mx-auto shadow-lg border-muted/60">
             <CardHeader>
-                <CardTitle>Contactez l'équipe Koda</CardTitle>
+                <CardTitle>{t('form.title')}</CardTitle>
                 <CardDescription>
-                    Un bug ? Une suggestion ? Ou juste envie de discuter ?
+                    {t('form.description')}
                 </CardDescription>
             </CardHeader>
 
@@ -63,27 +65,27 @@ export function FeedbackForm() {
 
                     {/* Sélection du Type */}
                     <div className="space-y-2">
-                        <Label>De quoi s'agit-il ?</Label>
+                        <Label>{t('form.typeLabel')}</Label>
                         <Select name="type" defaultValue={defaultType}>
                             <SelectTrigger>
-                                <SelectValue placeholder="Sélectionnez un sujet" />
+                                <SelectValue placeholder={t('form.typePlaceholder')} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="bug">Signaler un bug</SelectItem>
-                                <SelectItem value="feature">Suggérer une fonctionnalité</SelectItem>
-                                <SelectItem value="contact">Question générale / Contact</SelectItem>
+                                <SelectItem value="bug">{t('form.types.bug')}</SelectItem>
+                                <SelectItem value="feature">{t('form.types.feature')}</SelectItem>
+                                <SelectItem value="contact">{t('form.types.contact')}</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
 
                     {/* Email */}
                     <div className="space-y-2">
-                        <Label htmlFor="email">Votre email</Label>
+                        <Label htmlFor="email">{t('form.emailLabel')}</Label>
                         <Input
                             id="email"
                             name="email"
                             type="email"
-                            placeholder="vous@exemple.com"
+                            placeholder={t('form.emailPlaceholder')}
                             required
                         />
                         {state.errors?.email && (
@@ -95,11 +97,11 @@ export function FeedbackForm() {
 
                     {/* Sujet */}
                     <div className="space-y-2">
-                        <Label htmlFor="subject">Sujet</Label>
+                        <Label htmlFor="subject">{t('form.subjectLabel')}</Label>
                         <Input
                             id="subject"
                             name="subject"
-                            placeholder="Ex: Erreur lors du paiement..."
+                            placeholder={t('form.subjectPlaceholder')}
                             required
                         />
                         {state.errors?.subject && (
@@ -109,11 +111,11 @@ export function FeedbackForm() {
 
                     {/* Message */}
                     <div className="space-y-2">
-                        <Label htmlFor="message">Message</Label>
+                        <Label htmlFor="message">{t('form.messageLabel')}</Label>
                         <Textarea
                             id="message"
                             name="message"
-                            placeholder="Dites-nous tout..."
+                            placeholder={t('form.messagePlaceholder')}
                             className="min-h-[120px] resize-none"
                             required
                         />
@@ -126,12 +128,12 @@ export function FeedbackForm() {
                         {isPending ? (
                             <>
                                 <Loader2 className="h-4 w-4 animate-spin" />
-                                Envoi en cours...
+                                {t('form.sending')}
                             </>
                         ) : (
                             <>
                                 <Send className="h-4 w-4" />
-                                Envoyer le message
+                                {t('form.submit')}
                             </>
                         )}
                     </Button>
