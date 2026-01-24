@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
 import { Button } from "@/app/components/ui/button";
-import { ShoppingCart, Eye } from "lucide-react";
+import { ShoppingCart, Eye, Check } from "lucide-react";
 import { useCart } from "@/hooks/use-cart";
 import { IAutomation } from "@/types/automation";
 import { IProduct } from "@/types/product";
@@ -123,7 +123,11 @@ export function ProductCard({ product, userId, isPurchased = false }: ProductCar
             <CardFooter className="p-4 pt-0 mt-auto">
                 <Button
                     onClick={onAddToCart}
-                    className="w-full bg-primary/90 hover:bg-primary shadow-sm transition-all"
+                    className={`w-full shadow-sm transition-all ${
+                        isPurchased
+                            ? "bg-green-500/10 text-green-600 border-green-200 hover:bg-green-500/20 disabled:opacity-100"
+                            : "bg-primary/90 hover:bg-primary"
+                    }`}
                     disabled={isOwner || !automation || isPurchased}
                     variant={isPurchased ? "outline" : "default"}
                 >
@@ -134,7 +138,7 @@ export function ProductCard({ product, userId, isPurchased = false }: ProductCar
                         </>
                     ) : isPurchased ? (
                         <>
-                            <ShoppingCart className="mr-2 h-4 w-4 opacity-50" />
+                            <Check className="mr-2 h-4 w-4" />
                             Déjà acheté
                         </>
                     ) : !automation ? (
