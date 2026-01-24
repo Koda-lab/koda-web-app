@@ -84,14 +84,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         }
     }
 
-    // --- 2. RÉCUPÉRATION DES AVIS ---
-    // Note : On utilise type: 'review' au cas où tu as fait la mise à jour du modèle.
-    // Si ton modèle n'a pas de 'type', cela peut ne rien renvoyer ou tout renvoyer selon la config MongoDB.
-    // Si tu n'as pas encore mis à jour tes anciens avis, ils n'apparaîtront peut-être pas ici, mais les nouveaux OUI.
     const reviewsQuery = { productId: product._id } as any;
-    // On essaie de filtrer par type seulement si nécessaire, pour l'instant on prend tout ce qui matche le produit
-    // pour éviter de masquer tes anciens avis de test.
-
     const reviews = await Review.find(reviewsQuery)
         .sort({ createdAt: -1 })
         .lean();
@@ -99,7 +92,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     // On filtre côté JS pour être sûr d'afficher les avis (et éviter les bugs si le champ type manque)
     const filteredReviews = reviews.filter((r: any) => !r.type || r.type === 'review');
 
-    // --- 3. VÉRIFICATION : A-T-IL DÉJÀ NOTÉ ? ---
+    // VÉRIFICATION : A-T-IL DÉJÀ NOTÉ ?
     const hasAlreadyReviewed = userId ? filteredReviews.some((r: any) => r.userId === userId) : false;
 
     // Mise à jour de la permission :
@@ -112,7 +105,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         createdAt: r.createdAt.toISOString()
     }));
 
-    // --- 4. INFO VENDEUR ---
+    // INFO VENDEUR
     let sellerName = "Vendeur vérifié";
     let sellerImageUrl = null;
 
