@@ -6,20 +6,24 @@ export enum ProductCategory {
     OTHER = 'Other'
 }
 
+
+
 export interface IProduct {
     _id: string;
+    sellerId: string;
     title: string;
     description: string;
     price: number;
     category: ProductCategory;
-    tags: string[];
     previewImageUrl?: string;
-    sellerId: string;
-    createdAt: Date;
+    tags?: string[];
+    createdAt: string | Date;
+    updatedAt: string | Date;
+
+    averageRating?: number;
+    reviewCount?: number;
     seller?: {
         username?: string;
         firstName?: string;
-        lastName?: string;
-        imageUrl?: string;
     };
 }

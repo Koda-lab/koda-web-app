@@ -12,6 +12,8 @@ const ProductSchema = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
+    averageRating: { type: Number, default: 0 },
+    reviewCount: { type: Number, default: 0 },
     category: {
         type: String,
         required: true,

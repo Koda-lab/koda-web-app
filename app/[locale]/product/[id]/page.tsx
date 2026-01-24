@@ -6,23 +6,26 @@ import { Button } from "@/app/components/ui/button";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Separator } from "@/app/components/ui/separator";
 import { getPublicImageUrl } from "@/lib/image-helper";
-import { ChevronLeft, Download, ShieldCheck, Zap, User, Package } from "lucide-react";
+import { ChevronLeft, Download, ShieldCheck, Zap, User, Package, MessageSquare } from "lucide-react";
 import Link from "next/link";
-import { createClerkClient } from "@clerk/nextjs/server"; // Import pour le serveur
-import { createSingleProductCheckout } from "@/app/actions/transaction"; // Import de l'action de transaction
+import { createClerkClient } from "@clerk/nextjs/server";
+import { createSingleProductCheckout } from "@/app/actions/transaction";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import { auth } from "@clerk/nextjs/server";
+import { getDownloadUrl } from "@/lib/s3";
+import Purchase from "@/models/Purchase";
+import { Metadata } from "next";
+
+import Review from "@/models/Review";
+import { ReviewsSection } from "@/app/components/reviews/review-section";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
 
 const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
 
 interface ProductPageProps {
     params: Promise<{ id: string }>;
 }
-
-import { auth } from "@clerk/nextjs/server";
-import { getDownloadUrl } from "@/lib/s3";
-import Purchase from "@/models/Purchase";
-import { Metadata } from "next";
 
 // Generate dynamic metadata for SEO
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
@@ -61,22 +64,23 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
     const isOwner = userId === product.sellerId;
 
-    // VÉRIFICATION DE L'ACHAT
+    // --- 1. VÉRIFICATION DE L'ACHAT (Logique existante + CanReview) ---
     let hasPurchased = false;
     let secureDownloadUrl = "#";
+    let purchase = null;
 
     if (userId) {
-        const purchase = await Purchase.findOne({
+        // On récupère l'achat (Attention: le champ est buyerId dans ton modèle Purchase)
+        purchase = await Purchase.findOne({
             buyerId: userId,
-            productId: id
+            productId: id,
+            status: 'completed' // On s'assure que le paiement est validé
         });
 
         if (purchase) {
             hasPurchased = true;
             try {
-                // Générer le lien S3 sécurisé avec le nom du produit
                 const fileKey = product.fileUrl.split('.com/')[1];
-                // On nettoie le titre pour qu'il soit un nom de fichier valide
                 const filename = `${product.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.json`;
                 secureDownloadUrl = await getDownloadUrl(fileKey, filename);
             } catch (e) {
@@ -85,7 +89,27 @@ export default async function ProductPage({ params }: ProductPageProps) {
         }
     }
 
-    // RÉCUPÉRATION DES INFOS DU VENDEUR VIA CLERK
+    // --- 2. RÉCUPÉRATION DES AVIS ---
+    const reviews = await Review.find({
+        productId: product._id,
+        type: 'review' // On ne prend que les vrais avis notés
+    })
+        .sort({ createdAt: -1 })
+        .lean();
+
+    // Sérialisation pour passer les données au Client Component
+    const serializedReviews = reviews.map((r: any) => ({
+        ...r,
+        _id: r._id.toString(),
+        productId: r.productId.toString(),
+        createdAt: r.createdAt.toISOString()
+    }));
+
+    // Permission de noter : Si on a acheté OU si on est le vendeur (pour tester)
+    const canReview = !!purchase || isOwner;
+
+
+    // --- 3. RÉCUPÉRATION VENDEUR (Logique existante) ---
     let sellerName = "Vendeur vérifié";
     let sellerImageUrl = null;
 
@@ -98,9 +122,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
     } catch (error) {
         console.error("Erreur lors de la récupération du vendeur Clerk:", error);
     }
-
-    // CHECK IF USER IS THE SELLER
-    const isOwnProduct = userId && product.sellerId === userId;
 
     return (
         <div className="min-h-screen bg-background">
@@ -150,16 +171,51 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                     )}
                                 </div>
 
-                                <h1 className="text-4xl font-extrabold tracking-tight mb-6 italic">
+                                <h1 className="text-4xl font-extrabold tracking-tight mb-8 italic">
                                     {product.title}
                                 </h1>
 
-                                <div className="prose prose-stone dark:prose-invert max-w-none">
-                                    <h3 className="text-lg font-semibold mb-3">À propos de cette automatisation</h3>
-                                    <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                                        {product.description}
-                                    </p>
-                                </div>
+                                {/* --- SYSTÈME D'ONGLETS --- */}
+                                <Tabs defaultValue="description" className="w-full">
+                                    <TabsList className="grid w-full grid-cols-3 mb-6">
+                                        <TabsTrigger value="description">Description</TabsTrigger>
+                                        <TabsTrigger value="reviews">Avis ({product.reviewCount || 0})</TabsTrigger>
+                                        <TabsTrigger value="discussion">Discussion</TabsTrigger>
+                                    </TabsList>
+
+                                    {/* 1. Onglet Description */}
+                                    <TabsContent value="description" className="animate-in fade-in slide-in-from-left-2 duration-300">
+                                        <div className="prose prose-stone dark:prose-invert max-w-none">
+                                            <h3 className="text-lg font-semibold mb-3">À propos de cette automatisation</h3>
+                                            <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                                                {product.description}
+                                            </p>
+                                        </div>
+                                    </TabsContent>
+
+                                    {/* 2. Onglet Avis (Reviews) */}
+                                    <TabsContent value="reviews" className="animate-in fade-in slide-in-from-right-2 duration-300">
+                                        <ReviewsSection
+                                            productId={product._id.toString()}
+                                            reviews={serializedReviews}
+                                            canReview={canReview}
+                                        />
+                                    </TabsContent>
+
+                                    {/* 3. Onglet Discussion (Placeholder) */}
+                                    <TabsContent value="discussion" className="animate-in fade-in slide-in-from-right-2 duration-300">
+                                        <div className="flex flex-col items-center justify-center p-12 text-center border-2 border-dashed rounded-xl bg-muted/20">
+                                            <div className="p-4 bg-background rounded-full mb-4 shadow-sm">
+                                                <MessageSquare className="h-6 w-6 text-muted-foreground" />
+                                            </div>
+                                            <h3 className="text-lg font-semibold">Espace Discussion</h3>
+                                            <p className="text-muted-foreground max-w-sm mt-2">
+                                                Cet espace sera bientôt disponible pour poser vos questions au vendeur avant l'achat.
+                                            </p>
+                                        </div>
+                                    </TabsContent>
+                                </Tabs>
+
                             </CardContent>
                         </Card>
 
@@ -261,7 +317,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                     )}
                                 </div>
 
-                                {/* BLOC VENDEUR AMÉLIORÉ */}
+                                {/* BLOC VENDEUR */}
                                 <div className="pt-4 flex items-center gap-3 border-t mt-4">
                                     {sellerImageUrl ? (
                                         <img src={sellerImageUrl} alt={sellerName} className="h-10 w-10 rounded-full border" />
@@ -269,9 +325,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                         <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center">
                                             <User size={20} className="text-muted-foreground" />
                                         </div>
-                                    )
-                                    }
-                                    < div className="flex flex-col">
+                                    )}
+                                    <div className="flex flex-col">
                                         <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter">Vendu par</span>
                                         <span className="text-sm font-semibold text-primary">{sellerName}</span>
                                     </div>
@@ -279,8 +334,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                             </CardContent>
                         </Card>
                     </div>
-                </div >
-            </div >
-        </div >
+                </div>
+            </div>
+        </div>
     );
 }

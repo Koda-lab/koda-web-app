@@ -4,7 +4,7 @@ import { Link } from '@/i18n/routing';
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
 import { Button } from "@/app/components/ui/button";
-import { ShoppingCart, Eye, Check } from "lucide-react";
+import { ShoppingCart, Eye, Check, Star } from "lucide-react"; // <--- AJOUT DE STAR
 import { useCart } from "@/hooks/use-cart";
 import { IAutomation } from "@/types/automation";
 import { IProduct } from "@/types/product";
@@ -29,6 +29,10 @@ export function ProductCard({ product, userId, isPurchased = false }: ProductCar
     const cart = useCart();
     const isOwner = userId === product.sellerId;
     const automation = isAutomation(product);
+
+    // Sécurisation des valeurs par défaut
+    const rating = product.averageRating || 0;
+    const reviewCount = product.reviewCount || 0;
 
     const onAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -89,12 +93,12 @@ export function ProductCard({ product, userId, isPurchased = false }: ProductCar
             </div>
 
             <CardHeader className="p-4 pb-2">
-                <div className="flex justify-between items-center mb-2">
+                <div className="flex justify-between items-center mb-1">
                     {/* Platform (only for automations) */}
                     {automation ? (
                         <div className="flex items-center gap-2">
-                            <PlatformIcon platform={product.platform} className="w-5 h-5 text-muted-foreground" />
-                            <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                            <PlatformIcon platform={product.platform} className="w-4 h-4 text-muted-foreground" />
+                            <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors">
                                 {product.platform}
                             </span>
                         </div>
@@ -105,12 +109,21 @@ export function ProductCard({ product, userId, isPurchased = false }: ProductCar
                     <span className="font-bold text-lg text-primary">{product.price} €</span>
                 </div>
 
-                <h3 className="font-bold text-lg leading-tight line-clamp-1 group-hover:text-primary transition-colors">
+                <h3 className="font-bold text-lg leading-tight line-clamp-1 group-hover:text-primary transition-colors mb-1">
                     {product.title}
                 </h3>
 
+                {/* --- BLOC AVIS (Integration demandée) --- */}
+                <div className="flex items-center gap-1 text-xs text-muted-foreground mb-2">
+                    <Star className={`w-3 h-3 ${rating > 0 ? "fill-primary text-primary" : "text-muted-foreground/40"}`} />
+                    <span className={`font-medium ${rating > 0 ? "text-foreground" : ""}`}>
+                        {rating > 0 ? rating : t('new', { defaultMessage: 'Nouveau' })}
+                    </span>
+                    {reviewCount > 0 && <span>({reviewCount})</span>}
+                </div>
+
                 {/* Seller Info */}
-                <div className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                <div className="text-xs text-muted-foreground flex items-center gap-1">
                     <span>{t('offeredBy')}</span>
                     <span className="font-medium text-foreground hover:underline cursor-pointer">
                         {product.seller?.username || "Vendeur"}
@@ -126,8 +139,8 @@ export function ProductCard({ product, userId, isPurchased = false }: ProductCar
                 <Button
                     onClick={onAddToCart}
                     className={`w-full shadow-sm transition-all ${isPurchased
-                            ? "bg-green-500/10 text-green-600 border-green-200 hover:bg-green-500/20 disabled:opacity-100"
-                            : "bg-primary/90 hover:bg-primary"
+                        ? "bg-green-500/10 text-green-600 border-green-200 hover:bg-green-500/20 disabled:opacity-100"
+                        : "bg-primary/90 hover:bg-primary"
                         }`}
                     disabled={isOwner || !automation || isPurchased}
                     variant={isPurchased ? "outline" : "default"}
