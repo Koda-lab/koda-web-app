@@ -5,6 +5,7 @@ import { LayoutDashboard } from "lucide-react";
 import CartSheetWrapper from '@/app/components/cart/cart-sheet-wrapper';
 import UserButtonWrapper from '@/app/components/auth/user-button-wrapper';
 import { useTranslations } from 'next-intl';
+import { ModeToggle } from '@/app/components/layout/mode-toggle';
 
 export default function Header() {
     const t = useTranslations('Navigation');
@@ -40,7 +41,7 @@ export default function Header() {
                     <div className="flex items-center gap-2">
 
                         <CartSheetWrapper /> {/*Panier*/}
-
+                        <ModeToggle />
                         <SignedOut>
                             <SignInButton mode="modal">
                                 <Button variant="ghost">{tAuth('login')}</Button>

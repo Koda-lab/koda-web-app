@@ -9,6 +9,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { notFound } from 'next/navigation';
+import { ThemeProvider } from "@/app/components/provider/theme-provider"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,20 +48,25 @@ export default async function RootLayout({
 
   return (
     <ClerkProvider>
-      <html lang={locale}>
+      <html lang={locale} suppressHydrationWarning>
+        {/* ^^^ Ajoute suppressHydrationWarning ici pour éviter les erreurs de mismatch next-themes */}
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
           <NextIntlClientProvider messages={messages}>
 
-            <Header />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Header />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+              <Toaster position="top-center" richColors />
+            </ThemeProvider>
 
-            <main className="flex-1">
-              {children}
-            </main>
-
-            {/* Le Footer s'affichera toujours en bas grâce au flex-col et flex-1 du main */}
-            <Footer />
-
-            <Toaster position="top-center" richColors />
           </NextIntlClientProvider>
         </body>
       </html>

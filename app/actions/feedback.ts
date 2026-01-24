@@ -41,7 +41,7 @@ export async function sendFeedbackAction(prevState: FeedbackState, formData: For
         // ENVOI DE L'EMAIL VIA RESEND
         await resend.emails.send({
             from: 'Koda Feedback <onboarding@resend.dev>', // Utilise ce mail par défaut tant que tu n'as pas configuré ton domaine
-            to: 'hello.kodateam@gmail.com', // Ton adresse perso
+            to: 'hello.kodateam@gmail.com',
             replyTo: email, // Pour pouvoir répondre directement à l'utilisateur
             subject: `[${type.toUpperCase()}] ${subject}`,
             html: `
