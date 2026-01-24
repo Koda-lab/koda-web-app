@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from '@/i18n/routing';
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
 import { Button } from "@/app/components/ui/button";
@@ -10,6 +10,7 @@ import { IAutomation } from "@/types/automation";
 import { IProduct } from "@/types/product";
 import { PlatformIcon } from "@/app/components/icons/platform-icon";
 import { toast } from "sonner";
+import { useTranslations } from 'next-intl';
 
 type ProductLike = IProduct | IAutomation;
 
@@ -24,6 +25,7 @@ function isAutomation(p: ProductLike): p is IAutomation {
 }
 
 export function ProductCard({ product, userId, isPurchased = false }: ProductCardProps) {
+    const t = useTranslations('ProductCard');
     const cart = useCart();
     const isOwner = userId === product.sellerId;
     const automation = isAutomation(product);
@@ -33,12 +35,12 @@ export function ProductCard({ product, userId, isPurchased = false }: ProductCar
         e.stopPropagation();
 
         if (!automation) {
-            toast.error("Ce produit ne peut pas être ajouté au panier.");
+            toast.error(t('toast.cannotAdd'));
             return;
         }
 
         if (isPurchased) {
-            toast.error("Vous possédez déjà ce produit.");
+            toast.error(t('toast.alreadyOwned'));
             return;
         }
 
@@ -73,7 +75,7 @@ export function ProductCard({ product, userId, isPurchased = false }: ProductCar
                     >
                         <Link href={`/product/${product._id}`}>
                             <Eye className="mr-2 h-4 w-4" />
-                            Aperçu rapide
+                            {t('quickView')}
                         </Link>
                     </Button>
                 </div>
@@ -109,7 +111,7 @@ export function ProductCard({ product, userId, isPurchased = false }: ProductCar
 
                 {/* Seller Info */}
                 <div className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                    <span>Proposé par</span>
+                    <span>{t('offeredBy')}</span>
                     <span className="font-medium text-foreground hover:underline cursor-pointer">
                         {product.seller?.username || "Vendeur"}
                     </span>
@@ -123,33 +125,32 @@ export function ProductCard({ product, userId, isPurchased = false }: ProductCar
             <CardFooter className="p-4 pt-0 mt-auto">
                 <Button
                     onClick={onAddToCart}
-                    className={`w-full shadow-sm transition-all ${
-                        isPurchased
+                    className={`w-full shadow-sm transition-all ${isPurchased
                             ? "bg-green-500/10 text-green-600 border-green-200 hover:bg-green-500/20 disabled:opacity-100"
                             : "bg-primary/90 hover:bg-primary"
-                    }`}
+                        }`}
                     disabled={isOwner || !automation || isPurchased}
                     variant={isPurchased ? "outline" : "default"}
                 >
                     {isOwner ? (
                         <>
                             <ShoppingCart className="mr-2 h-4 w-4 opacity-50" />
-                            Votre produit
+                            {t('yourProduct')}
                         </>
                     ) : isPurchased ? (
                         <>
                             <Check className="mr-2 h-4 w-4" />
-                            Déjà acheté
+                            {t('alreadyPurchased')}
                         </>
                     ) : !automation ? (
                         <>
                             <ShoppingCart className="mr-2 h-4 w-4 opacity-50" />
-                            Indisponible
+                            {t('unavailable')}
                         </>
                     ) : (
                         <>
                             <ShoppingCart className="mr-2 h-4 w-4" />
-                            Ajouter au panier
+                            {t('addToCart')}
                         </>
                     )}
                 </Button>

@@ -1,12 +1,13 @@
 import { connectToDatabase } from "@/lib/db";
 import Automation from "@/models/Automation";
 import User from "@/models/User";
-import Link from "next/link";
+import { Link } from '@/i18n/routing';
 import { Button } from "@/app/components/ui/button";
 import { ProductCard } from "@/app/components/products/product-card";
 import { SearchBar } from "@/app/components/search/search-bar";
 import { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
+import { getTranslations } from 'next-intl/server';
 
 export const metadata: Metadata = {
   title: 'Koda - Marketplace d\'Automations No-Code',
@@ -107,6 +108,7 @@ import Purchase from "@/models/Purchase";
 // ... existing imports ...
 
 export default async function Home(props: HomeProps) {
+  const t = await getTranslations('HomePage');
   const { userId } = await auth(); // Récupération de l'utilisateur connecté
   const searchParams = await props.searchParams;
   const query = searchParams.q || "";
@@ -134,10 +136,10 @@ export default async function Home(props: HomeProps) {
       <section className="relative py-20 px-4 border-b bg-gradient-to-b from-muted/50 to-background">
         <div className="container mx-auto text-center space-y-6 max-w-4xl">
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-foreground">
-            Automatisez votre business.
+            {t('title')}
           </h1>
           <p className="text-xl text-muted-foreground">
-            Des workflows testés et approuvés pour gagner du temps.
+            {t('subtitle')}
           </p>
 
           <div className="pt-4 flex flex-col items-center gap-6 w-full">

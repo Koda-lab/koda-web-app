@@ -1,0 +1,40 @@
+{
+    "HomePage": {
+        "title": "Welcome to Koda",
+        "subtitle": "The data marketplace"
+    },
+    "Navigation": {
+        "catalog": "Catalog",
+        "dashboard": "Dashboard",
+        "sell": "Sell"
+    },
+    "Auth": {
+        "login": "Login",
+        "signup": "Sign up"
+    },
+    "ProductCard": {
+        "quickView": "Quick view",
+        "offeredBy": "Offered by",
+        "yourProduct": "Your product",
+        "alreadyPurchased": "Already purchased",
+        "unavailable": "Unavailable",
+        "addToCart": "Add to cart",
+        "toast": {
+            "cannotAdd": "This product cannot be added to the cart.",
+            "alreadyOwned": "You already own this product."
+        }
+    },
+    "Search": {
+        "placeholder": "Search for an automation...",
+        "allPlatforms": "All platforms",
+        "allCategories": "All categories",
+        "allSellers": "All sellers",
+        "platform": "Platform",
+        "category": "Category",
+        "seller": "Seller",
+        "other": "Other",
+        "search": "Search",
+        "activeFilters": "Active filters:",
+        "clearAll": "Clear all"
+    }
+}

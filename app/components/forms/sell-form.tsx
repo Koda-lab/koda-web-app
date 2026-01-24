@@ -251,6 +251,7 @@ export function SellForm() {
                                         width={600}
                                         height={300}
                                         className="w-full h-48 object-cover rounded-md"
+                                        unoptimized
                                     />
                                     <Button variant="destructive" size="sm" onClick={() => setPreviewImageUrl("")} className="w-full">
                                         Supprimer l'image
