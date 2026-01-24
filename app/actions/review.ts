@@ -7,88 +7,80 @@ import Purchase from "@/models/Purchase";
 import { Product } from "@/models/Product";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import mongoose from "mongoose";
 
-const reviewSchema = z.object({
-    productId: z.string(),
-    rating: z.number().min(1).max(5),
-    comment: z.string().max(500).optional(),
-});
 
-export async function submitReview(prevState: any, formData: FormData) {
-    const { userId } = await auth();
+export async function submitContent(prevState: any, formData: FormData) {
+
     const user = await currentUser();
 
-    if (!userId || !user) {
-        return { error: "Vous devez être connecté." };
+    if (!user) {
+        return { error: "Non autorisé" };
     }
 
-    const validatedFields = reviewSchema.safeParse({
+    const userId = user.id;
+    const rawData = {
         productId: formData.get("productId"),
-        rating: Number(formData.get("rating")),
+        path: formData.get("path"),
+        type: formData.get("type") || 'review',
+        rating: formData.get("rating") ? Number(formData.get("rating")) : undefined,
         comment: formData.get("comment"),
-    });
+    };
 
-    if (!validatedFields.success) {
-        return { error: "Données invalides." };
-    }
-
-    const { productId, rating, comment } = validatedFields.data;
+    const { productId, type, rating, comment } = rawData as any;
+    const path = formData.get("path") as string;
 
     await connectToDatabase();
 
-    // 1. VÉRIFICATION : L'utilisateur a-t-il acheté ce produit ?
-    const hasPurchased = await Purchase.exists({
-        buyerId: userId,
-        productId: productId,
-    });
 
-    // Petite astuce : on laisse aussi le vendeur noter son propre produit pour tester (optionnel)
-    const isSeller = await Product.exists({ _id: productId, sellerId: userId });
 
-    if (!hasPurchased && !isSeller) {
-        return { error: "Vous devez acheter ce produit pour laisser un avis." };
-    }
-
+    //logique de vérification d'achat
     try {
-        // 2. CRÉATION DE L'AVIS
-        // upsert = true permet de mettre à jour l'avis s'il existe déjà
-        await Review.findOneAndUpdate(
-            { userId, productId },
-            {
-                userId,
-                productId,
-                userName: user.firstName || user.username || "Utilisateur",
-                rating,
-                comment
-            },
-            { upsert: true, new: true }
-        );
-
-        // 3. RECALCUL DE LA MOYENNE (Aggregation Pipeline)
-        const stats = await Review.aggregate([
-            { $match: { productId: new Object(productId) } }, // Attention au new Object ici si c'est un string
-            {
-                $group: {
-                    _id: "$productId",
-                    avgRating: { $avg: "$rating" },
-                    totalReviews: { $sum: 1 }
-                }
-            }
-        ]);
-
-        // 4. MISE À JOUR DU PRODUIT
-        if (stats.length > 0) {
-            await Product.findByIdAndUpdate(productId, {
-                averageRating: Math.round(stats[0].avgRating * 10) / 10, // Arrondi à 1 décimale
-                reviewCount: stats[0].totalReviews
-            });
+        // logique de création/update
+        if (type === 'review') {
+            await Review.findOneAndUpdate(
+                { userId, productId, type: 'review' },
+                {
+                    userName: user.firstName || "Utilisateur",
+                    rating,
+                    comment
+                },
+                { upsert: true, new: true }
+            );
+        } else {
+            // ...
         }
 
-        revalidatePath(`/product/${productId}`);
-        return { success: true, message: "Avis publié avec succès !" };
+        // CALCUL DE MOYENNE
+        if (type === 'review') {
+            const stats = await Review.aggregate([
+                {
+                    $match: {
+                        productId: new mongoose.Types.ObjectId(productId),
+                        type: 'review'
+                    }
+                },
+                { $group: { _id: "$productId", avg: { $avg: "$rating" }, count: { $sum: 1 } } }
+            ]);
+
+            if (stats.length > 0) {
+                await Product.findByIdAndUpdate(productId, {
+                    averageRating: Math.round(stats[0].avg * 10) / 10,
+                    reviewCount: stats[0].count
+                });
+            }
+        }
+
+        if (path) {
+            revalidatePath(path); // Rafraîchit /fr/product/123 au lieu de /product/123
+        } else {
+            revalidatePath(`/product/${productId}`); // Fallback
+        }
+
+        return { success: true, message: "Envoyé avec succès !" };
 
     } catch (error) {
-        console.error("Erreur review:", error);
-        return { error: "Une erreur est survenue." };
+        console.error(error);
+        return { error: "Erreur serveur." };
     }
 }

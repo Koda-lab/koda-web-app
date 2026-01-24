@@ -10,7 +10,7 @@ interface FileUploadProps {
     label?: string;
 }
 
-export default function FileUpload({ onUploadSuccess, accept, label = "Fichier JSON de l'automatisation" }: FileUploadProps) {
+export default function FileUpload({ onUploadSuccess, accept, label = "Fichier JSON de l'automatisation", children, className }: FileUploadProps & { children?: React.ReactNode, className?: string }) {
     const [uploading, setUploading] = useState(false);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +18,7 @@ export default function FileUpload({ onUploadSuccess, accept, label = "Fichier J
         if (!file) return;
 
         setUploading(true);
-        const toastId = toast.loading("Envoi en cour...");
+        const toastId = toast.loading("Envoi en cours...");
 
         try {
             // 1. Demander l'URL présignée à notre API
@@ -60,9 +60,11 @@ export default function FileUpload({ onUploadSuccess, accept, label = "Fichier J
     };
 
     return (
-        <div className="border-2 border-dashed border-gray-300 p-6 rounded-lg text-center hover:bg-muted/50 transition-colors">
+        <div className={className || "border-2 border-dashed border-gray-300 p-6 rounded-lg text-center hover:bg-muted/50 transition-colors"}>
             {uploading ? (
-                <p className="text-blue-500 font-medium animate-pulse">Téléchargement en cours...</p>
+                <div className="flex flex-col items-center justify-center h-full">
+                    <p className="text-primary font-medium animate-pulse">Téléchargement en cours...</p>
+                </div>
             ) : (
                 <>
                     <input
@@ -77,10 +79,16 @@ export default function FileUpload({ onUploadSuccess, accept, label = "Fichier J
                         htmlFor={`file-upload-${label}`}
                         className="cursor-pointer flex flex-col items-center justify-center w-full h-full"
                     >
-                        <p className="text-sm font-medium text-muted-foreground mb-2">{label}</p>
-                        <span className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors text-sm">
-                            Choisir un fichier
-                        </span>
+                        {children ? (
+                            children
+                        ) : (
+                            <>
+                                <p className="text-sm font-medium text-muted-foreground mb-2">{label}</p>
+                                <span className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors text-sm">
+                                    Choisir un fichier
+                                </span>
+                            </>
+                        )}
                     </label>
                 </>
             )}

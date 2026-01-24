@@ -11,4 +11,4 @@ export interface IAutomation extends IProduct {
 }
 
 
-export type CreateAutomationInput = Omit<IAutomation, '_id' | 'createdAt' | 'sellerId'>;
+export type CreateAutomationInput = Omit<IAutomation, '_id' | 'createdAt' | 'updatedAt' | 'sellerId'>;

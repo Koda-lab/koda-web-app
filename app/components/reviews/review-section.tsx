@@ -1,30 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useActionState } from "react";
-import { submitReview } from "@/app/actions/review";
+import { submitContent } from "@/app/actions/review";
+import { usePathname } from "next/navigation";
 import { StarRating } from "./star-rating";
 import { Button } from "@/app/components/ui/button";
 import { Textarea } from "@/app/components/ui/textarea";
 import { Avatar, AvatarFallback } from "@/app/components/ui/avatar";
 import { toast } from "sonner";
-import { MessageSquarePlus } from "lucide-react";
+import { MessageSquarePlus, Loader2 } from "lucide-react";
 
 interface ReviewsSectionProps {
     productId: string;
-    reviews: any[]; // On passera les reviews depuis la page serveur
-    canReview: boolean; // Si l'user a acheté le produit
+    reviews: any[];
+    canReview: boolean;
 }
 
 export function ReviewsSection({ productId, reviews, canReview }: ReviewsSectionProps) {
+    const pathname = usePathname();
     const [rating, setRating] = useState(5);
-    const [state, action, isPending] = useActionState(submitReview, null);
 
-    if (state?.success) {
-        toast.success(state.message);
-    } else if (state?.error) {
-        toast.error(state.error);
-    }
+    // On utilise submitContent ici
+    const [state, action, isPending] = useActionState(submitContent, null);
+
+    // Effet pour gérer les notifications (Toasts)
+    useEffect(() => {
+        if (state?.success) {
+            toast.success(state.message);
+        } else if (state?.error) {
+            toast.error(state.error);
+        }
+    }, [state]);
 
     return (
         <div className="space-y-8 mt-12">
@@ -41,6 +48,11 @@ export function ReviewsSection({ productId, reviews, canReview }: ReviewsSection
                     </h4>
                     <form action={action} className="space-y-4">
                         <input type="hidden" name="productId" value={productId} />
+
+                        {/* 3. CHAMP CACHÉ POUR LE REFRESH */}
+                        <input type="hidden" name="path" value={pathname} />
+
+                        <input type="hidden" name="type" value="review" />
                         <input type="hidden" name="rating" value={rating} />
 
                         <div className="space-y-2">
@@ -54,11 +66,19 @@ export function ReviewsSection({ productId, reviews, canReview }: ReviewsSection
                                 name="comment"
                                 placeholder="Qu'avez-vous pensé de cette automatisation ?"
                                 className="bg-background"
+                                required
                             />
                         </div>
 
                         <Button disabled={isPending}>
-                            {isPending ? "Envoi..." : "Publier l'avis"}
+                            {isPending ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Envoi...
+                                </>
+                            ) : (
+                                "Publier l'avis"
+                            )}
                         </Button>
                     </form>
                 </div>
@@ -77,19 +97,22 @@ export function ReviewsSection({ productId, reviews, canReview }: ReviewsSection
                         <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
                                 <Avatar className="w-8 h-8">
-                                    <AvatarFallback>{review.userName[0]}</AvatarFallback>
+                                    <AvatarFallback>{review.userName ? review.userName[0] : "U"}</AvatarFallback>
                                 </Avatar>
-                                <span className="font-semibold text-sm">{review.userName}</span>
+                                <span className="font-semibold text-sm">{review.userName || "Utilisateur"}</span>
                             </div>
                             <span className="text-xs text-muted-foreground">
                                 {new Date(review.createdAt).toLocaleDateString()}
                             </span>
                         </div>
 
-                        <StarRating rating={review.rating} size={14} className="mb-2" />
+                        {/* On affiche les étoiles seulement si c'est un avis noté */}
+                        {review.type === 'review' && (
+                            <StarRating rating={review.rating} size={14} className="mb-2" />
+                        )}
 
                         {review.comment && (
-                            <p className="text-sm text-muted-foreground leading-relaxed">
+                            <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
                                 {review.comment}
                             </p>
                         )}
