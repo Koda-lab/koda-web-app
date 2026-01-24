@@ -13,30 +13,14 @@ import {
     SelectValue,
 } from "@/app/components/ui/select";
 import { Badge } from "@/app/components/ui/badge";
-
-const PLATFORMS = [
-    { value: "all", label: "Toutes les plateformes" },
-    { value: "n8n", label: "n8n" },
-    { value: "Make", label: "Make" },
-    { value: "Zapier", label: "Zapier" },
-    { value: "Python", label: "Python" },
-    { value: "Other", label: "Autre" },
-];
-
-const CATEGORIES = [
-    { value: "all", label: "Toutes catégories" },
-    { value: "Social Media", label: "Social Media" },
-    { value: "Email Marketing", label: "Email Marketing" },
-    { value: "Productivity", label: "Productivity" },
-    { value: "Sales", label: "Sales" },
-    { value: "Other", label: "Autre" },
-];
+import { useTranslations } from 'next-intl';
 
 interface SearchBarProps {
     sellers?: { value: string; label: string }[];
 }
 
 export function SearchBar({ sellers = [] }: SearchBarProps) {
+    const t = useTranslations('Search');
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -45,6 +29,24 @@ export function SearchBar({ sellers = [] }: SearchBarProps) {
     const [category, setCategory] = useState(searchParams.get("category") || "all");
     const [seller, setSeller] = useState(searchParams.get("seller") || "all");
     const [mounted, setMounted] = useState(false);
+
+    const PLATFORMS = [
+        { value: "all", label: t('allPlatforms') },
+        { value: "n8n", label: "n8n" },
+        { value: "Make", label: "Make" },
+        { value: "Zapier", label: "Zapier" },
+        { value: "Python", label: "Python" },
+        { value: "Other", label: t('other') },
+    ];
+
+    const CATEGORIES = [
+        { value: "all", label: t('allCategories') },
+        { value: "Social Media", label: "Social Media" },
+        { value: "Email Marketing", label: "Email Marketing" },
+        { value: "Productivity", label: "Productivity" },
+        { value: "Sales", label: "Sales" },
+        { value: "Other", label: t('other') },
+    ];
 
     useEffect(() => {
         setMounted(true);
@@ -106,7 +108,7 @@ export function SearchBar({ sellers = [] }: SearchBarProps) {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                         type="search"
-                        placeholder="Rechercher une automatisation..."
+                        placeholder={t('placeholder')}
                         className="pl-10 bg-background/50 border-muted-foreground/20"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
@@ -116,7 +118,7 @@ export function SearchBar({ sellers = [] }: SearchBarProps) {
                 {/* Platform Filter */}
                 <Select value={platform} onValueChange={setPlatform}>
                     <SelectTrigger className="w-full md:w-[200px]">
-                        <SelectValue placeholder="Plateforme" />
+                        <SelectValue placeholder={t('platform')} />
                     </SelectTrigger>
                     <SelectContent>
                         {PLATFORMS.map((p) => (
@@ -130,7 +132,7 @@ export function SearchBar({ sellers = [] }: SearchBarProps) {
                 {/* Category Filter */}
                 <Select value={category} onValueChange={setCategory}>
                     <SelectTrigger className="w-full md:w-[200px]">
-                        <SelectValue placeholder="Catégorie" />
+                        <SelectValue placeholder={t('category')} />
                     </SelectTrigger>
                     <SelectContent>
                         {CATEGORIES.map((c) => (
@@ -145,10 +147,10 @@ export function SearchBar({ sellers = [] }: SearchBarProps) {
                 {sellers.length > 0 && (
                     <Select value={seller} onValueChange={setSeller}>
                         <SelectTrigger className="w-full md:w-[200px]">
-                            <SelectValue placeholder="Vendeur" />
+                            <SelectValue placeholder={t('seller')} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">Tous les vendeurs</SelectItem>
+                            <SelectItem value="all">{t('allSellers')}</SelectItem>
                             {sellers.map((s) => (
                                 <SelectItem key={s.value} value={s.value}>
                                     {s.label}
@@ -160,17 +162,17 @@ export function SearchBar({ sellers = [] }: SearchBarProps) {
 
                 <Button type="submit" className="md:w-auto">
                     <Search className="h-4 w-4 mr-2" />
-                    Rechercher
+                    {t('search')}
                 </Button>
             </form>
 
             {/* Active Filters Display */}
             {hasActiveFilters && (
                 <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm text-muted-foreground">Filtres actifs :</span>
+                    <span className="text-sm text-muted-foreground">{t('activeFilters')}</span>
                     {query && (
                         <Badge variant="secondary" className="gap-1">
-                            Recherche: {query}
+                            {t('search')}: {query}
                             <X className="h-3 w-3 cursor-pointer" onClick={() => setQuery("")} />
                         </Badge>
                     )}
@@ -188,12 +190,12 @@ export function SearchBar({ sellers = [] }: SearchBarProps) {
                     )}
                     {seller !== "all" && (
                         <Badge variant="secondary" className="gap-1">
-                            Vendeur: {sellers.find((s) => s.value === seller)?.label || "Inconnu"}
+                            {t('seller')}: {sellers.find((s) => s.value === seller)?.label || "Inconnu"}
                             <X className="h-3 w-3 cursor-pointer" onClick={() => setSeller("all")} />
                         </Badge>
                     )}
                     <Button variant="ghost" size="sm" onClick={clearFilters} className="h-6 text-xs">
-                        Tout effacer
+                        {t('clearAll')}
                     </Button>
                 </div>
             )}
