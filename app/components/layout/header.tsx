@@ -1,15 +1,28 @@
 import { Link } from '@/i18n/routing';
 import { Button } from '@/app/components/ui/button';
 import { SignInButton, SignUpButton, SignedIn, SignedOut } from '@clerk/nextjs';
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, ShieldCheck } from "lucide-react";
 import CartSheetWrapper from '@/app/components/cart/cart-sheet-wrapper';
 import UserButtonWrapper from '@/app/components/auth/user-button-wrapper';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { ModeToggle } from '@/app/components/layout/mode-toggle';
+import { auth } from "@clerk/nextjs/server";
+import { connectToDatabase } from '@/lib/db';
+import User from '@/models/User';
 
-export default function Header() {
-    const t = useTranslations('Navigation');
-    const tAuth = useTranslations('Auth');
+export default async function Header() {
+    const t = await getTranslations('Navigation');
+    const tAuth = await getTranslations('Auth');
+    const { userId } = await auth();
+
+    let isAdmin = false;
+    if (userId) {
+        await connectToDatabase();
+        const user = await User.findOne({ clerkId: userId }, 'role');
+        if (user && user.role === 'admin') {
+            isAdmin = true;
+        }
+    }
 
     return (
         <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
@@ -31,6 +44,13 @@ export default function Header() {
                                 <LayoutDashboard className="h-4 w-4" />
                                 {t('dashboard')}
                             </Link>
+
+                            {isAdmin && (
+                                <Link href="/admin" className="transition-colors text-purple-600 hover:text-purple-800 dark:text-purple-400 dark:hover:text-purple-300 flex items-center gap-1 font-semibold">
+                                    <ShieldCheck className="h-4 w-4" />
+                                    Admin
+                                </Link>
+                            )}
                         </SignedIn>
 
                         <Link href="/sell" className="transition-colors hover:text-primary">

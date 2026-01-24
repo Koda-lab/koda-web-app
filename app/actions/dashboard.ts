@@ -1,12 +1,11 @@
 "use server";
 
-import { auth } from "@clerk/nextjs/server";
+import { requireAuth } from "@/lib/auth-utils";
 import { connectToDatabase } from "@/lib/db";
 import Automation from "@/models/Automation";
 import Purchase from "@/models/Purchase";
 import User from "@/models/User";
 import Stripe from "stripe";
-import { IAutomation } from "@/types/automation";
 import { IProduct } from "@/types/product";
 import { Product } from "@/models/Product";
 
@@ -16,10 +15,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
  * Récupère les produits mis en vente par le vendeur connecté.
  */
 export async function getMyProducts(): Promise<IProduct[]> {
-    const { userId } = await auth();
-    if (!userId) return [];
+    const userId = await requireAuth();
 
-    await connectToDatabase();
 
     // On convertit en objets JS simples avec lean() pour éviter les problèmes de sérialisation
     const products = await Product.find({ sellerId: userId }).sort({ createdAt: -1 }).lean();
@@ -36,8 +33,8 @@ export async function getMyProducts(): Promise<IProduct[]> {
  * Récupère l'historique des ventes du vendeur.
  */
 export async function getSalesHistory() {
-    const { userId } = await auth();
-    if (!userId) return [];
+    const userId = await requireAuth();
+
 
     await connectToDatabase();
 
@@ -58,8 +55,8 @@ export async function getSalesHistory() {
  * Récupère la balance Stripe du vendeur (Fonds disponibles et en attente).
  */
 export async function getSellerBalance() {
-    const { userId } = await auth();
-    if (!userId) return null;
+    const userId = await requireAuth();
+
 
     await connectToDatabase();
     const user = await User.findOne({ clerkId: userId });
@@ -95,8 +92,8 @@ export async function getSellerBalance() {
  * Récupère les achats de l'utilisateur (en tant qu'acheteur).
  */
 export async function getMyOrders() {
-    const { userId } = await auth();
-    if (!userId) return [];
+    const userId = await requireAuth();
+
 
     await connectToDatabase();
 

@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@clerk/nextjs/server";
+import { requireUser } from "@/lib/auth-utils";
 import { connectToDatabase } from "@/lib/db";
 import Automation from "@/models/Automation";
 import User from "@/models/User";
@@ -9,11 +9,8 @@ import { CreateAutomationInput } from "@/types/automation";
 import { ProductSchema } from "@/lib/validations";
 
 export async function createAutomation(formData: CreateAutomationInput) {
-    const { userId } = await auth();
+    const userId = await requireUser();
 
-    if (!userId) {
-        throw new Error("Vous devez être connecté pour vendre un produit.");
-    }
 
     // Validation Zod
     const validationResult = ProductSchema.safeParse(formData);

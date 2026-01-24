@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { resend } from "@/lib/resend"; // On importe notre client
+import { requireUser } from "@/lib/auth-utils";
 
 const feedbackSchema = z.object({
     type: z.enum(["bug", "contact", "feature"]),
@@ -19,6 +20,15 @@ export type FeedbackState = {
 };
 
 export async function sendFeedbackAction(prevState: FeedbackState, formData: FormData): Promise<FeedbackState> {
+    try {
+        await requireUser();
+    } catch (err: any) {
+        return {
+            success: false,
+            message: err.message || "Vous devez être connecté et non banni pour envoyer un message."
+        };
+    }
+
     // Validation des données
     const validatedFields = feedbackSchema.safeParse({
         type: formData.get("type"),

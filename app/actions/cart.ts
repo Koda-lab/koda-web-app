@@ -1,18 +1,14 @@
 // app/actions/cart.ts
 "use server";
 
-import { auth } from "@clerk/nextjs/server";
-import { connectToDatabase } from "@/lib/db";
+import { requireAuth, requireUser } from "@/lib/auth-utils";
 import User from "@/models/User";
 import Automation from "@/models/Automation"; // Important pour que la 'ref' fonctionne
 import { IAutomation } from "@/types/automation";
 
 // Récupérer le panier depuis la BDD
 export async function getSavedCart(): Promise<IAutomation[]> {
-    const { userId } = await auth();
-    if (!userId) return [];
-
-    await connectToDatabase();
+    const userId = await requireAuth();
 
     // On cherche l'utilisateur et on "populate" (remplit) le champ cart avec les vrais objets produits
     const user = await User.findOne({ clerkId: userId }).populate("cart").lean();
@@ -34,10 +30,7 @@ export async function getSavedCart(): Promise<IAutomation[]> {
 
 // Sauvegarder le panier dans la BDD
 export async function syncCart(items: IAutomation[]) {
-    const { userId } = await auth();
-    if (!userId) return;
-
-    await connectToDatabase();
+    const userId = await requireUser();
 
     const productIds = items.map((item) => item._id);
 
