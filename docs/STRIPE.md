@@ -42,6 +42,11 @@ const transfer = await stripe.transfers.create({
 });
 ```
 
+### 🔔 Post-Payment Notifications (Email Automation)
+After a successful purchase, the Stripe Webhook triggers a series of automated emails via **Resend**:
+1. **Buyer Receipt**: A complete HTML receipt listing all items, the total price, and a link to their new downloads.
+2. **Seller Sale Alert**: Each seller involved in the transaction receives an individual alert specifying the product sold and their net payout.
+
 ---
 
 ## 🔔 Webhook Management
@@ -64,5 +69,5 @@ Koda listens for specific events from Stripe at `/api/webhooks/stripe`.
 ## 🛡️ Security & Compliance
 
 - **Express Dashboard**: Sellers have access to a simplified dashboard for payouts and tax identity, managed entirely by Stripe.
+- **Nuclear Data Deletion**: Admins can permanently delete a seller's Stripe Connect account via the Admin Panel. This is handled using the `stripe.accounts.del()` API as part of the unified cleanup process.
 - **Isolations**: Your platform doesn't store sensitive banking details (IBANs, SSNs); all sensitive data is handled within Stripe's PCI-compliant infrastructure.
-- **Dynamic Links**: Access to the Stripe dashboard is granted via short-lived, single-use login tokens generated on the server.

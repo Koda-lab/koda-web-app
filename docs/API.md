@@ -81,21 +81,18 @@ Wrappers for Mongoose queries to fetch user-specific records with proper object 
 
 Administrative tools for platform management.
 
-### `getAllUsers()`
-Fetches all users from MongoDB and synchronizes missing metadata from Clerk.
-- **Security**: Restricted to admins via `requireAdmin`.
-- **Logic**: Compares local records with Clerk's `getUserList` to ensure profiles (Email, Name) are up to date.
+### `fullSyncWithClerk()`
+Performs a bi-directional sync with Clerk's user list.
+- **Security**: Restricted to admins.
+- **Upsert Logic**: Updates/recreates local profiles from Clerk.
+- **Purge Logic**: Deletes local user records whose Clerk IDs no longer exist in the system.
+- **Returns**: `{ success: true, count: number, deleted: number }`.
 
-### `updateUserRole(userId: string, newRole: 'user' | 'admin')`
-Promotes or demotes a user.
-- **UserId**: Uses the **Clerk ID** for lookup.
-- **Logic**: Performs a `findOneAndUpdate` using `{ clerkId: userId }`.
-
-### `toggleBanUser(userId: string)`
-Bans or unbans a user account.
-- **UserId**: Uses the **Clerk ID**.
-- **Security**: Prevents admins from banning themselves.
-- **Effect**: Toggles the `isBanned` boolean in the User model.
+### `deleteUser(clerkId: string)`
+Technically known as the **Nuclear Deletion**.
+- **Scope**: Purges the user from Clerk, Stripe Connect, and all associated MongoDB instances (Products, Sales, Purchases).
+- **Security**: Admins cannot delete their own active account.
+- **Returns**: `{ success: true }`.
 
 ---
 
@@ -105,7 +102,10 @@ Bans or unbans a user account.
 Handles asynchronous events from Stripe.
 - **Events**:
   - `account.updated`: Synced to local `User.onboardingComplete`.
-  - `checkout.session.completed`: Triggers the creation of `Purchase` records.
+  - `checkout.session.completed`: Creates `Purchase` records and **triggers automated emails**.
+- **Automation Flows**:
+  - Calls `sendBuyerEmail` with a full receipt of all items in the transaction.
+  - Calls `sendSellerEmail` for each seller involved, notifying them of their net earnings.
 - **Security**: Verifies the `stripe-signature` header.
 
 ### `app/api/webhooks/clerk/route.ts`

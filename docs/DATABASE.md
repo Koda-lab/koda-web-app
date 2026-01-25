@@ -80,12 +80,30 @@ Records every successful transaction on the platform.
 
 ---
 
+## Data Integrity & Cleanup
+### Full Database Sync
+Administrators can trigger a bi-directional synchronization between the local database and Clerk.
+- **Auto-Update**: Existing local users are refreshed with the latest Clerk metadata (Names, Emails, Avatars).
+- **Auto-Restore**: Users present in Clerk but missing from MongoDB are automatically recreated.
+- **Auto-Prune**: Crucially, local records for users that no longer exist in Clerk are identified and deleted to prevent stale or orphaned data.
+
+### Nuclear Deletion Cascade
+To ensure absolute data privacy and integrity, the `deleteUser` action implements a comprehensive cleanup cascade across all MongoDB collections:
+1. **Products**: All listings owned by the user are permanently deleted.
+2. **Purchases**: All transaction records (where the user was either buyer or seller) are removed.
+3. **Automations**: All associated automation child-documents are purged.
+4. **User**: The primary profile is deleted last.
+
+### Query Optimization
+- **Lean Queries**: We frequently use `.lean()` in our queries to return plain JavaScript objects instead of Mongoose Documents, significantly reducing memory overhead and improving speed.
+- **Projections**: Expensive fields like `cart` or `fileUrl` are excluded from high-traffic queries (like user lists) unless explicitly required.
+
+---
+
 ## Technical Considerations
 
 ### Indexing Strategies
 - **Unique Indexes**: `clerkId` and `email` are uniquely indexed in the `User` model to prevent duplicates.
 - **Sparse Indexes**: Used for `email` to allow users without emails (if applicable) while maintaining uniqueness for those who have them.
-- **Query Optimization**: We frequently use `.lean()` in our queries to return plain JavaScript objects instead of Mongoose Documents, significantly reducing memory overhead and improving speed.
-
 ### Extensibility
 Thanks to the discriminator pattern, adding a "Plugin" or "Template" product type only requires creating a new model that extends `Product` with its specific fields. No database migration is needed for existing records.

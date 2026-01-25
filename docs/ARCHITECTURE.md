@@ -63,11 +63,16 @@ For product listings, we use a `getOrSetCache` utility. This utility:
 3. Saves to Redis for future requests (TTL based).
 4. Automatic invalidation occurs when products are created, updated, or deleted.
 
+### Dashboard Mode Management
+The Buyer and Seller experience is unified into a single Dashboard route.
+- **Server-Side Fetching**: Data for both modes (purchases, sales, products) is fetched in parallel on the server to ensure high performance.
+- **Client-Side State**: A `DashboardModeSwitcher` manages the active view using a persistent client-side state, allowing for zero-latency toggling without page reloads.
+
 ### Internationalization (i18n)
 Koda uses `next-intl` for a seamless multi-language experience.
 1. **Translation Files**: Located in `/messages/{locale}.json`.
 2. **Context-Aware Hooks**: Components use `useTranslations` to fetch keys.
-3. **Localized Toasts**: The `useLocalizedToast` hook handles mapped error and notification keys, ensuring feedback matches the user's language.
+3. **Dynamic Localized Toasts**: The `useLocalizedToast` hook handles both static keys and **dynamic parameters** (e.g., "5 items synced"). This ensures that even complex notifications remain fully internationalized without leaking raw strings.
 
 ## 🔒 Security Architecture
 

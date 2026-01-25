@@ -56,7 +56,30 @@ Once uploads are confirmed:
 1. Stripe sends a `checkout.session.completed` webhook.
 2. The handler verifies the signature and retrieves item metadata.
 3. A `Purchase` record is created for each item in MongoDB.
-4. The buyer's dashboard is updated to show the new items.
+4. **Notification Sequence**:
+    - **Buyer**: Receives an consolidated "Order Confirmation" email listing all items and a dashboard access link.
+    - **Sellers**: Each seller receives a specific "New Sale" alert with their net payout details.
+5. The buyer's dashboard is updated to show the new items.
+
+---
+
+## 4. Admin Integrity Flows
+
+### 4.1 Nuclear Deletion Sequence
+When an admin purges a user:
+1. **Third-Party Cleanup**:
+    - Calls Stripe API (`accounts.del`) to remove the Connect account.
+    - Calls Clerk API (`deleteUser`) to remove the authentication profile.
+2. **Local Data Purge**:
+    - Deletes all `Products` where `sellerId` matches.
+    - Deletes all `Purchases` where `userId` is buyer or seller.
+    - Deletes the `User` document.
+
+### 4.2 Bi-directional User Sync
+Admin triggers `fullSyncWithClerk`:
+1. **Fetcher**: Retrieves the total user list from Clerk API in batches of 100.
+2. **Upsert**: Updates local documents or creates missing ones.
+3. **Ghost Cleanup**: Queries MongoDB for all users NOT in the تازه fetched list and deletes them.
 
 ---
 

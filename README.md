@@ -7,20 +7,24 @@ This platform empowers creators to sell their workflows and allows users to purc
 
 ## ✨ Key Features
 
-- **🏪 Digital Marketplace**: Product catalog with a cart system and dynamic filtering by category and platform.
+- **🖥️ Premium Unified Dashboard**:
+    - Single-page interactive experience with **Buyer** and **Seller** modes.
+    - Real-time sales metrics, recent activity feeds, and order tracking.
+    - Smooth transitions and glassmorphic UI for a pro experience.
 - **💳 Split Payments (Stripe Connect)**:
     - Sellers connect their own Stripe Express accounts.
     - Automated commission management: 85% goes to the seller, 15% to the platform.
-    - Secure checkout with Stripe's modern payment interface.
-    - Automatic onboarding verification and seller status checks.
+    - **New**: Automatic email receipts for buyers and sale alerts for sellers via **Resend**.
+- **🛡️ Nuclear Admin Tools**:
+    - **Full Sync**: Bi-directional synchronization with Clerk (creates missing local users, removes orphaned ones).
+    - **Nuclear Deletion**: One-click purge of a user across Clerk, Stripe Connect, and all associated MongoDB data (Products, Sales, Purchases).
 - **☁️ Secure Hosting (AWS S3)**:
     - Automation JSON files are stored in private S3 buckets.
     - Temporary, secure download links are generated only after a verified purchase.
 - **🔐 User management (Clerk)**: Full authentication suite (Sign-up, Log-in, Profile management).
-- **🛡️ Product Protection**:
+- **Product Protection**:
     - Gated downloads: only accessible to verified buyers.
     - Anti-collision rules: sellers cannot buy their own products.
-    - Ownership-based management: sellers can only edit/delete their own products.
 - **📦 Extensible Architecture**:
     - Built with Mongoose discriminators to support multiple product types beyond just automations.
     - Comprehensive TypeScript types for type safety across the stack.
