@@ -109,14 +109,15 @@ export function AdminProductTable({ products }: AdminProductTableProps) {
                                         <Loader2 className="w-3.5 h-3.5 animate-spin" />
                                     ) : product.isCertified ? (
                                         <>
-                                            <XCircle className="w-3.5 h-3.5 mr-1.5" /> {t('productsTable.decertify')}
+                                            <ShieldAlert className="w-3.5 h-3.5 mr-1.5" /> {t('productsTable.decertify')}
                                         </>
                                     ) : (
                                         <>
-                                            <CheckCircle2 className="w-3.5 h-3.5 mr-1.5" /> {t('productsTable.certify')}
+                                            <ShieldCheck className="w-3.5 h-3.5 mr-1.5" /> {t('productsTable.certify')}
                                         </>
                                     )}
                                 </Button>
+
                             </td>
                         </tr>
                     ))}

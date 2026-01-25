@@ -25,4 +25,13 @@ const ProductSchema = new Schema({
     isCertified: { type: Boolean, default: false },
 }, baseOptions);
 
+// Indexes pour le filtrage et le tri
+ProductSchema.index({ price: 1 });
+ProductSchema.index({ category: 1 });
+ProductSchema.index({ sellerId: 1 });
+ProductSchema.index({ isCertified: 1 });
+ProductSchema.index({ createdAt: -1 });
+ProductSchema.index({ title: 'text', description: 'text' }); // Pour la recherche textuelle performante
+
+
 export const Product = models.Product || model('Product', ProductSchema);

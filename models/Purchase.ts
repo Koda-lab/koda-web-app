@@ -13,6 +13,10 @@ const PurchaseSchema = new Schema({
     createdAt: { type: Date, default: Date.now },
 });
 
+// Index pour vérifier les achats d'un utilisateur
+PurchaseSchema.index({ buyerId: 1 });
+
+
 // Index pour l'analytics (historique des ventes)
 PurchaseSchema.index({ sellerId: 1, createdAt: -1 });
 PurchaseSchema.index({ createdAt: 1 });

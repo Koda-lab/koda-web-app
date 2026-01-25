@@ -350,15 +350,19 @@
             "price": "Precio",
             "status": "Estado",
             "certified": "Certificado",
+            "unverified": "Estándar",
             "notCertified": "Estándar",
             "actions": "Acciones",
             "view": "Ver",
+            "test": "Probar",
             "download": "Descargar JSON",
             "certify": "Certificar",
             "decertify": "Quitar Certificación",
+            "noProducts": "No se encontraron productos.",
             "toasts": {
                 "certified": "¡Producto certificado con éxito!",
                 "decertified": "Certificación eliminada.",
+                "error": "Ocurrió un error.",
                 "downloadError": "Error de descarga."
             }
         },

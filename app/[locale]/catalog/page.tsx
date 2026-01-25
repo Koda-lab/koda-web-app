@@ -4,6 +4,7 @@ import { ProductCard } from "@/app/components/products/product-card";
 import { FiltersSidebar } from "@/app/components/products/filters-sidebar";
 import { SortSelect } from "@/app/components/products/sort-select";
 import { SidebarSearch } from "@/app/components/products/sidebar-search";
+import { CatalogPagination } from "@/app/components/products/catalog-pagination";
 import { Search, Loader2 } from "lucide-react";
 import { IProduct } from "@/types/product"; // Utilisation de l'interface de base
 
@@ -22,6 +23,7 @@ export default async function CatalogPage(props: CatalogPageProps) {
         maxPrice: params.maxPrice ? Number(params.maxPrice) : 2000,
         sort: typeof params.sort === "string" ? params.sort : "newest",
         query: typeof params.query === "string" ? params.query : "",
+        page: params.page ? Number(params.page) : 1,
     };
 
     return (
@@ -68,7 +70,7 @@ import { connectToDatabase } from "@/lib/db";
 
 // Composant interne pour gérer l'affichage des produits
 async function ProductList({ filters }: { filters: any }) {
-    const products = await getFilteredProducts(filters);
+    const { products, metadata } = await getFilteredProducts(filters);
     const { userId } = await auth();
     const purchasedProductIds = new Set<string>();
 
@@ -90,15 +92,22 @@ async function ProductList({ filters }: { filters: any }) {
     }
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((product: IProduct) => (
-                <ProductCard
-                    key={product._id}
-                    product={product}
-                    userId={userId}
-                    isPurchased={purchasedProductIds.has(product._id.toString())}
-                />
-            ))}
+        <div className="space-y-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {products.map((product: IProduct) => (
+                    <ProductCard
+                        key={product._id}
+                        product={product}
+                        userId={userId}
+                        isPurchased={purchasedProductIds.has(product._id.toString())}
+                    />
+                ))}
+            </div>
+
+            <CatalogPagination
+                currentPage={metadata.currentPage}
+                totalPages={metadata.totalPages}
+            />
         </div>
     );
 }

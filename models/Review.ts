@@ -30,6 +30,10 @@ const ReviewSchema = new Schema<IReview>(
     { timestamps: true }
 );
 
+// Index pour optimiser la récupération des reviews par produit
+ReviewSchema.index({ productId: 1, type: 1 });
+
+
 ReviewSchema.index(
     { productId: 1, userId: 1, type: 1 },
     {
