@@ -96,6 +96,7 @@ export function ReviewsSection({ productId, reviews, canReview, currentUserId }:
                         <input type="hidden" name="path" value={pathname} />
                         <input type="hidden" name="type" value="review" />
                         <input type="hidden" name="rating" value={rating} />
+                        {editingReviewId && <input type="hidden" name="reviewId" value={editingReviewId} />}
 
                         <div className="space-y-2">
                             <label className="text-sm font-medium">Votre note</label>
@@ -166,6 +167,7 @@ export function ReviewsSection({ productId, reviews, canReview, currentUserId }:
                                             <input type="hidden" name="reviewId" value={review._id} />
                                             <input type="hidden" name="path" value={pathname} />
                                             <Button
+                                                type="submit"
                                                 variant="ghost"
                                                 size="icon"
                                                 className="h-7 w-7 text-muted-foreground hover:text-destructive"

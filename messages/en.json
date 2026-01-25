@@ -294,7 +294,8 @@
         },
         "account": {
             "memberSince": "Member since",
-            "manageProfile": "Manage Security & Profile"
+            "manageProfile": "Manage Security & Profile",
+            "badge": "Koda Professional"
         },
         "products": {
             "new": "New Product",
@@ -302,7 +303,13 @@
             "startSelling": "Start selling",
             "edit": "Edit",
             "delete": "Delete",
-            "noImage": "No image"
+            "noImage": "No image",
+            "status": {
+                "active": "Active"
+            },
+            "description": "Manage your expertise and track your performance",
+            "emptyState": "Ready to share your workflow with the world? Your first blueprint is just a click away.",
+            "previewListing": "Preview Listing"
         },
         "orders": {
             "noOrders": "You haven't made any purchases yet.",
@@ -311,7 +318,8 @@
             "access": "Access"
         },
         "sales": {
-            "noSales": "No sales yet."
+            "noSales": "No sales yet.",
+            "description": "Real-time revenue stream"
         }
     },
     "Admin": {

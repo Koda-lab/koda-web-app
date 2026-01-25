@@ -55,8 +55,8 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
                             <Calendar className="h-4 w-4" />
                             {t('account.memberSince')} {memberSince}
                         </Badge>
-                        <Badge variant="outline" className="px-4 py-1.5 text-sm font-semibold rounded-full border-border/50 bg-background/50 backdrop-blur-sm">
-                            Koda Professional
+                        <Badge variant="secondary" className="bg-primary/10 text-primary border-none font-bold text-xs px-3 py-1 rounded-full">
+                            {t('account.badge')}
                         </Badge>
                     </div>
                 </div>

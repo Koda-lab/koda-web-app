@@ -97,7 +97,7 @@ export function ActivityFeed({ sales = [], orders = [] }: ActivityFeedProps) {
                                 <ArrowUpRight className="h-5 w-5 text-green-500" />
                                 {t('sections.sales')}
                             </CardTitle>
-                            <CardDescription>Real-time revenue stream</CardDescription>
+                            <CardDescription>{t('sales.description')}</CardDescription>
                         </div>
                     </CardHeader>
                     <CardContent className="p-0 flex-1 overflow-y-auto custom-scrollbar">

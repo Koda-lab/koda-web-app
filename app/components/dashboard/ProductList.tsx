@@ -26,7 +26,7 @@ export function ProductList({ products, onDelete }: ProductListProps) {
                         {t('sections.products')}
                     </h2>
                     <p className="text-muted-foreground font-medium mt-1">
-                        Manage your expertise and track your performance
+                        {t('products.description')}
                     </p>
                 </div>
                 <Button asChild className="relative z-10 rounded-2xl h-14 px-8 font-bold text-lg shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-95">
@@ -61,7 +61,7 @@ export function ProductList({ products, onDelete }: ProductListProps) {
                                 {/* Status & Quick Info Overlays */}
                                 <div className="absolute top-4 left-4 flex gap-2">
                                     <Badge className="bg-background/80 backdrop-blur-md text-foreground border-border/50 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-lg">
-                                        Active
+                                        {t('products.status.active')}
                                     </Badge>
                                 </div>
 
@@ -101,7 +101,7 @@ export function ProductList({ products, onDelete }: ProductListProps) {
                                         <Button variant="secondary" className="flex-1 rounded-xl font-bold text-xs h-11 bg-secondary/50 hover:bg-secondary/80 border-border/50" asChild>
                                             <Link href={`/product/${product._id}`}>
                                                 <Eye className="mr-2 h-4 w-4 opacity-70" />
-                                                Preview Listing
+                                                {t('products.previewListing')}
                                             </Link>
                                         </Button>
                                     </div>
@@ -138,7 +138,7 @@ export function ProductList({ products, onDelete }: ProductListProps) {
                         </div>
                         <h3 className="text-2xl font-black mb-3">{t('products.noProducts')}</h3>
                         <p className="text-muted-foreground mb-10 max-w-sm mx-auto font-medium">
-                            Ready to share your workflow with the world? Your first blueprint is just a click away.
+                            {t('products.emptyState')}
                         </p>
                         <Button asChild className="rounded-2xl h-14 px-10 font-bold text-lg shadow-2xl shadow-primary/20">
                             <Link href="/sell">{t('products.startSelling')}</Link>

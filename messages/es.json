@@ -293,7 +293,8 @@
         },
         "account": {
             "memberSince": "Miembro desde",
-            "manageProfile": "Gestionar mi seguridad y perfil"
+            "manageProfile": "Gestionar mi seguridad y perfil",
+            "badge": "Koda Profesional"
         },
         "products": {
             "new": "Nuevo Producto",
@@ -301,7 +302,13 @@
             "startSelling": "Empezar a vender",
             "edit": "Editar",
             "delete": "Eliminar",
-            "noImage": "Sin imagen"
+            "noImage": "Sin imagen",
+            "status": {
+                "active": "Activo"
+            },
+            "description": "Gestiona tu experiencia y sigue tu rendimiento",
+            "emptyState": "¿Listo para compartir tu flujo de trabajo con el mundo? Tu primer blueprint está a solo un clic.",
+            "previewListing": "Vista previa del anuncio"
         },
         "orders": {
             "noOrders": "Aún no has realizado ninguna compra.",
@@ -310,7 +317,8 @@
             "access": "Acceder"
         },
         "sales": {
-            "noSales": "No hay ventas por el momento."
+            "noSales": "No hay ventas por el momento.",
+            "description": "Flujo de ingresos en tiempo real"
         }
     },
     "Admin": {
