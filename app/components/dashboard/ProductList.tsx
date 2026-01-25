@@ -75,10 +75,6 @@ export function ProductList({ products, onDelete }: ProductListProps) {
                                             <MessageSquare className="h-3.5 w-3.5 opacity-70" />
                                             {product.reviewCount || 0}
                                         </div>
-                                        <div className="flex items-center gap-1.5">
-                                            <BarChart3 className="h-3.5 w-3.5 opacity-70" />
-                                            2k views
-                                        </div>
                                     </div>
                                 </div>
                             </div>

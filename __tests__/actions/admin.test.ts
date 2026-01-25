@@ -4,6 +4,16 @@ import { requireAdmin } from "@/lib/auth-utils";
 import User from "@/models/User";
 import { revalidatePath } from "next/cache";
 
+// Mock Stripe first to prevent initialization errors
+vi.mock("stripe", () => ({
+    default: vi.fn().mockImplementation(() => ({
+        accounts: {
+            retrieve: vi.fn(),
+            del: vi.fn(),
+        },
+    })),
+}));
+
 // Mocks
 vi.mock("@/lib/auth-utils", () => ({
     requireAdmin: vi.fn(),

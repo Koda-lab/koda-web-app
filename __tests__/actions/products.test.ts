@@ -9,6 +9,18 @@ import User from '@/models/User'
 import { revalidatePath } from 'next/cache'
 import { getOrSetCache, invalidateCache } from '@/lib/cache-utils'
 
+// Mock Redis first to prevent initialization errors
+vi.mock('@upstash/redis', () => ({
+    Redis: {
+        fromEnv: vi.fn(() => ({
+            get: vi.fn(),
+            set: vi.fn(),
+            del: vi.fn(),
+            keys: vi.fn(),
+        })),
+    },
+}))
+
 // Mocks
 vi.mock('@clerk/nextjs/server', () => ({
     auth: vi.fn(),

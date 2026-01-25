@@ -8,6 +8,7 @@ export default defineConfig({
         environment: 'jsdom',
         globals: true,
         setupFiles: ['./__tests__/integration/setup.ts'],
+        exclude: ['**/node_modules/**', '**/e2e/**'], // Exclude E2E tests (Playwright)
         alias: {
             '@': resolve(__dirname, './')
         }
