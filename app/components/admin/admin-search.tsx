@@ -1,22 +1,24 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+// 1. On garde useSearchParams de next/navigation
+import { useSearchParams } from "next/navigation";
+// 2. IMPORTANT : On importe le router et pathname depuis VOTRE config i18n
+import { useRouter, usePathname } from "@/i18n/routing";
 import { Input } from "@/app/components/ui/input";
 import { Search, X } from "lucide-react";
-import { useTranslations } from 'next-intl';
 
 interface AdminSearchProps {
     type: 'users' | 'products';
 }
 
 export function AdminSearch({ type }: AdminSearchProps) {
-    // Si vous n'avez pas encore les traductions pour 'AdminSearch', vous pouvez mettre des strings en dur ou utiliser 'Common'
-    // const t = useTranslations('Admin'); 
+    // 3. Ce router gère automatiquement les locales (fr/en/es)
     const router = useRouter();
+    // 4. usePathname() nous donne le chemin actuel sans la locale (ex: "/admin")
+    const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    // Clés distinctes pour ne pas écraser la recherche de l'autre onglet
     const paramKey = type === 'users' ? 'userQ' : 'productQ';
     const [query, setQuery] = useState(searchParams.get(paramKey) || "");
 
@@ -29,13 +31,14 @@ export function AdminSearch({ type }: AdminSearchProps) {
             params.delete(paramKey);
         }
 
-        // Debounce de 300ms pour éviter de recharger la page à chaque frappe
         const timeoutId = setTimeout(() => {
-            router.replace(`/admin?${params.toString()}`, { scroll: false });
+            // 5. On utilise pathname (dynamique) au lieu de hardcoder "/admin"
+            // Le router.replace de next-intl ajoutera automatiquement /fr, /en, etc.
+            router.replace(`${pathname}?${params.toString()}`, { scroll: false });
         }, 300);
 
         return () => clearTimeout(timeoutId);
-    }, [query, paramKey, router, searchParams]);
+    }, [query, paramKey, router, searchParams, pathname]);
 
     return (
         <div className="relative w-full max-w-sm mb-6">

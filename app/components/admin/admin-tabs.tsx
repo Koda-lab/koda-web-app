@@ -7,6 +7,7 @@ import { Users, Package } from "lucide-react";
 import { AdminBanButton } from "@/app/components/admin/admin-ban-button";
 import { AdminRoleButton } from "@/app/components/admin/admin-role-button";
 import { AdminDeleteButton } from "@/app/components/admin/admin-delete-button";
+import { AdminSearch } from "@/app/components/admin/admin-search"; // Import ajouté
 
 import { useFormatter } from "next-intl";
 
@@ -32,14 +33,14 @@ export function AdminTabs({ users, products, translations }: AdminTabsProps) {
         return <div className="h-96 w-full animate-pulse bg-muted/20 rounded-xl" />;
     }
 
-
-    const t = (key: string) => {
-        const keys = key.split('.');
+    // Helper simple pour accéder aux traductions imbriquées passées en props
+    const t = (path: string, fallback: string) => {
+        const keys = path.split('.');
         let val: any = translations;
         for (const k of keys) {
             val = val?.[k];
         }
-        return val || key;
+        return val || fallback;
     }
 
     return (
@@ -54,6 +55,9 @@ export function AdminTabs({ users, products, translations }: AdminTabsProps) {
             </TabsList>
 
             <TabsContent value="users" className="space-y-4">
+                {/* Barre de recherche ajoutée ici */}
+                <AdminSearch type="users" />
+
                 <div className="bg-white dark:bg-gray-950 rounded-lg shadow overflow-x-auto">
                     <table className="w-full text-left min-w-[900px]">
                         <thead className="bg-gray-100 dark:bg-gray-900 border-b">
@@ -114,12 +118,22 @@ export function AdminTabs({ users, products, translations }: AdminTabsProps) {
                                     </td>
                                 </tr>
                             ))}
+                            {users.length === 0 && (
+                                <tr>
+                                    <td colSpan={5} className="p-8 text-center text-muted-foreground">
+                                        Aucun utilisateur trouvé.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
             </TabsContent>
 
-            <TabsContent value="products">
+            <TabsContent value="products" className="space-y-4">
+                {/* Barre de recherche ajoutée ici */}
+                <AdminSearch type="products" />
+
                 <AdminProductTable products={products} />
             </TabsContent>
         </Tabs>

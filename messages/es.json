@@ -340,7 +340,15 @@
             "date": "Fecha",
             "actions": "Acciones",
             "noName": "Sin nombre",
-            "missingEmail": "Email faltante"
+            "missingEmail": "Email faltante",
+            "seller": "Vendedor",
+            "banned": "BANEADO",
+            "banConfirm": "¿Está seguro de que desea banear a este usuario?",
+            "unbanConfirm": "¿Desea desbanear a este usuario?",
+            "banLabel": "Banear",
+            "unbanLabel": "Desbanear",
+            "promoteLabel": "Promover",
+            "demoteLabel": "Degradar"
         },
         "productsTable": {
             "title": "Certificación de Productos",
