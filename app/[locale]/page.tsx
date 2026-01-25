@@ -32,7 +32,7 @@ async function getAutomations(searchQuery?: string, platform?: string, category?
     // Limite à 18 pour un multiple de 3 (grille complète)
     const automations = await Automation.find(filter)
       .sort({ createdAt: -1 })
-      .limit(18)
+      .limit(9)
       .lean();
 
     const sellerIds = [...new Set(automations.map((a: any) => a.sellerId))];
