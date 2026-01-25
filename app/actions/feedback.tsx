@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { resend } from "@/lib/resend";
+import { resend } from "../../lib/resend";
 
 const feedbackSchema = z.object({
     type: z.enum(["bug", "contact", "feature"]),
