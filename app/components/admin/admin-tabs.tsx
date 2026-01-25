@@ -82,6 +82,7 @@ export function AdminTabs({ users, products, translations }: AdminTabsProps) {
                                         <div className="text-xs text-gray-500 font-mono mt-1 opacity-70">
                                             {user.clerkId}
                                             {user.stripeConnectId && user.onboardingComplete && <span className="text-green-600 ml-2 font-semibold">({translations.usersTable.seller})</span>}
+                                            {user.stripeConnectId && !user.onboardingComplete && <span className="text-yellow-600 ml-2 font-semibold text-xs bg-yellow-100 dark:bg-yellow-900/30 px-1 rounded">Stripe Pending</span>}
                                             {user.isBanned && <span className="text-red-600 ml-2 font-bold">[{translations.usersTable.banned}]</span>}
                                         </div>
                                     </td>

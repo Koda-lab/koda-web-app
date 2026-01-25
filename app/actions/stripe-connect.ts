@@ -65,3 +65,26 @@ export async function getStripeLoginLink() {
     }
 }
 
+export async function forceStripeSync() {
+    try {
+        const user = await requireUser();
+        if (!user.stripeConnectId) return { success: false, message: "No Stripe account linked" };
+
+        const account = await stripe.accounts.retrieve(user.stripeConnectId);
+        const isComplete = account.details_submitted && account.charges_enabled;
+
+        if (user.onboardingComplete !== isComplete) {
+            user.onboardingComplete = isComplete;
+            await user.save();
+            const { revalidatePath } = await import('next/cache');
+            revalidatePath('/');
+            return { success: true, updated: true, isComplete };
+        }
+
+        return { success: true, updated: false, isComplete };
+    } catch (error: any) {
+        console.error("Force sync error:", error);
+        return { success: false, error: error.message };
+    }
+}
+

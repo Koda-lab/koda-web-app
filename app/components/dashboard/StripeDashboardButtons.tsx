@@ -38,9 +38,14 @@ export function StripeDashboardButton({ className }: { className?: string }) {
     );
 }
 
+
+import { forceStripeSync } from "@/app/actions/stripe-connect"; // Added import
+
+// ... (StripeDashboardButton remains unchanged)
+
 export function StripeOnboardingButton({ className }: { className?: string }) {
     const [isLoading, setIsLoading] = useState(false);
-    const { showError } = useLocalizedToast();
+    const { showError, showSuccess } = useLocalizedToast();
     const t = useTranslations('Dashboard.stats');
 
     const handleClick = async () => {
@@ -55,14 +60,45 @@ export function StripeOnboardingButton({ className }: { className?: string }) {
         }
     };
 
+    const handleSync = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsLoading(true);
+        try {
+            const res = await forceStripeSync();
+            if (res.success) {
+                if (res.isComplete) {
+                    showSuccess("Stripe account verified!");
+                    window.location.reload(); // Refresh to update UI state
+                } else {
+                    showSuccess("Status updated (still pending).");
+                }
+            } else {
+                if (res.error) throw new Error(res.error);
+            }
+        } catch (error) {
+            showError(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
-        <Button
-            onClick={handleClick}
-            disabled={isLoading}
-            className={`w-full rounded-xl shadow-lg shadow-primary/20 h-11 text-sm font-bold ${className}`}
-        >
-            {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-            {t('setupPayouts')}
-        </Button>
+        <div className="flex flex-col gap-2 w-full">
+            <Button
+                onClick={handleClick}
+                disabled={isLoading}
+                className={`w-full rounded-xl shadow-lg shadow-primary/20 h-11 text-sm font-bold ${className}`}
+            >
+                {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                {t('setupPayouts')}
+            </Button>
+            <button
+                onClick={handleSync}
+                disabled={isLoading}
+                className="text-xs text-muted-foreground hover:text-primary underline transition-colors"
+            >
+                Updated settings? Click to refresh status
+            </button>
+        </div>
     );
 }
