@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useActionState } from "react";
 import { submitContent, deleteReview } from "@/app/actions/review";
 import { usePathname } from "next/navigation";
@@ -31,26 +31,36 @@ export function ReviewsSection({ productId, reviews, canReview, currentUserId }:
     const [state, action, isPending] = useActionState(submitContent, null);
     const [deleteState, deleteAction, isDeleting] = useActionState(deleteReview, null);
 
+    const lastStateRef = useRef<any>(null);
+    const lastDeleteStateRef = useRef<any>(null);
+
     // Filter to find if the user already has a review
     const userReview = currentUserId ? reviews.find(r => r.userId === currentUserId && r.type === 'review') : null;
 
     useEffect(() => {
-        if (state?.success) {
+        if (!state || state === lastStateRef.current) return;
+        lastStateRef.current = state;
+
+        if (state.success) {
             showSuccess(state.message);
+            const wasEditing = !!editingReviewId;
             setEditingReviewId(null);
-            if (!editingReviewId) {
+            if (!wasEditing) {
                 setComment("");
                 setRating(5);
             }
-        } else if (state?.error) {
+        } else if (state.error) {
             showError(state.error);
         }
     }, [state, showSuccess, showError, editingReviewId]);
 
     useEffect(() => {
-        if (deleteState?.success) {
+        if (!deleteState || deleteState === lastDeleteStateRef.current) return;
+        lastDeleteStateRef.current = deleteState;
+
+        if (deleteState.success) {
             showSuccess(deleteState.message);
-        } else if (deleteState?.error) {
+        } else if (deleteState.error) {
             showError(deleteState.error);
         }
     }, [deleteState, showSuccess, showError]);

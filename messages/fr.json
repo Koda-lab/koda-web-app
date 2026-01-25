@@ -106,7 +106,10 @@
         "genericError": "Une erreur inattendue est survenue. Veuillez réessayer.",
         "fileUploadFailed": "Échec de l'envoi du fichier.",
         "paymentError": "Une erreur est survenue lors de la préparation du paiement.",
-        "serverError": "Erreur serveur."
+        "serverError": "Erreur serveur.",
+        "mustPurchaseToReview": "Vous devez acheter ce produit pour laisser un avis.",
+        "reviewNotFound": "Avis introuvable.",
+        "notAuthorizedToDeleteReview": "Non autorisé à supprimer cet avis."
     },
     "Notifications": {
         "itemRemovedSingular": "\"{title}\" a été retiré (déjà possédé ou c'est votre produit).",
@@ -117,6 +120,7 @@
         "productUpdated": "Produit mis à jour avec succès !",
         "messageReceived": "Merci ! Votre message a été reçu.",
         "reviewSuccess": "Envoyé avec succès !",
+        "reviewDeleted": "Avis supprimé avec succès.",
         "roleUpdated": "Rôle mis à jour avec succès en {role}",
         "userBanned": "L'utilisateur a été banni",
         "userUnbanned": "L'utilisateur a été débanni",

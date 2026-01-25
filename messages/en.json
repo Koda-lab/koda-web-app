@@ -107,7 +107,10 @@
         "genericFormError": "There was an error while submitting the form. Please try again.",
         "fileUploadFailed": "File upload failed.",
         "paymentError": "An error occurred while preparing the payment.",
-        "serverError": "Server error."
+        "serverError": "Server error.",
+        "mustPurchaseToReview": "You must purchase this product to leave a review.",
+        "reviewNotFound": "Review not found.",
+        "notAuthorizedToDeleteReview": "Unauthorized to delete this review."
     },
     "Notifications": {
         "itemRemovedSingular": "\"{title}\" was removed (already owned or it's your product).",
@@ -118,6 +121,7 @@
         "productUpdated": "Product updated successfully!",
         "messageReceived": "Thank you! Your message has been received.",
         "reviewSuccess": "Sent successfully!",
+        "reviewDeleted": "Review deleted successfully.",
         "roleUpdated": "Role successfully updated to {role}",
         "userBanned": "User has been banned",
         "userUnbanned": "User has been unbanned",

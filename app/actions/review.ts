@@ -41,7 +41,7 @@ export async function submitContent(prevState: any, formData: FormData) {
             });
 
             if (!hasPurchased) {
-                return { error: "You must purchase this product to leave a review." };
+                return { error: "mustPurchaseToReview" };
             }
         }
 
@@ -78,11 +78,11 @@ export async function submitContent(prevState: any, formData: FormData) {
             revalidatePath(`/product/${productId}`);
         }
 
-        return { success: true, message: "Sent successfully!" };
+        return { success: true, message: "reviewSuccess" };
 
     } catch (error) {
         console.error(error);
-        return { error: "Server error." };
+        return { error: "serverError" };
     }
 }
 
@@ -104,11 +104,11 @@ export async function deleteReview(prevState: any, formData: FormData) {
         const review = await Review.findById(reviewId);
 
         if (!review) {
-            return { error: "Review not found." };
+            return { error: "reviewNotFound" };
         }
 
         if (review.userId !== userId) {
-            return { error: "Unauthorized to delete this review." };
+            return { error: "notAuthorizedToDeleteReview" };
         }
 
         const productId = review.productId;
@@ -123,10 +123,10 @@ export async function deleteReview(prevState: any, formData: FormData) {
             revalidatePath(path);
         }
 
-        return { success: true, message: "Review deleted successfully." };
+        return { success: true, message: "reviewDeleted" };
     } catch (error) {
         console.error(error);
-        return { error: "Server error." };
+        return { error: "serverError" };
     }
 }
 

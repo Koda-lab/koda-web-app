@@ -35,7 +35,7 @@ export async function requireUser() {
     const { userId } = await auth();
 
     if (!userId) {
-        throw new Error("Unauthorized: User is declared but not authenticated");
+        throw new Error("unauthorized");
     }
 
     await connectToDatabase();
@@ -43,11 +43,11 @@ export async function requireUser() {
     const user = await User.findOne({ clerkId: userId });
 
     if (!user) {
-        throw new Error("User not found");
+        throw new Error("userNotFound");
     }
 
     if (user.isBanned) {
-        throw new Error("Access Denied: Your account has been suspended.");
+        throw new Error("accountSuspended");
     }
 
     return user;

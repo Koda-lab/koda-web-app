@@ -106,7 +106,10 @@
         "genericError": "Ocurrió un error inesperado. Por favor, inténtelo de nuevo.",
         "fileUploadFailed": "Error al cargar el archivo.",
         "paymentError": "Ocurrió un error al preparar el pago.",
-        "serverError": "Error del servidor."
+        "serverError": "Error del servidor.",
+        "mustPurchaseToReview": "Debes comprar este producto para dejar una reseña.",
+        "reviewNotFound": "Reseña no encontrada.",
+        "notAuthorizedToDeleteReview": "No estás autorizado para eliminar esta reseña."
     },
     "Notifications": {
         "itemRemovedSingular": "\"{title}\" fue eliminado (ya es de su propiedad o es su producto).",
@@ -117,6 +120,7 @@
         "productUpdated": "¡Producto actualizado con éxito!",
         "messageReceived": "¡Gracias! Tu mensaje ha sido recibido.",
         "reviewSuccess": "¡Enviado con éxito!",
+        "reviewDeleted": "Avisado eliminado con éxito.",
         "roleUpdated": "Rol actualizado con éxito a {role}",
         "userBanned": "El usuario ha sido baneado",
         "userUnbanned": "El usuario ha sido desbaneado",
