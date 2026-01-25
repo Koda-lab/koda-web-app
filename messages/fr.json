@@ -1,4 +1,8 @@
 {
+    "Metadata": {
+        "title": "Koda - La marketplace de l'automatisation logicielle",
+        "description": "Achetez et vendez des datasets et workflows d'automatisation de qualité pour n8n, Make et Zapier."
+    },
     "HomePage": {
         "title": "Bienvenue sur Koda",
         "subtitle": "La marketplace de données"

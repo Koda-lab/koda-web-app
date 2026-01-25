@@ -7,6 +7,7 @@ import { clerkClient } from "@clerk/nextjs/server";
 import Stripe from "stripe";
 import { Product } from "@/models/Product";
 import Purchase from "@/models/Purchase";
+import { ratelimit } from "@/lib/ratelimit";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
@@ -114,7 +115,13 @@ export async function toggleBanUser(userId: string) {
  * 2. Deletes local users that are NOT in Clerk.
  */
 export async function fullSyncWithClerk() {
-    await requireAdmin();
+    const admin = await requireAdmin();
+
+    // RATE LIMITING
+    const { success } = await ratelimit.limit(`admin_sync_${admin.clerkId}`);
+    if (!success) {
+        throw new Error("Too many requests. Please try again later.");
+    }
     const client = await clerkClient();
     let totalSynced = 0;
     const clerkIds = new Set<string>();
@@ -187,6 +194,13 @@ export async function fullSyncWithClerk() {
  */
 export async function deleteUser(userId: string) {
     const admin = await requireAdmin();
+
+    // RATE LIMITING
+    const { success } = await ratelimit.limit(`admin_delete_${admin.clerkId}`);
+    if (!success) {
+        throw new Error("Too many requests. Please try again later.");
+    }
+
     if (admin.clerkId === userId) throw new Error("You cannot delete yourself.");
 
     const user = await User.findOne({ clerkId: userId });
