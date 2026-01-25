@@ -109,7 +109,7 @@ export function ProductCard({ product, userId, isPurchased = false }: ProductCar
                     <div className="absolute top-2 right-2">
                         <Badge className="bg-green-600 hover:bg-green-700 text-white border-none shadow-lg gap-1.5 py-1 px-2.5">
                             <ShieldCheck className="w-3.5 h-3.5" />
-                            <span className="text-[10px] font-bold uppercase tracking-wider">Certifié</span>
+                            <span className="text-[10px] font-bold uppercase tracking-wider">{t('certified')}</span>
                         </Badge>
                     </div>
                 )}

@@ -22,6 +22,7 @@
         "yourProduct": "Tu producto",
         "alreadyPurchased": "Ya comprado",
         "new": "Nuevo",
+        "certified": "Certificado",
         "unavailable": "No disponible",
         "addToCart": "Añadir al carrito",
         "toast": {
@@ -308,7 +309,8 @@
             "delete": "Eliminar",
             "noImage": "Sin imagen",
             "status": {
-                "active": "Activo"
+                "active": "Activo",
+                "certified": "Certificado"
             },
             "description": "Gestiona tu experiencia y sigue tu rendimiento",
             "emptyState": "¿Listo para compartir tu flujo de trabajo con el mundo? Tu primer blueprint está a solo un clic.",
@@ -333,37 +335,30 @@
         },
         "usersTable": {
             "user": "Usuario",
-            "email": "Correo electrónico",
+            "email": "Email",
             "role": "Rol",
             "date": "Fecha",
             "actions": "Acciones",
             "noName": "Sin nombre",
-            "missingEmail": "Correo faltante",
-            "seller": "Vendedor",
-            "banned": "BANEADO",
-            "banConfirm": "¿Realmente quieres banear a este usuario?",
-            "unbanConfirm": "¿Quieres desbanear a este usuario?",
-            "banLabel": "Banear",
-            "unbanLabel": "Desbanear",
-            "promoteLabel": "Promover",
-            "demoteLabel": "Degradar"
+            "missingEmail": "Email faltante"
         },
         "productsTable": {
+            "title": "Certificación de Productos",
+            "search": "Buscar un producto...",
             "product": "Producto",
             "seller": "Vendedor",
             "price": "Precio",
             "status": "Estado",
-            "actions": "Acciones",
             "certified": "Certificado",
-            "unverified": "No verificado",
-            "test": "Probar",
+            "notCertified": "Estándar",
+            "actions": "Acciones",
+            "view": "Ver",
+            "download": "Descargar JSON",
             "certify": "Certificar",
-            "decertify": "Descertificar",
-            "noProducts": "No se encontraron productos.",
+            "decertify": "Quitar Certificación",
             "toasts": {
-                "certified": "¡Producto certificado!",
+                "certified": "¡Producto certificado con éxito!",
                 "decertified": "Certificación eliminada.",
-                "error": "Error durante la certificación.",
                 "downloadError": "Error de descarga."
             }
         },

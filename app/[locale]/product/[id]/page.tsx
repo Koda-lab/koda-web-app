@@ -6,7 +6,8 @@ import { Button } from "@/app/components/ui/button";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Separator } from "@/app/components/ui/separator";
 import { getPublicImageUrl } from "@/lib/image-helper";
-import { ChevronLeft, Download, ShieldCheck, Zap, User, Package, MessageSquare } from "lucide-react";
+import { ShieldCheck, ChevronLeft, Download, Zap, MessageSquare, Star, Package, User } from "lucide-react";
+import { getTranslations, getFormatter } from "next-intl/server";
 import Link from "next/link";
 import { createClerkClient } from "@clerk/nextjs/server";
 import { createSingleProductCheckout } from "@/app/actions/transaction";
@@ -54,6 +55,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
     const product = await Automation.findById(id).lean();
 
     if (!product) notFound();
+
+    const t = await getTranslations('ProductCard');
+    const tPage = await getTranslations('ProductPage');
+    const format = await getFormatter();
 
     const isOwner = userId === product.sellerId;
 
@@ -106,13 +111,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
     }));
 
     // INFO VENDEUR
-    let sellerName = "Vendeur vérifié";
+    let sellerName = tPage("verifiedSeller");
     let sellerImageUrl = null;
 
     try {
         if (product.sellerId && product.sellerId !== "mock-seller") {
             const seller = await clerkClient.users.getUser(product.sellerId);
-            sellerName = seller.username || `${seller.firstName} ${seller.lastName}` || "Utilisateur Koda";
+            sellerName = seller.username || `${seller.firstName} ${seller.lastName}` || tPage("verifiedSeller");
             sellerImageUrl = seller.imageUrl;
         }
     } catch (error) {
@@ -125,7 +130,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <Button variant="ghost" asChild className="mb-6 -ml-2 text-muted-foreground hover:text-primary">
                     <Link href="/">
                         <ChevronLeft className="mr-2 h-4 w-4" />
-                        Retour au catalogue
+                        {tPage('backToCatalog')}
                     </Link>
                 </Button>
 
@@ -147,7 +152,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                 ) : (
                                     <div className="flex flex-col items-center gap-3 text-muted-foreground">
                                         <Zap size={48} className="opacity-20" />
-                                        <span className="text-sm font-medium">Aperçu {product.category}</span>
+                                        <span className="text-sm font-medium">{t('quickView')} {product.category}</span>
                                     </div>
                                 )}
                             </div>
@@ -157,12 +162,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                     <Badge className="bg-primary/90 hover:bg-primary text-sm">{product.platform}</Badge>
                                     {hasPurchased && (
                                         <Badge className="bg-green-600 hover:bg-green-700 text-white gap-1 shadow-sm border-none">
-                                            <ShieldCheck className="h-3 w-3" /> Acheté
+                                            <ShieldCheck className="h-3 w-3" /> {tPage('purchased')}
                                         </Badge>
                                     )}
                                     {product.isCertified && (
                                         <Badge className="bg-green-600 hover:bg-green-700 text-white gap-1.5 shadow-sm border-none">
-                                            <ShieldCheck className="h-3.5 w-3.5" /> Certifié par Koda
+                                            <ShieldCheck className="h-3.5 w-3.5" /> {tPage('certifiedByKoda')}
                                         </Badge>
                                     )}
                                 </div>
@@ -171,14 +176,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
                                 <Tabs defaultValue="description" className="w-full">
                                     <TabsList className="grid w-full grid-cols-3 mb-6">
-                                        <TabsTrigger value="description">Description</TabsTrigger>
-                                        <TabsTrigger value="reviews">Avis ({product.reviewCount || 0})</TabsTrigger>
-                                        <TabsTrigger value="discussion">Discussion</TabsTrigger>
+                                        <TabsTrigger value="description">{t('description')}</TabsTrigger>
+                                        <TabsTrigger value="reviews">{tPage('reviews')} ({product.reviewCount || 0})</TabsTrigger>
+                                        <TabsTrigger value="discussion">{tPage('discussion')}</TabsTrigger>
                                     </TabsList>
 
                                     <TabsContent value="description" className="animate-in fade-in duration-300">
                                         <div className="prose prose-stone dark:prose-invert max-w-none">
-                                            <h3 className="text-lg font-semibold mb-3">À propos</h3>
+                                            <h3 className="text-lg font-semibold mb-3">{tPage('about')}</h3>
                                             <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{product.description}</p>
                                         </div>
                                     </TabsContent>
@@ -197,8 +202,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                             <div className="p-4 bg-background rounded-full mb-4 shadow-sm">
                                                 <MessageSquare className="h-6 w-6 text-muted-foreground" />
                                             </div>
-                                            <h3 className="text-lg font-semibold">Espace Discussion</h3>
-                                            <p className="text-muted-foreground max-w-sm mt-2">Bientôt disponible.</p>
+                                            <h3 className="text-lg font-semibold">{tPage('discussion')}</h3>
+                                            <p className="text-muted-foreground max-w-sm mt-2">{tPage('comingSoon')}.</p>
                                         </div>
                                     </TabsContent>
                                 </Tabs>
@@ -210,14 +215,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
                             <Card className="p-4 border-border/40 bg-card/30">
                                 <div className="flex items-start gap-3">
                                     <div className="p-2 bg-primary/10 rounded-lg text-primary"><Download size={20} /></div>
-                                    <div><h4 className="font-medium text-sm">Accès immédiat</h4><p className="text-xs text-muted-foreground">Téléchargement instantané.</p></div>
+                                    <div><h4 className="font-medium text-sm">{tPage('immediateAccess')}</h4><p className="text-xs text-muted-foreground">{tPage('instantDownload')}.</p></div>
                                 </div>
                             </Card>
                             {product.isCertified && (
                                 <Card className="p-4 border-border/40 bg-card/30">
                                     <div className="flex items-start gap-3">
                                         <div className="p-2 bg-primary/10 rounded-lg text-primary"><ShieldCheck size={20} /></div>
-                                        <div><h4 className="font-medium text-sm">Vérifié par Koda</h4><p className="text-xs text-muted-foreground">Structure validée.</p></div>
+                                        <div><h4 className="font-medium text-sm">{tPage('verifiedByKoda')}</h4><p className="text-xs text-muted-foreground">{tPage('validatedStructure')}.</p></div>
                                     </div>
                                 </Card>
                             )}
@@ -229,7 +234,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                         <Card className="border-border/50 shadow-xl sticky top-24 bg-card/80 backdrop-blur">
                             <CardContent className="p-6 space-y-6">
                                 <div className="space-y-2">
-                                    <p className="text-xs font-medium text-muted-foreground uppercase">Prix de licence</p>
+                                    <p className="text-xs font-medium text-muted-foreground uppercase">{tPage('priceLicense')}</p>
                                     <div className="flex items-baseline gap-1">
                                         <span className="text-4xl font-bold">{product.price}</span>
                                         <span className="text-xl font-semibold text-primary">€</span>

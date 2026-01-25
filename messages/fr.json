@@ -22,6 +22,7 @@
         "yourProduct": "Votre produit",
         "alreadyPurchased": "Déjà acheté",
         "new": "Nouveau",
+        "certified": "Certifié",
         "unavailable": "Indisponible",
         "addToCart": "Ajouter au panier",
         "toast": {
@@ -308,7 +309,8 @@
             "delete": "Supprimer",
             "noImage": "Aucune image",
             "status": {
-                "active": "Actif"
+                "active": "Actif",
+                "certified": "Certifié"
             },
             "description": "Gérez votre expertise et suivez vos performances",
             "emptyState": "Prêt à partager votre workflow avec le monde ? Votre premier blueprint n'est qu'à un clic.",
@@ -349,21 +351,24 @@
             "demoteLabel": "Rétrograder"
         },
         "productsTable": {
+            "title": "Certification Produits",
+            "search": "Chercher un produit...",
             "product": "Produit",
             "seller": "Vendeur",
             "price": "Prix",
             "status": "Statut",
-            "actions": "Actions",
             "certified": "Certifié",
-            "unverified": "Non vérifié",
-            "test": "Tester",
+            "notCertified": "Standard",
+            "actions": "Actions",
+            "view": "Voir",
+            "download": "Télécharger JSON",
             "certify": "Certifier",
-            "decertify": "Dé-certifier",
+            "decertify": "Retirer Certification",
             "noProducts": "Aucun produit trouvé.",
             "toasts": {
-                "certified": "Produit certifié !",
+                "certified": "Produit certifié avec succès !",
                 "decertified": "Certification retirée.",
-                "error": "Erreur lors de la certification.",
+                "error": "Une erreur est survenue.",
                 "downloadError": "Erreur de téléchargement."
             }
         },

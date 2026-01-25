@@ -22,6 +22,7 @@
         "yourProduct": "Your product",
         "alreadyPurchased": "Already purchased",
         "new": "New",
+        "certified": "Certified",
         "unavailable": "Unavailable",
         "addToCart": "Add to cart",
         "toast": {
@@ -309,7 +310,8 @@
             "delete": "Delete",
             "noImage": "No image",
             "status": {
-                "active": "Active"
+                "active": "Active",
+                "certified": "Certified"
             },
             "description": "Manage your expertise and track your performance",
             "emptyState": "Ready to share your workflow with the world? Your first blueprint is just a click away.",
@@ -350,21 +352,22 @@
             "demoteLabel": "Demote"
         },
         "productsTable": {
+            "title": "Products Certification",
+            "search": "Search a product...",
             "product": "Product",
             "seller": "Seller",
             "price": "Price",
             "status": "Status",
-            "actions": "Actions",
             "certified": "Certified",
-            "unverified": "Unverified",
-            "test": "Test",
+            "notCertified": "Standard",
+            "actions": "Actions",
+            "view": "View",
+            "download": "Download JSON",
             "certify": "Certify",
-            "decertify": "De-certify",
-            "noProducts": "No products found.",
+            "decertify": "Remove Certification",
             "toasts": {
-                "certified": "Product certified!",
+                "certified": "Product certified successfully!",
                 "decertified": "Certification removed.",
-                "error": "Error during certification.",
                 "downloadError": "Download error."
             }
         },
