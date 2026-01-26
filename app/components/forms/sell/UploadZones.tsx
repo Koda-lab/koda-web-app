@@ -31,6 +31,7 @@ export function UploadZones({
                 <FileUpload
                     onUploadSuccess={onPreviewImageUpload}
                     accept="image/*"
+                    label="cover-upload"
                     className={`border-2 border-dashed rounded-xl p-2 transition-all duration-200 h-64 ${!previewImageUrl ? "hover:bg-accent/50 hover:border-primary/50 border-border" : "border-border"}`}
                 >
                     {!previewImageUrl ? (
@@ -76,6 +77,7 @@ export function UploadZones({
                 <FileUpload
                     onUploadSuccess={onFileUpload}
                     accept=".json"
+                    label="source-upload"
                     className={`border-2 border-dashed rounded-xl p-6 h-64 flex flex-col items-center justify-center transition-all duration-200 ${!fileUrl ? "hover:bg-accent/50 hover:border-primary/50 bg-muted/20 border-border" : "border-green-500/50 bg-green-500/5"}`}
                 >
                     {!fileUrl ? (

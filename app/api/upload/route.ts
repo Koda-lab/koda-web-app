@@ -35,7 +35,6 @@ export async function POST(req: Request) {
             Bucket: process.env.AWS_S3_BUCKET_NAME,
             Key: fileKey,
             ContentType: fileType,
-            ContentLength: fileSize, // Enforce size in signature
         });
 
         // L'URL expire après 60 secondes pour la sécurité
