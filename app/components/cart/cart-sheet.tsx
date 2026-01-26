@@ -213,7 +213,7 @@ export default function CartSheet() {
                 </div>
 
                 {cart.items.length > 0 && (
-                    <div className="border-t pt-6 mt-auto bg-background">
+                    <div className="border-t pt-6 px-6 pb-6 mt-auto bg-background">
                         <div className="space-y-2 mb-4">
                             <div className="flex justify-between text-sm text-muted-foreground">
                                 <span>{t('subtotal')}</span>
