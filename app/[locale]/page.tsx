@@ -7,6 +7,7 @@ import { Button } from "@/app/components/ui/button";
 import { ProductCard } from "@/app/components/products/product-card";
 import { SearchBar } from "@/app/components/search/search-bar";
 import { FadeIn } from "@/app/components/ui/fade-in";
+import { MovingIcons } from "@/app/components/home/moving-icons";
 import { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import { getTranslations } from 'next-intl/server';
@@ -124,7 +125,11 @@ export default async function Home(props: HomeProps) {
             </p>
           </FadeIn>
 
-          <FadeIn direction="up" delay={0.2} className="pt-8 flex flex-col items-center gap-6 w-full">
+          <FadeIn direction="up" delay={0.2} className="w-full pt-8">
+            <MovingIcons />
+          </FadeIn>
+
+          <FadeIn direction="up" delay={0.4} className="pt-12 flex flex-col items-center gap-6 w-full">
             <div className="w-full flex justify-center">
               <SearchBar sellers={sellers} />
             </div>
