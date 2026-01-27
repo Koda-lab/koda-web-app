@@ -170,8 +170,10 @@
         "userBanned": "El usuario ha sido baneado",
         "userUnbanned": "El usuario ha sido desbaneado",
         "articleAddedToCart": "¡Artículo añadido al carrito!",
+        "addedToCart": "¡Añadido al carrito!",
         "articleRemoved": "Artículo eliminado del carrito.",
         "alreadyInCart": "Este artículo ya está en tu carrito.",
+        "inCart": "En el carrito",
         "syncResult": "{synced} sincronizados, {deleted} eliminados (huérfanos).",
         "userDeleted": "El usuario y todos los datos asociados han sido eliminados permanentemente."
     },

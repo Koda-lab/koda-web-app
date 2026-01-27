@@ -156,8 +156,10 @@
         "userBanned": "User has been banned",
         "userUnbanned": "User has been unbanned",
         "articleAddedToCart": "Article added to the cart!",
+        "addedToCart": "Added to cart!",
         "articleRemoved": "Article removed from the cart.",
         "alreadyInCart": "This article is already in your cart.",
+        "inCart": "In your cart",
         "syncResult": "{synced} synced, {deleted} deleted (orphans).",
         "userDeleted": "User and all associated data have been permanently deleted."
     },

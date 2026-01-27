@@ -22,6 +22,7 @@ import { Metadata } from "next";
 import Review from "@/models/Review";
 import { ReviewsSection } from "@/app/components/reviews/review-section";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
+import { AddToCartButton } from "@/app/components/products/add-to-cart-button";
 
 const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
 
@@ -277,11 +278,22 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                             <Link href="/sign-in">Se connecter pour acheter</Link>
                                         </Button>
                                     ) : (
-                                        <form action={async () => { "use server"; const url = await createSingleProductCheckout(id); redirect(url); }}>
-                                            <Button type="submit" className="w-full text-lg h-14" size="lg">
-                                                <Zap className="mr-2 h-5 w-5" /> Acheter maintenant
-                                            </Button>
-                                        </form>
+                                        <div className="space-y-3">
+                                            <form action={async () => { "use server"; const url = await createSingleProductCheckout(id); redirect(url); }}>
+                                                <Button type="submit" className="w-full text-lg h-14" size="lg">
+                                                    <Zap className="mr-2 h-5 w-5" /> Acheter maintenant
+                                                </Button>
+                                            </form>
+                                            <AddToCartButton product={{
+                                                _id: product._id.toString(),
+                                                title: product.title,
+                                                price: product.price,
+                                                category: product.category,
+                                                platform: product.platform,
+                                                previewImageUrl: product.previewImageUrl,
+                                                sellerId: product.sellerId,
+                                            }} />
+                                        </div>
                                     )}
                                 </div>
                                 <div className="pt-4 flex items-center gap-3 border-t mt-4">

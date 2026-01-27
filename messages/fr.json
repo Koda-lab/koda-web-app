@@ -155,8 +155,10 @@
         "userBanned": "L'utilisateur a été banni",
         "userUnbanned": "L'utilisateur a été débanni",
         "articleAddedToCart": "Article ajouté au panier !",
+        "addedToCart": "Ajouté au panier !",
         "articleRemoved": "Article retiré du panier.",
         "alreadyInCart": "Cet article est déjà dans votre panier.",
+        "inCart": "Dans le panier",
         "syncResult": "{synced} synchronisés, {deleted} supprimés (orphelins).",
         "userDeleted": "L'utilisateur et toutes ses données associées ont été supprimés définitivement."
     },
