@@ -29,7 +29,24 @@
             "cannotAdd": "Este producto no se puede añadir al carrito.",
             "alreadyOwned": "Ya posees este producto.",
             "ownProduct": "No puedes comprar tu propio producto."
-        }
+        },
+        "description": "Descripción",
+        "removeFromCart": "Eliminar"
+    },
+    "ProductPage": {
+        "verifiedSeller": "Vendedor Verificado",
+        "backToCatalog": "Volver al catálogo",
+        "purchased": "Comprado",
+        "certifiedByKoda": "Certificado por Koda",
+        "reviews": "Reseñas",
+        "discussion": "Discusión",
+        "about": "Acerca de",
+        "comingSoon": "Próximamente",
+        "immediateAccess": "Acceso Inmediato",
+        "instantDownload": "Descarga tus archivos instantáneamente después de la compra",
+        "verifiedByKoda": "Verificado por Koda",
+        "validatedStructure": "Estructura y calidad validadas por nuestro equipo",
+        "priceLicense": "Precio / Licencia"
     },
     "Search": {
         "placeholder": "Buscar una automatización...",
