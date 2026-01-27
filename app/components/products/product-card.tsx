@@ -13,6 +13,7 @@ import { useLocalizedToast } from "@/hooks/use-localized-toast";
 import { getErrorKey } from "@/lib/error-translator";
 import { useTranslations } from "next-intl";
 import { getPublicImageUrl } from "@/lib/image-helper";
+import { FavoriteButton } from "@/app/components/favorites/favorite-button";
 
 type ProductLike = IProduct | IAutomation;
 
@@ -112,15 +113,23 @@ export function ProductCard({ product, userId, isPurchased = false }: ProductCar
                     </Badge>
                 </div>
 
-                {/* Badge Certification (Top Right) */}
-                {product.isCertified && (
-                    <div className="absolute top-2 right-2">
+                {/* Top Right Actions */}
+                <div className="absolute top-2 right-2 flex items-center gap-1">
+                    {/* Favorite Button - hidden for owners and purchased products */}
+                    {!isOwner && !isPurchased && (
+                        <div className="backdrop-blur-md bg-background/70 rounded-full">
+                            <FavoriteButton productId={product._id} size="sm" />
+                        </div>
+                    )}
+
+                    {/* Badge Certification */}
+                    {product.isCertified && (
                         <Badge className="bg-green-600 hover:bg-green-700 text-white border-none shadow-lg gap-1.5 py-1 px-2.5">
                             <ShieldCheck className="w-3.5 h-3.5" />
                             <span className="text-[10px] font-bold uppercase tracking-wider">{t('certified')}</span>
                         </Badge>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
 
             <CardHeader className="p-4 pb-2">

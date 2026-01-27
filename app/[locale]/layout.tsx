@@ -10,6 +10,7 @@ import { getMessages, setRequestLocale, getTranslations } from 'next-intl/server
 import { routing } from '@/i18n/routing';
 import { notFound } from 'next/navigation';
 import { ThemeProvider } from "@/app/components/provider/theme-provider"
+import { FavoritesSyncProvider } from "@/app/components/providers/favorites-sync-provider"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -64,12 +65,14 @@ export default async function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <Header />
-              <main className="flex-1">
-                {children}
-              </main>
-              <Footer />
-              <Toaster position="top-center" richColors />
+              <FavoritesSyncProvider>
+                <Header />
+                <main className="flex-1">
+                  {children}
+                </main>
+                <Footer />
+                <Toaster position="top-center" richColors />
+              </FavoritesSyncProvider>
             </ThemeProvider>
 
           </NextIntlClientProvider>

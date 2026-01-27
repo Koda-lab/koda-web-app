@@ -170,8 +170,15 @@ export async function POST(req: Request) {
                         await sendBuyerEmail(buyerEmail, buyerOrderItems, orderTotal);
                     }
 
-                    // Optionnel : Vider le panier de l'utilisateur dans la BDD
-                    await User.findOneAndUpdate({ clerkId: userId }, { cart: [] });
+                    // 4. Clear cart and remove purchased items from favorites
+                    await User.findOneAndUpdate(
+                        { clerkId: userId },
+                        {
+                            cart: [],
+                            $pull: { favorites: { $in: productIds } } // Remove purchased items from favorites
+                        }
+                    );
+                    console.log(`[WEBHOOK] Cleared cart and removed ${productIds.length} items from favorites for user ${userId}`);
                 }
             }
         } catch (err: any) {

@@ -168,6 +168,9 @@
         "alreadyInCart": "This article is already in your cart.",
         "inCart": "In your cart",
         "syncResult": "{synced} synced, {deleted} deleted (orphans).",
+        "addedToFavorites": "Added to favorites!",
+        "removedFromFavorites": "Removed from favorites.",
+        "loginRequired": "Please log in to save favorites.",
         "userDeleted": "User and all associated data have been permanently deleted."
     },
     "CartSheet": {
@@ -225,6 +228,16 @@
         "user": "User",
         "me": "Me",
         "confirmDelete": "Delete this review?"
+    },
+    "Favorites": {
+        "title": "My Favorites",
+        "empty": "No favorites yet",
+        "emptyDesc": "Products you save will appear here.",
+        "save": "Save",
+        "saved": "Saved",
+        "addToFavorites": "Add to favorites",
+        "removeFromFavorites": "Remove from favorites",
+        "browse": "Browse catalog"
     },
     "Sell": {
         "title": "Sell a Blueprint",

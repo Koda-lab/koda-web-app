@@ -1,5 +1,6 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getSellerBalance, getSalesHistory, getMyProducts, getMyOrders } from "@/app/actions/dashboard";
+import { getMyFavorites } from "@/app/actions/favorites";
 import { deleteProduct } from "@/app/actions/product-management";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
@@ -22,11 +23,12 @@ export default async function DashboardPage() {
     if (!userId || !user) redirect("/sign-in");
 
     // Parallel data fetching
-    const [balance, sales, products, orders] = await Promise.all([
+    const [balance, sales, products, orders, favorites] = await Promise.all([
         getSellerBalance(),
         getSalesHistory(),
         getMyProducts(),
         getMyOrders(),
+        getMyFavorites(),
     ]);
 
     async function handleDelete(productId: string) {
@@ -47,6 +49,7 @@ export default async function DashboardPage() {
             sales={sales}
             products={products}
             orders={orders}
+            favorites={favorites}
             onDelete={handleDelete}
         />
     );

@@ -79,6 +79,16 @@
         "me": "Yo",
         "confirmDelete": "¿Eliminar esta reseña?"
     },
+    "Favorites": {
+        "title": "Mis Favoritos",
+        "empty": "No tienes favoritos aún",
+        "emptyDesc": "Los productos que guardes aparecerán aquí.",
+        "save": "Guardar",
+        "saved": "Guardado",
+        "addToFavorites": "Añadir a favoritos",
+        "removeFromFavorites": "Quitar de favoritos",
+        "browse": "Explorar catálogo"
+    },
     "Search": {
         "placeholder": "Buscar una automatización...",
         "allPlatforms": "Todas las plataformas",
@@ -206,6 +216,9 @@
         "alreadyInCart": "Este artículo ya está en tu carrito.",
         "inCart": "En el carrito",
         "syncResult": "{synced} sincronizados, {deleted} eliminados (huérfanos).",
+        "addedToFavorites": "¡Añadido a favoritos!",
+        "removedFromFavorites": "Eliminado de favoritos.",
+        "loginRequired": "Inicia sesión para guardar favoritos.",
         "userDeleted": "El usuario y todos los datos asociados han sido eliminados permanentemente."
     },
     "CartSheet": {

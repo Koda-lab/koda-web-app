@@ -167,6 +167,9 @@
         "alreadyInCart": "Cet article est déjà dans votre panier.",
         "inCart": "Dans le panier",
         "syncResult": "{synced} synchronisés, {deleted} supprimés (orphelins).",
+        "addedToFavorites": "Ajouté aux favoris !",
+        "removedFromFavorites": "Retiré des favoris.",
+        "loginRequired": "Connectez-vous pour sauvegarder des favoris.",
         "userDeleted": "L'utilisateur et toutes ses données associées ont été supprimés définitivement."
     },
     "CartSheet": {
@@ -224,6 +227,16 @@
         "user": "Utilisateur",
         "me": "Moi",
         "confirmDelete": "Supprimer cet avis ?"
+    },
+    "Favorites": {
+        "title": "Mes Favoris",
+        "empty": "Aucun favori pour le moment",
+        "emptyDesc": "Les produits que vous enregistrez apparaîtront ici.",
+        "save": "Enregistrer",
+        "saved": "Enregistré",
+        "addToFavorites": "Ajouter aux favoris",
+        "removeFromFavorites": "Retirer des favoris",
+        "browse": "Parcourir le catalogue"
     },
     "Sell": {
         "title": "Vendre un Blueprint",

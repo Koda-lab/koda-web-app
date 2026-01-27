@@ -12,6 +12,7 @@ export interface IUser extends Document {
     role: 'user' | 'admin';
     isBanned: boolean; // Field for soft ban
     cart: mongoose.Types.ObjectId[];
+    favorites: mongoose.Types.ObjectId[]; // Wishlist
     createdAt: Date;
     updatedAt: Date;
 }
@@ -28,6 +29,7 @@ const UserSchema = new mongoose.Schema({
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
     isBanned: { type: Boolean, default: false }, // Default to not banned
     cart: [{ type: Schema.Types.ObjectId, ref: "Automation" }],
+    favorites: [{ type: Schema.Types.ObjectId, ref: "Automation" }], // Wishlist
 }, { timestamps: true });
 
 const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>("User", UserSchema);

@@ -23,6 +23,7 @@ import Review from "@/models/Review";
 import { ReviewsSection } from "@/app/components/reviews/review-section";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
 import { AddToCartButton } from "@/app/components/products/add-to-cart-button";
+import { FavoriteButton } from "@/app/components/favorites/favorite-button";
 
 const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
 
@@ -286,15 +287,25 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                                     <Zap className="mr-2 h-5 w-5" /> {tPage('buyNow')}
                                                 </Button>
                                             </form>
-                                            <AddToCartButton product={{
-                                                _id: product._id.toString(),
-                                                title: product.title,
-                                                price: product.price,
-                                                category: product.category,
-                                                platform: product.platform,
-                                                previewImageUrl: product.previewImageUrl,
-                                                sellerId: product.sellerId,
-                                            }} />
+                                            <div className="flex gap-2 items-center">
+                                                <div className="flex-1">
+                                                    <AddToCartButton product={{
+                                                        _id: product._id.toString(),
+                                                        title: product.title,
+                                                        price: product.price,
+                                                        category: product.category,
+                                                        platform: product.platform,
+                                                        previewImageUrl: product.previewImageUrl,
+                                                        sellerId: product.sellerId,
+                                                    }} />
+                                                </div>
+                                                <div className="shrink-0 flex items-center justify-center w-12 h-12 rounded-lg border border-border bg-muted/30 hover:bg-muted/50 transition-colors">
+                                                    <FavoriteButton
+                                                        productId={product._id.toString()}
+                                                        size="md"
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
                                     )}
                                 </div>

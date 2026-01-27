@@ -3,6 +3,7 @@ import { Button } from '@/app/components/ui/button';
 import { SignInButton, SignUpButton, SignedIn, SignedOut } from '@clerk/nextjs';
 import { LayoutDashboard, ShieldCheck } from "lucide-react";
 import CartSheetWrapper from '@/app/components/cart/cart-sheet-wrapper';
+import FavoritesSheetWrapper from '@/app/components/favorites/favorites-sheet-wrapper';
 import UserButtonWrapper from '@/app/components/auth/user-button-wrapper';
 import { getTranslations } from 'next-intl/server';
 import { ModeToggle } from '@/app/components/layout/mode-toggle';
@@ -77,6 +78,7 @@ export default async function Header() {
                     </nav>
 
                     <div className="flex items-center gap-2">
+                        <FavoritesSheetWrapper /> {/*Favoris*/}
                         <CartSheetWrapper /> {/*Panier*/}
                         <LanguageSwitcher />
                         <ModeToggle />

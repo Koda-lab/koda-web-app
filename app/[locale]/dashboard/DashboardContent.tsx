@@ -8,9 +8,8 @@ import { DashboardHeader } from "@/app/components/dashboard/DashboardHeader";
 import { StatsGrid } from "@/app/components/dashboard/StatsGrid";
 import { ActivityFeed } from "@/app/components/dashboard/ActivityFeed";
 import { ProductList } from "@/app/components/dashboard/ProductList";
+import { FavoritesList } from "@/app/components/dashboard/FavoritesList";
 import { DashboardModeSwitcher, DashboardMode } from "@/app/components/dashboard/DashboardModeSwitcher";
-import { Card } from "@/app/components/ui/card";
-import { ShoppingCart } from "lucide-react";
 
 interface DashboardContentProps {
     user: any;
@@ -18,10 +17,11 @@ interface DashboardContentProps {
     sales: any[];
     products: any[];
     orders: any[];
+    favorites: any[];
     onDelete: (productId: string) => Promise<void>;
 }
 
-export function DashboardContent({ user, balance, sales, products, orders, onDelete }: DashboardContentProps) {
+export function DashboardContent({ user, balance, sales, products, orders, favorites, onDelete }: DashboardContentProps) {
     const [mode, setMode] = useState<DashboardMode>("buyer");
     const t = useTranslations('Dashboard');
 
@@ -54,13 +54,9 @@ export function DashboardContent({ user, balance, sales, products, orders, onDel
                                 <div className="lg:col-span-2">
                                     <ActivityFeed sales={[]} orders={orders} />
                                 </div>
-                                <Card className="border-border/50 bg-card shadow-lg border-dashed flex flex-col items-center justify-center p-8 text-center h-[500px]">
-                                    <div className="p-4 bg-muted rounded-full mb-4">
-                                        <ShoppingCart className="h-8 w-8 text-muted-foreground opacity-20" />
-                                    </div>
-                                    <h3 className="text-lg font-bold mb-2">{t('sections.buyerInsights')}</h3>
-                                    <p className="text-xs text-muted-foreground">{t('sections.buyerInsightsDesc')}</p>
-                                </Card>
+                                <div>
+                                    <FavoritesList favorites={favorites} />
+                                </div>
                             </div>
                         </div>
                     )}
