@@ -15,6 +15,11 @@ export default clerkMiddleware(async (auth, req) => {
 
     // Si c'est une route API, on ne l'internationalise pas
     if (req.nextUrl.pathname.startsWith('/api')) {
+        // Skip rate limiting for webhooks (Stripe sends many events quickly)
+        if (req.nextUrl.pathname.startsWith('/api/webhooks')) {
+            return;
+        }
+
         // Rate Limiting (Protection DDoS / Billing)
         // On ne limite que l'API, pas les assets ni les pages
         try {
