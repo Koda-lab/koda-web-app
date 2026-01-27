@@ -64,7 +64,14 @@
             "category": "Category",
             "price": "Price",
             "reset": "Reset filters"
-        }
+        },
+        "sort": {
+            "placeholder": "Sort by",
+            "newest": "Newest",
+            "priceAsc": "Price: Low to High",
+            "priceDesc": "Price: High to Low"
+        },
+        "searchPlaceholder": "Search..."
     },
     "Footer": {
         "description": "The trusted marketplace to automate your business with n8n, Make, and Zapier etc...",

@@ -4,12 +4,14 @@ import { useState, useEffect, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/app/components/ui/input";
 import { Search, Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type SidebarSearchProps = {
     defaultValue?: string;
 };
 
 export function SidebarSearch({ defaultValue }: SidebarSearchProps) {
+    const t = useTranslations('Catalog');
     const router = useRouter();
     const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
@@ -50,7 +52,7 @@ export function SidebarSearch({ defaultValue }: SidebarSearchProps) {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
                 type="search"
-                placeholder="Rechercher..."
+                placeholder={t('searchPlaceholder')}
                 className="pl-8"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}

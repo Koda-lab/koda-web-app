@@ -79,7 +79,14 @@
             "category": "Categoría",
             "price": "Precio",
             "reset": "Restablecer filtros"
-        }
+        },
+        "sort": {
+            "placeholder": "Ordenar por",
+            "newest": "Más recientes",
+            "priceAsc": "Precio: Menor a Mayor",
+            "priceDesc": "Precio: Mayor a Menor"
+        },
+        "searchPlaceholder": "Buscar..."
     },
     "Footer": {
         "description": "El mercado de confianza para automatizar tu negocio con n8n, Make, Zapier, etc...",

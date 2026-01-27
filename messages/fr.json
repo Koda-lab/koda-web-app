@@ -64,7 +64,14 @@
             "category": "Catégorie",
             "price": "Prix",
             "reset": "Réinitialiser les filtres"
-        }
+        },
+        "sort": {
+            "placeholder": "Trier par",
+            "newest": "Plus récents",
+            "priceAsc": "Prix croissant",
+            "priceDesc": "Prix décroissant"
+        },
+        "searchPlaceholder": "Rechercher..."
     },
     "Footer": {
         "description": "La marketplace de confiance pour automatiser votre business avec n8n, Make et Zapier etc...",

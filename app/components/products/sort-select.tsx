@@ -8,12 +8,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/app/components/ui/select";
+import { useTranslations } from "next-intl";
 
 interface SortSelectProps {
     initialSort: string;
 }
 
 export function SortSelect({ initialSort }: SortSelectProps) {
+    const t = useTranslations('Catalog.sort');
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -26,12 +28,12 @@ export function SortSelect({ initialSort }: SortSelectProps) {
     return (
         <Select value={initialSort} onValueChange={handleSortChange}>
             <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Trier par" />
+                <SelectValue placeholder={t('placeholder')} />
             </SelectTrigger>
             <SelectContent>
-                <SelectItem value="newest">Plus récents</SelectItem>
-                <SelectItem value="price_asc">Prix croissant</SelectItem>
-                <SelectItem value="price_desc">Prix décroissant</SelectItem>
+                <SelectItem value="newest">{t('newest')}</SelectItem>
+                <SelectItem value="price_asc">{t('priceAsc')}</SelectItem>
+                <SelectItem value="price_desc">{t('priceDesc')}</SelectItem>
             </SelectContent>
         </Select>
     );
