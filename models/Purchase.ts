@@ -9,7 +9,7 @@ const PurchaseSchema = new Schema({
     platformFee: { type: Number, required: true }, // Commission Koda (15%)
     category: { type: String }, // Dénormalisé pour analytics
     platform: { type: String }, // Dénormalisé pour analytics
-    stripeSessionId: { type: String, required: true, unique: true },
+    stripeSessionId: { type: String, required: true }, // Not unique (one session can have multiple products)
     createdAt: { type: Date, default: Date.now },
 });
 
