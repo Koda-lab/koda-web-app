@@ -111,14 +111,32 @@ export async function getFilteredProducts(params: ProductFilterParams) {
 
 /**
  * Récupère des suggestions aléatoires de produits (Cross-selling)
+ * @param excludeIds - IDs des produits dans le panier
+ * @param userId - ID de l'utilisateur connecté (pour exclure ses propres produits)
+ * @param purchasedIds - IDs des produits déjà achetés
  */
-export async function getSuggestedProducts(excludeIds: string[] = []) {
+export async function getSuggestedProducts(
+    excludeIds: string[] = [],
+    userId?: string | null,
+    purchasedIds: string[] = []
+) {
     try {
         await connectToDatabase();
 
-        const products = await Product.find({
-            _id: { $nin: excludeIds }
-        })
+        // Combine all IDs to exclude
+        const allExcludeIds = [...new Set([...excludeIds, ...purchasedIds])];
+
+        // Build query - exclude cart items, purchased items, and user's own products
+        const query: any = {
+            _id: { $nin: allExcludeIds }
+        };
+
+        // Exclude products where the user is the seller
+        if (userId) {
+            query.sellerId = { $ne: userId };
+        }
+
+        const products = await Product.find(query)
             .sort({ averageRating: -1, reviewCount: -1 })
             .limit(10)
             .lean();

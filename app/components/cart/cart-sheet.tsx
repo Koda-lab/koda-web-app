@@ -103,11 +103,12 @@ export default function CartSheet() {
     useEffect(() => {
         if (cart.items.length > 0) {
             const excludeIds = cart.items.map(i => i._id);
-            getSuggestedProducts(excludeIds).then(setSuggestions);
+            const purchasedArray = purchasedIds ? Array.from(purchasedIds) : [];
+            getSuggestedProducts(excludeIds, userId, purchasedArray).then(setSuggestions);
         } else {
             setSuggestions([]);
         }
-    }, [cart.items.length]);
+    }, [cart.items.length, userId, purchasedIds]);
 
     if (!isMounted) return null;
 
