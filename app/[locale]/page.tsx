@@ -122,14 +122,14 @@ export default async function Home(props: HomeProps) {
         <div className="flex justify-between items-end mb-16">
           <div>
             <h2 className="text-3xl font-bold tracking-tight">
-              {category !== "all" ? category : (query ? `Résultats pour "${query}"` : "Nouveautés")}
+              {category !== "all" ? category : (query ? `${t('resultsFor')} "${query}"` : t('newArrivals'))}
             </h2>
-            <p className="text-muted-foreground mt-2">Découvrez les dernières automatisations ajoutées.</p>
+            <p className="text-muted-foreground mt-2">{t('discoverLatest')}</p>
           </div>
 
           {(query || category !== "all") && (
             <Link href="/" className="text-sm font-medium text-primary hover:underline bg-primary/10 px-4 py-2 rounded-full transition-colors hover:bg-primary/20">
-              Tout effacer
+              {t('clearAll')}
             </Link>
           )}
         </div>
@@ -157,12 +157,12 @@ export default async function Home(props: HomeProps) {
         ) : (
           <FadeIn>
             <div className="text-center py-20 bg-muted/20 rounded-xl border border-dashed">
-              <h3 className="text-lg font-semibold">Aucun résultat trouvé 🔍</h3>
+              <h3 className="text-lg font-semibold">{t('noResults')}</h3>
               <p className="text-muted-foreground mt-2">
-                Aucune automatisation ne correspond à vos filtres.
+                {t('noMatch')}
               </p>
               <Button variant="link" asChild className="mt-4">
-                <Link href="/">Effacer les filtres</Link>
+                <Link href="/">{t('clearFilters')}</Link>
               </Button>
             </div>
           </FadeIn>

@@ -5,7 +5,14 @@
     },
     "HomePage": {
         "title": "Welcome to Koda",
-        "subtitle": "Automation is all you need"
+        "subtitle": "Automation is all you need",
+        "newArrivals": "New Arrivals",
+        "resultsFor": "Results for",
+        "discoverLatest": "Discover the latest automations added.",
+        "clearAll": "Clear all",
+        "noResults": "No results found 🔍",
+        "noMatch": "No automation matches your filters.",
+        "clearFilters": "Clear filters"
     },
     "Navigation": {
         "catalog": "Catalog",
@@ -193,7 +200,15 @@
         "instantDownload": "Download your files instantly after purchase",
         "verifiedByKoda": "Verified by Koda",
         "validatedStructure": "Structure and quality validated by our team",
-        "priceLicense": "Price / License"
+        "priceLicense": "Price / License",
+        "download": "Download",
+        "alreadyOwn": "You already own this product ✅",
+        "satisfiedPurchase": "Satisfied with your purchase?",
+        "leaveReview": "⭐ Leave a review in the dedicated tab!",
+        "yourProduct": "Your product",
+        "loginToBuy": "Log in to buy",
+        "buyNow": "Buy now",
+        "soldBy": "Sold by"
     },
     "Sell": {
         "title": "Sell a Blueprint",

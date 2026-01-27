@@ -59,6 +59,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
     const t = await getTranslations('ProductCard');
     const tPage = await getTranslations('ProductPage');
+    const tCats = await getTranslations('Categories');
     const format = await getFormatter();
 
     const isOwner = userId === product.sellerId;
@@ -153,13 +154,25 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                 ) : (
                                     <div className="flex flex-col items-center gap-3 text-muted-foreground">
                                         <Zap size={48} className="opacity-20" />
-                                        <span className="text-sm font-medium">{t('quickView')} {product.category}</span>
+                                        <span className="text-sm font-medium">{t('quickView')} {
+                                            product.category === "Social Media" ? tCats('socialMedia') :
+                                                product.category === "Email Marketing" ? tCats('emailMarketing') :
+                                                    product.category === "Productivity" ? tCats('productivity') :
+                                                        product.category === "Sales" ? tCats('sales') :
+                                                            product.category === "Other" ? tCats('other') : product.category
+                                        }</span>
                                     </div>
                                 )}
                             </div>
                             <CardContent className="p-8">
                                 <div className="flex items-center gap-3 mb-4 flex-wrap">
-                                    <Badge variant="outline" className="capitalize text-sm">{product.category}</Badge>
+                                    <Badge variant="outline" className="capitalize text-sm">
+                                        {product.category === "Social Media" ? tCats('socialMedia') :
+                                            product.category === "Email Marketing" ? tCats('emailMarketing') :
+                                                product.category === "Productivity" ? tCats('productivity') :
+                                                    product.category === "Sales" ? tCats('sales') :
+                                                        product.category === "Other" ? tCats('other') : product.category}
+                                    </Badge>
                                     <Badge className="bg-primary/90 hover:bg-primary text-sm">{product.platform}</Badge>
                                     {hasPurchased && (
                                         <Badge className="bg-green-600 hover:bg-green-700 text-white gap-1 shadow-sm border-none">
@@ -247,22 +260,22 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                         <div className="space-y-3">
                                             <Button asChild className="w-full text-lg h-14 bg-green-600 hover:bg-green-700 text-white" size="lg">
                                                 <a href={secureDownloadUrl} download={`${product.title}.json`}>
-                                                    <Download className="mr-3 h-6 w-6" /> Télécharger
+                                                    <Download className="mr-3 h-6 w-6" /> {tPage('download')}
                                                 </a>
                                             </Button>
-                                            <p className="text-xs text-center text-muted-foreground">Vous possédez déjà ce produit ✅</p>
+                                            <p className="text-xs text-center text-muted-foreground">{tPage('alreadyOwn')}</p>
 
                                             {/* RAPPEL POUR NOTER */}
                                             {canReview && (
                                                 <div className="pt-3 border-t border-dashed">
                                                     <p className="text-xs text-muted-foreground text-center mb-2">
-                                                        Satisfait de votre achat ?
+                                                        {tPage('satisfiedPurchase')}
                                                     </p>
                                                     <Badge
                                                         variant="outline"
                                                         className="w-full justify-center py-2 text-primary border-primary/30 bg-primary/5"
                                                     >
-                                                        ⭐ Laissez un avis dans l'onglet dédié !
+                                                        {tPage('leaveReview')}
                                                     </Badge>
                                                 </div>
                                             )}
@@ -270,18 +283,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                     ) : isOwner ? (
                                         <div className="space-y-3">
                                             <div className="w-full text-lg h-14 flex items-center justify-center bg-muted/50 rounded-lg border-2 border-primary/20 cursor-not-allowed">
-                                                <Package className="mr-2 h-5 w-5 text-primary" /> <span className="font-semibold text-primary">Votre produit</span>
+                                                <Package className="mr-2 h-5 w-5 text-primary" /> <span className="font-semibold text-primary">{tPage('yourProduct')}</span>
                                             </div>
                                         </div>
                                     ) : !userId ? (
                                         <Button asChild className="w-full text-lg h-14" size="lg">
-                                            <Link href="/sign-in">Se connecter pour acheter</Link>
+                                            <Link href="/sign-in">{tPage('loginToBuy')}</Link>
                                         </Button>
                                     ) : (
                                         <div className="space-y-3">
                                             <form action={async () => { "use server"; const url = await createSingleProductCheckout(id); redirect(url); }}>
                                                 <Button type="submit" className="w-full text-lg h-14" size="lg">
-                                                    <Zap className="mr-2 h-5 w-5" /> Acheter maintenant
+                                                    <Zap className="mr-2 h-5 w-5" /> {tPage('buyNow')}
                                                 </Button>
                                             </form>
                                             <AddToCartButton product={{
@@ -303,7 +316,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                         <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center"><User size={20} /></div>
                                     )}
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] text-muted-foreground uppercase font-bold">Vendu par</span>
+                                        <span className="text-[10px] text-muted-foreground uppercase font-bold">{tPage('soldBy')}</span>
                                         <span className="text-sm font-semibold text-primary">{sellerName}</span>
                                     </div>
                                 </div>

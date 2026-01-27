@@ -5,7 +5,14 @@
     },
     "HomePage": {
         "title": "Bienvenido a Koda",
-        "subtitle": "El mercado de datos"
+        "subtitle": "El mercado de datos",
+        "newArrivals": "Novedades",
+        "resultsFor": "Resultados para",
+        "discoverLatest": "Descubre las últimas automatizaciones añadidas.",
+        "clearAll": "Borrar todo",
+        "noResults": "No se encontraron resultados 🔍",
+        "noMatch": "Ninguna automatización coincide con tus filtros.",
+        "clearFilters": "Borrar filtros"
     },
     "Navigation": {
         "catalog": "Catálogo",
@@ -46,7 +53,15 @@
         "instantDownload": "Descarga tus archivos instantáneamente después de la compra",
         "verifiedByKoda": "Verificado por Koda",
         "validatedStructure": "Estructura y calidad validadas por nuestro equipo",
-        "priceLicense": "Precio / Licencia"
+        "priceLicense": "Precio / Licencia",
+        "download": "Descargar",
+        "alreadyOwn": "Ya posees este producto ✅",
+        "satisfiedPurchase": "¿Satisfecho con tu compra?",
+        "leaveReview": "⭐ ¡Deja una reseña en la pestaña dedicada!",
+        "yourProduct": "Tu producto",
+        "loginToBuy": "Inicia sesión para comprar",
+        "buyNow": "Comprar ahora",
+        "soldBy": "Vendido por"
     },
     "Search": {
         "placeholder": "Buscar una automatización...",

@@ -5,7 +5,14 @@
     },
     "HomePage": {
         "title": "Bienvenue sur Koda",
-        "subtitle": "La marketplace de données"
+        "subtitle": "La marketplace de données",
+        "newArrivals": "Nouveautés",
+        "resultsFor": "Résultats pour",
+        "discoverLatest": "Découvrez les dernières automatisations ajoutées.",
+        "clearAll": "Tout effacer",
+        "noResults": "Aucun résultat trouvé 🔍",
+        "noMatch": "Aucune automatisation ne correspond à vos filtres.",
+        "clearFilters": "Effacer les filtres"
     },
     "Navigation": {
         "catalog": "Catalogue",
@@ -192,7 +199,15 @@
         "instantDownload": "Téléchargez vos fichiers instantanément après achat",
         "verifiedByKoda": "Vérifié par Koda",
         "validatedStructure": "Structure et qualité validées par notre équipe",
-        "priceLicense": "Prix / Licence"
+        "priceLicense": "Prix / Licence",
+        "download": "Télécharger",
+        "alreadyOwn": "Vous possédez déjà ce produit ✅",
+        "satisfiedPurchase": "Satisfait de votre achat ?",
+        "leaveReview": "⭐ Laissez un avis dans l'onglet dédié !",
+        "yourProduct": "Votre produit",
+        "loginToBuy": "Se connecter pour acheter",
+        "buyNow": "Acheter maintenant",
+        "soldBy": "Vendu par"
     },
     "Sell": {
         "title": "Vendre un Blueprint",
