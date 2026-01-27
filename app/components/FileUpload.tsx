@@ -9,9 +9,11 @@ interface FileUploadProps {
     accept?: string;
     label?: string;
     endpoint?: string;
+    children?: React.ReactNode;
+    className?: string;
 }
 
-export default function FileUpload({ onUploadSuccess, accept, label = "Automation JSON File", endpoint = "/api/upload", children, className }: FileUploadProps & { children?: React.ReactNode, className?: string }) {
+export default function FileUpload({ onUploadSuccess, accept, label = "Automation JSON File", endpoint = "/api/upload", children, className }: FileUploadProps) {
     const { showSuccess, showError, showLoading, dismiss } = useLocalizedToast();
     const [uploading, setUploading] = useState(false);
 
@@ -23,36 +25,37 @@ export default function FileUpload({ onUploadSuccess, accept, label = "Automatio
         const toastId = showLoading("Uploading...");
 
         try {
-            // 1. Get presigned URL from API
+            // 1. Get presigned URL
             const res = await fetch(endpoint, {
                 method: "POST",
                 body: JSON.stringify({ fileName: file.name, fileType: file.type, fileSize: file.size }),
             });
 
-            // CRITICAL VERIFICATION
             if (!res.ok) {
                 const errorText = await res.text();
-                try {
-                    const errorJson = JSON.parse(errorText);
-                    throw new Error(errorJson.error || "Upload error");
-                } catch {
-                    throw new Error(errorText || "Server error");
-                }
+                throw new Error(errorText || "Presign error");
             }
 
             const { uploadUrl, fileUrl } = await res.json();
 
-            // 2. Upload file directly to AWS S3
-            await fetch(uploadUrl, {
+            // 2. Upload to AWS S3
+            // CRITICAL FIX: Check response status of the S3 upload
+            const uploadRes = await fetch(uploadUrl, {
                 method: "PUT",
                 body: file,
                 headers: { "Content-Type": file.type },
             });
 
+            if (!uploadRes.ok) {
+                const errorText = await uploadRes.text();
+                console.error("S3 Upload Failed:", uploadRes.status, errorText);
+                throw new Error(`S3 Upload failed: ${uploadRes.statusText}`);
+            }
+
             onUploadSuccess(fileUrl);
             showSuccess('fileUploadSuccess');
         } catch (error: any) {
-            console.error("Upload failed", error);
+            console.error("Upload process failed:", error);
             Sentry.captureException(error);
             showError(error.message || "File upload failed.");
         } finally {

@@ -7,7 +7,10 @@
 export function getPublicImageUrl(s3Url?: string | null) {
     if (!s3Url) return "/placeholder-image.jpg";
 
-    // Si c'est déjà une URL relative ou proxifiée, on ne touche pas
+    // FIX: Si l'URL passe déjà par notre proxy API, on la retourne direct pour éviter le double encodage
+    if (s3Url.includes("/api/image")) return s3Url;
+
+    // Si c'est déjà une URL relative, on ne touche pas
     if (s3Url.startsWith("/")) return s3Url;
 
     // Si c'est une URL S3 (amazon, etc), on la passe dans le proxy
