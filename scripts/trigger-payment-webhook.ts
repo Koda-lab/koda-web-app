@@ -21,41 +21,43 @@ if (fs.existsSync(envPath)) {
 }
 
 // 2. Main Function with Dynamic Imports
-// We use dynamic imports to ensure env vars are set BEFORE the DB module loads
 async function triggerWebhook() {
     try {
         console.log("🔌 Connecting to database...");
 
-        // Dynamic imports to avoid hoisting checks
         const { connectToDatabase } = await import('../lib/db');
         const { default: Automation } = await import('../models/Automation');
         const { default: User } = await import('../models/User');
 
         await connectToDatabase();
 
-        // 1. Fetch a real product (Automation)
-        const product = await Automation.findOne({});
-        if (!product) {
+        // 1. Fetch real products (try to get 2)
+        const products = await Automation.find({}).limit(2);
+        if (products.length === 0) {
             console.error("❌ No products found in database. Create one first.");
             process.exit(1);
         }
 
+        const productIds = products.map(p => p._id.toString());
+        const firstProduct = products[0];
+
         // 2. Fetch a real user (Buyer)
-        // Try to find a user who is NOT the seller, if possible
-        const buyer = await User.findOne({ clerkId: { $ne: product.sellerId } }) || await User.findOne({});
+        // Try to find a user who is NOT the seller of the first product
+        const buyer = await User.findOne({ clerkId: { $ne: firstProduct.sellerId } }) || await User.findOne({});
 
         if (!buyer) {
             console.error("❌ No users found in database. Create one first.");
             process.exit(1);
         }
 
-        console.log(`\n📋 Using Test Data:`);
-        console.log(`   - Product: ${product.title} (ID: ${product._id})`);
+        console.log(`\n📋 Using Test Data (${products.length} items):`);
+        products.forEach((p, i) => {
+            console.log(`   - Product ${i + 1}: ${p.title} (ID: ${p._id})`);
+        });
         console.log(`   - Buyer:   ${buyer.email || buyer.clerkId} (ID: ${buyer.clerkId})`);
 
         // 3. Construct the Stripe CLI command
-        // We need to override the metadata to match what our webhook handler expects
-        const productIdsJson = JSON.stringify([product._id.toString()]);
+        const productIdsJson = JSON.stringify(productIds);
 
         // Escape quotes for the shell command
         const cmd = `stripe trigger checkout.session.completed --add checkout_session:metadata.userId="${buyer.clerkId}" --add checkout_session:metadata.productIds='${productIdsJson}'`;
@@ -73,7 +75,7 @@ async function triggerWebhook() {
                 console.log(stderr);
             }
             console.log(stdout);
-            console.log(`\n✅ Webhook triggered! Check your 'stripe listen' terminal window to see the event received by your local server.`);
+            console.log(`\n✅ Webhook triggered!`);
             process.exit(0);
         });
 

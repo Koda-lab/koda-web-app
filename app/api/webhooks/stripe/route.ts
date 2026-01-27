@@ -75,81 +75,85 @@ export async function POST(req: Request) {
                     let orderTotal = 0;
 
                     for (const productId of productIds) {
-                        // 1. On récupère le produit pour avoir le vendeur (sellerId)
-                        const product = await Automation.findById(productId);
+                        try {
+                            // 1. On récupère le produit pour avoir le vendeur (sellerId)
+                            const product = await Automation.findById(productId);
 
-                        if (product) {
-                            const seller = await User.findOne({ clerkId: typeof product.sellerId === 'object' ? product.sellerId.toString() : product.sellerId });
+                            if (product) {
+                                const seller = await User.findOne({ clerkId: typeof product.sellerId === 'object' ? product.sellerId.toString() : product.sellerId });
 
-                            buyerOrderItems.push({ title: product.title, price: product.price });
-                            orderTotal += product.price;
+                                buyerOrderItems.push({ title: product.title, price: product.price });
+                                orderTotal += product.price;
 
-                            if (!seller?.stripeConnectId) {
-                                console.error(`Seller ${product.sellerId} has no Stripe Connect ID. Skipping transfer.`);
-                            }
+                                if (!seller?.stripeConnectId) {
+                                    console.error(`Seller ${product.sellerId} has no Stripe Connect ID. Skipping transfer.`);
+                                }
 
-                            // 1. Create the purchase record locally
-                            const existingPurchase = await Purchase.findOne({
-                                buyerId: userId,
-                                productId: productId
-                            });
-
-                            if (!existingPurchase) {
-                                const platformFee = product.price * 0.15;
-                                const netAmount = product.price - platformFee;
-
-                                await Purchase.create({
+                                // 1. Create the purchase record locally
+                                const existingPurchase = await Purchase.findOne({
                                     buyerId: userId,
-                                    productId: productId,
-                                    sellerId: seller?.clerkId || product.sellerId,
-                                    stripeSessionId: session.id,
-                                    amount: product.price,
-                                    netAmount: netAmount,
-                                    platformFee: platformFee,
-                                    category: product.category,
-                                    platform: (product as any).platform, // Automation platform
+                                    productId: productId
                                 });
 
-                                // 1a. Send Email to Seller
-                                if (seller) {
-                                    let sellerEmail = seller.email;
-                                    if (!sellerEmail) {
-                                        try {
-                                            const clerk = await clerkClient();
-                                            const clerkUser = await clerk.users.getUser(seller.clerkId);
-                                            sellerEmail = clerkUser.emailAddresses[0]?.emailAddress;
-                                        } catch (e) {
-                                            console.error("Failed to fetch seller email from Clerk:", e);
+                                if (!existingPurchase) {
+                                    const platformFee = product.price * 0.15;
+                                    const netAmount = product.price - platformFee;
+
+                                    await Purchase.create({
+                                        buyerId: userId,
+                                        productId: productId,
+                                        sellerId: seller?.clerkId || product.sellerId,
+                                        stripeSessionId: session.id,
+                                        amount: product.price,
+                                        netAmount: netAmount,
+                                        platformFee: platformFee,
+                                        category: product.category,
+                                        platform: (product as any).platform, // Automation platform
+                                    });
+
+                                    // 1a. Send Email to Seller
+                                    if (seller) {
+                                        let sellerEmail = seller.email;
+                                        if (!sellerEmail) {
+                                            try {
+                                                const clerk = await clerkClient();
+                                                const clerkUser = await clerk.users.getUser(seller.clerkId);
+                                                sellerEmail = clerkUser.emailAddresses[0]?.emailAddress;
+                                            } catch (e) {
+                                                console.error("Failed to fetch seller email from Clerk:", e);
+                                            }
+                                        }
+
+                                        if (sellerEmail) {
+                                            await sendSellerEmail(sellerEmail, product.title, product.price * 0.85);
                                         }
                                     }
+                                }
 
-                                    if (sellerEmail) {
-                                        await sendSellerEmail(sellerEmail, product.title, product.price * 0.85);
+                                // 2. Transfer 85% of the price to the seller (if they have a connect ID)
+                                if (seller?.stripeConnectId) {
+                                    try {
+                                        const transferAmount = Math.round(product.price * 100 * 0.85); // 85% in cents
+
+                                        await stripe.transfers.create({
+                                            amount: transferAmount,
+                                            currency: "eur",
+                                            destination: seller.stripeConnectId,
+                                            description: `Payout for ${product.title}`,
+                                            source_transaction: chargeId, // Link transfer to the original charge
+                                            metadata: {
+                                                productId: productId.toString(),
+                                                buyerId: userId,
+                                            },
+                                        });
+                                        console.log(`Transfer of ${transferAmount} cents of ${product.price} to seller ${seller.stripeConnectId} successful.`);
+                                    } catch (transferError) {
+                                        console.error(`Failed to transfer funds to seller ${seller.stripeConnectId}:`, transferError);
                                     }
                                 }
                             }
-
-                            // 2. Transfer 85% of the price to the seller (if they have a connect ID)
-                            if (seller?.stripeConnectId) {
-                                try {
-                                    const transferAmount = Math.round(product.price * 100 * 0.85); // 85% in cents
-
-                                    await stripe.transfers.create({
-                                        amount: transferAmount,
-                                        currency: "eur",
-                                        destination: seller.stripeConnectId,
-                                        description: `Payout for ${product.title}`,
-                                        source_transaction: chargeId, // Link transfer to the original charge
-                                        metadata: {
-                                            productId: productId.toString(),
-                                            buyerId: userId,
-                                        },
-                                    });
-                                    console.log(`Transfer of ${transferAmount} cents of ${product.price} to seller ${seller.stripeConnectId} successful.`);
-                                } catch (transferError) {
-                                    console.error(`Failed to transfer funds to seller ${seller.stripeConnectId}:`, transferError);
-                                }
-                            }
+                        } catch (innerError) {
+                            console.error(`Error processing product ${productId}:`, innerError);
                         }
                     }
 
