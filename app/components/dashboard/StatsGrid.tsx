@@ -74,7 +74,7 @@ export function StatsGrid({ balance }: StatsGridProps) {
                         <Info className="h-4 w-4 mt-0.5 text-primary opacity-70" />
                         {t('commissionDesc')}
                     </p>
-                    <button className="text-[11px] font-bold uppercase tracking-widest text-primary flex items-center gap-1 hover:gap-2 transition-all opacity-80 hover:opacity-100">
+                    <button className="text-[11px] font-bold uppercase tracking-widest text-primary flex items-center gap-1 hover:gap-2 transition-all opacity-80 hover:opacity-100 cursor-pointer">
                         Learn about Premium <ChevronRight className="h-3 w-3" />
                     </button>
                 </CardContent>
