@@ -64,26 +64,13 @@ export async function POST(req: Request) {
         const safeFileName = `${sanitizedFileName}${originalExtension}`;
         const fileKey = `uploads/${userId}/${Date.now()}-${safeFileName}`;
 
-        // 6. SÉCURISATION DE LA COMMANDE S3
-        const isImage = fileType.startsWith("image/");
-        const contentDisposition = isImage
-            ? `inline; filename="${safeFileName}"`
-            : `attachment; filename="${safeFileName}"`;
-
+        // SIMPLIFICATION : On ne met QUE le ContentType pour éviter les problèmes de signature
+        // Les Metadata et ContentDisposition causent des erreurs SignatureDoesNotMatch
+        // car le client doit les envoyer exactement comme spécifiés
         const command = new PutObjectCommand({
             Bucket: process.env.AWS_S3_BUCKET_NAME,
             Key: fileKey,
             ContentType: fileType,
-            // CRITIQUE : Force le téléchargement pour les non-images pour éviter XSS (fichiers HTML, SVG, etc)
-            // Pour les images, on permet l'affichage inline
-            ContentDisposition: contentDisposition,
-            // Cache control pour les images (1 an immutable)
-            CacheControl: isImage ? "public, max-age=31536000, immutable" : undefined,
-            // Métadonnées pour suivi éventuel
-            Metadata: {
-                userId: userId,
-                originalName: fileName
-            }
         });
 
         const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 60 });
