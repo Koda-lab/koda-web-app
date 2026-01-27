@@ -8,9 +8,10 @@ interface FileUploadProps {
     onUploadSuccess: (url: string) => void;
     accept?: string;
     label?: string;
+    endpoint?: string;
 }
 
-export default function FileUpload({ onUploadSuccess, accept, label = "Automation JSON File", children, className }: FileUploadProps & { children?: React.ReactNode, className?: string }) {
+export default function FileUpload({ onUploadSuccess, accept, label = "Automation JSON File", endpoint = "/api/upload", children, className }: FileUploadProps & { children?: React.ReactNode, className?: string }) {
     const { showSuccess, showError, showLoading, dismiss } = useLocalizedToast();
     const [uploading, setUploading] = useState(false);
 
@@ -23,7 +24,7 @@ export default function FileUpload({ onUploadSuccess, accept, label = "Automatio
 
         try {
             // 1. Get presigned URL from API
-            const res = await fetch("/api/upload", {
+            const res = await fetch(endpoint, {
                 method: "POST",
                 body: JSON.stringify({ fileName: file.name, fileType: file.type, fileSize: file.size }),
             });

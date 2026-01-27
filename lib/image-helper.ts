@@ -6,6 +6,14 @@
  */
 export function getPublicImageUrl(s3Url?: string | null) {
     if (!s3Url) return "/placeholder-image.jpg";
-    // Retourne directement l'URL S3 - Next.js Image gérera l'optimisation
+
+    // Si c'est déjà une URL relative ou proxifiée, on ne touche pas
+    if (s3Url.startsWith("/")) return s3Url;
+
+    // Si c'est une URL S3 (amazon, etc), on la passe dans le proxy
+    if (s3Url.includes("s3") && s3Url.includes("amazonaws")) {
+        return `/api/image?url=${encodeURIComponent(s3Url)}`;
+    }
+
     return s3Url;
 }

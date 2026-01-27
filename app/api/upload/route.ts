@@ -6,19 +6,9 @@ import { auth } from "@clerk/nextjs/server";
 import { ratelimit } from "@/lib/ratelimit";
 import path from "path";
 
-// 1. DÉFINITION STRICTE DES TYPES AUTORISÉS
-// Adaptez cette liste selon vos besoins réels (ex: images + zip pour les produits d'automatisation)
+
 const ALLOWED_FILE_TYPES: Record<string, string[]> = {
-    // Images
-    "image/png": [".png"],
-    "image/jpeg": [".jpg", ".jpeg"],
-    "image/webp": [".webp"],
-    // Documents / Code
-    "application/pdf": [".pdf"],
-    "application/json": [".json"], // Pour les blueprints n8n/Make
-    "application/zip": [".zip"],   // Pour les paquets de scripts
-    "text/x-python": [".py"],      // Si vous acceptez le Python
-    "text/plain": [".txt", ".py"], // Parfois Python est détecté comme text/plain
+    "application/json": [".json"],
 };
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
@@ -41,12 +31,14 @@ export async function POST(req: Request) {
 
         // 2. VALIDATION TAILLE
         if (!fileSize || fileSize > MAX_FILE_SIZE) {
+            console.error(`Upload refused: File too large (${fileSize})`);
             return NextResponse.json({ error: "File too large" }, { status: 400 });
         }
 
         // 3. VALIDATION TYPE MIME (Allowlist)
         const allowedExtensions = ALLOWED_FILE_TYPES[fileType];
         if (!allowedExtensions) {
+            console.error(`Upload refused: Invalid MIME type '${fileType}' for file '${fileName}'`);
             return NextResponse.json({
                 error: `File type not allowed: ${fileType}`
             }, { status: 400 });
@@ -58,6 +50,7 @@ export async function POST(req: Request) {
 
         // On vérifie si l'extension correspond au mime type déclaré
         if (!allowedExtensions.includes(originalExtension)) {
+            console.error(`Upload refused: Mismatch extension '${originalExtension}' for MIME '${fileType}'`);
             return NextResponse.json({
                 error: "Invalid file extension for the provided file type"
             }, { status: 400 });

@@ -12,6 +12,7 @@ import { PlatformIcon } from "@/app/components/icons/platform-icon";
 import { useLocalizedToast } from "@/hooks/use-localized-toast";
 import { getErrorKey } from "@/lib/error-translator";
 import { useTranslations } from "next-intl";
+import { getPublicImageUrl } from "@/lib/image-helper";
 
 type ProductLike = IProduct | IAutomation;
 
@@ -73,7 +74,7 @@ export function ProductCard({ product, userId, isPurchased = false }: ProductCar
             <div className="relative w-full aspect-video bg-muted overflow-hidden">
                 {product.previewImageUrl ? (
                     <img
-                        src={product.previewImageUrl}
+                        src={getPublicImageUrl(product.previewImageUrl)}
                         alt={product.title}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />

@@ -32,6 +32,7 @@ export function UploadZones({
                     onUploadSuccess={onPreviewImageUpload}
                     accept="image/*"
                     label="cover-upload"
+                    endpoint="/api/image"
                     className={`border-2 border-dashed rounded-xl p-2 transition-all duration-200 h-64 ${!previewImageUrl ? "hover:bg-accent/50 hover:border-primary/50 border-border" : "border-border"}`}
                 >
                     {!previewImageUrl ? (
