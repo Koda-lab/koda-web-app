@@ -141,7 +141,14 @@
         "total": "Total",
         "loading": "Chargement...",
         "login": "Se connecter pour payer",
-        "checkout": "Passer au paiement"
+        "checkout": "Passer au paiement",
+        "clearAll": "Tout vider",
+        "promoCode": "Code Promo",
+        "apply": "Appliquer",
+        "discount": "Réduction",
+        "codePlaceholder": "Saisir le code",
+        "youMightLike": "Vous aimerez aussi",
+        "add": "Ajouter"
     },
     "ProductPage": {
         "verifiedSeller": "Vendeur Vérifié",

@@ -142,7 +142,14 @@
         "total": "Total",
         "loading": "Loading...",
         "login": "Sign in to checkout",
-        "checkout": "Proceed to checkout"
+        "checkout": "Proceed to checkout",
+        "clearAll": "Clear all",
+        "promoCode": "Promo Code",
+        "apply": "Apply",
+        "discount": "Discount",
+        "codePlaceholder": "Enter code",
+        "youMightLike": "You might also like",
+        "add": "Add"
     },
     "ProductPage": {
         "verifiedSeller": "Verified Seller",

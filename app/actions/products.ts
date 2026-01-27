@@ -108,3 +108,45 @@ export async function getFilteredProducts(params: ProductFilterParams) {
         return { products: [], metadata: { totalCount: 0, totalPages: 0, currentPage: 1, limit: 12 } };
     }
 }
+
+/**
+ * Récupère des suggestions aléatoires de produits (Cross-selling)
+ */
+export async function getSuggestedProducts(excludeIds: string[] = []) {
+    try {
+        await connectToDatabase();
+
+        const products = await Product.find({
+            _id: { $nin: excludeIds }
+        })
+            .sort({ averageRating: -1, reviewCount: -1 })
+            .limit(10)
+            .lean();
+
+        // Randomize
+        const shuffled = products.sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 2);
+
+        // Fetch sellers
+        const sellerIds = [...new Set(selected.map((p: any) => p.sellerId))];
+        const sellers = await User.find({ clerkId: { $in: sellerIds } }).lean();
+        const sellerMap = new Map(sellers.map((s: any) => [s.clerkId, s]));
+
+        return selected.map((p: any) => ({
+            ...p,
+            _id: p._id.toString(),
+            createdAt: p.createdAt ? p.createdAt.toISOString() : null,
+            updatedAt: p.updatedAt ? p.updatedAt.toISOString() : null,
+            seller: sellerMap.get(p.sellerId) ? {
+                username: (sellerMap.get(p.sellerId) as any).username ||
+                    `${(sellerMap.get(p.sellerId) as any).firstName || ''} ${(sellerMap.get(p.sellerId) as any).lastName || ''}`.trim() ||
+                    "Vendeur",
+                imageUrl: (sellerMap.get(p.sellerId) as any).imageUrl
+            } : null
+        }));
+
+    } catch (error) {
+        console.error("Error fetching suggestions:", error);
+        return [];
+    }
+}

@@ -156,7 +156,14 @@
         "total": "Total",
         "loading": "Cargando...",
         "login": "Iniciar sesión para pagar",
-        "checkout": "Proceder al pago"
+        "checkout": "Proceder al pago",
+        "clearAll": "Vaciar",
+        "promoCode": "Código Promocional",
+        "apply": "Aplicar",
+        "discount": "Descuento",
+        "codePlaceholder": "Introducir código",
+        "youMightLike": "También te podría gustar",
+        "add": "Añadir"
     },
     "Sell": {
         "title": "Vender un Blueprint",
