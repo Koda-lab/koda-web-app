@@ -59,24 +59,7 @@ async function getAutomations(searchQuery?: string, platform?: string, category?
   }
 }
 
-async function getActiveSellers() {
-  "use server";
-  try {
-    await connectToDatabase();
-    const sellerIds = await Automation.distinct("sellerId");
-    const sellers = await User.find({ clerkId: { $in: sellerIds } })
-      .select("clerkId username firstName lastName")
-      .lean();
 
-    return sellers.map((s: any) => ({
-      value: s.clerkId,
-      label: s.username || `${s.firstName || ''} ${s.lastName || ''}`.trim() || "Vendeur"
-    }));
-  } catch (e) {
-    console.error("Error fetching active sellers:", e);
-    return [];
-  }
-}
 
 interface HomeProps {
   searchParams: Promise<{
@@ -96,10 +79,7 @@ export default async function Home(props: HomeProps) {
   const category = searchParams.category || "all";
   const seller = searchParams.seller || "all";
 
-  const [automations, sellers] = await Promise.all([
-    getAutomations(query, platform, category, seller),
-    getActiveSellers()
-  ]);
+  const automations = await getAutomations(query, platform, category, seller);
 
   const purchasedProductIds = new Set<string>();
   if (userId) {
@@ -131,7 +111,7 @@ export default async function Home(props: HomeProps) {
 
           <FadeIn direction="up" delay={0.4} className="pt-12 flex flex-col items-center gap-6 w-full">
             <div className="w-full flex justify-center">
-              <SearchBar sellers={sellers} />
+              <SearchBar />
             </div>
           </FadeIn>
         </div>

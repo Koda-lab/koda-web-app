@@ -16,10 +16,10 @@ import { Badge } from "@/app/components/ui/badge";
 import { useTranslations } from 'next-intl';
 
 interface SearchBarProps {
-    sellers?: { value: string; label: string }[];
+
 }
 
-export function SearchBar({ sellers = [] }: SearchBarProps) {
+export function SearchBar({ }: SearchBarProps) {
     const t = useTranslations('Search');
     const tCats = useTranslations('Categories');
     const router = useRouter();
@@ -28,7 +28,7 @@ export function SearchBar({ sellers = [] }: SearchBarProps) {
     const [query, setQuery] = useState(searchParams.get("q") || "");
     const [platform, setPlatform] = useState(searchParams.get("platform") || "all");
     const [category, setCategory] = useState(searchParams.get("category") || "all");
-    const [seller, setSeller] = useState(searchParams.get("seller") || "all");
+
     const [mounted, setMounted] = useState(false);
 
     const PLATFORMS = [
@@ -64,7 +64,7 @@ export function SearchBar({ sellers = [] }: SearchBarProps) {
         if (query.trim()) params.set("q", query);
         if (platform !== "all") params.set("platform", platform);
         if (category !== "all") params.set("category", category);
-        if (seller !== "all") params.set("seller", seller);
+
 
         const queryString = params.toString();
         router.push(queryString ? `/?${queryString}` : "/");
@@ -74,18 +74,18 @@ export function SearchBar({ sellers = [] }: SearchBarProps) {
         setQuery("");
         setPlatform("all");
         setCategory("all");
-        setSeller("all");
+
         router.push("/");
     };
 
-    const hasActiveFilters = query || platform !== "all" || category !== "all" || seller !== "all";
+    const hasActiveFilters = query || platform !== "all" || category !== "all";
 
     // Appliquer les filtres quand ils changent
     useEffect(() => {
         if (mounted) {
             applyFilters();
         }
-    }, [platform, category, seller]); // Retirer mounted des dépendances pour éviter double trigger
+    }, [platform, category]); // Retirer mounted des dépendances pour éviter double trigger
 
     // Hydration fix: Ne pas rendre les Select (Radix UI) tant que pas monté
     if (!mounted) {
@@ -144,22 +144,7 @@ export function SearchBar({ sellers = [] }: SearchBarProps) {
                     </SelectContent>
                 </Select>
 
-                {/* Seller Filter - Only show if there are sellers */}
-                {sellers.length > 0 && (
-                    <Select value={seller} onValueChange={setSeller}>
-                        <SelectTrigger className="w-full md:w-[200px]">
-                            <SelectValue placeholder={t('seller')} />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">{t('allSellers')}</SelectItem>
-                            {sellers.map((s) => (
-                                <SelectItem key={s.value} value={s.value}>
-                                    {s.label}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                )}
+
 
                 <Button type="submit" className="md:w-auto">
                     <Search className="h-4 w-4 mr-2" />
@@ -189,12 +174,7 @@ export function SearchBar({ sellers = [] }: SearchBarProps) {
                             <X className="h-3 w-3 cursor-pointer" onClick={() => setCategory("all")} />
                         </Badge>
                     )}
-                    {seller !== "all" && (
-                        <Badge variant="secondary" className="gap-1">
-                            {t('seller')}: {sellers.find((s) => s.value === seller)?.label || "Inconnu"}
-                            <X className="h-3 w-3 cursor-pointer" onClick={() => setSeller("all")} />
-                        </Badge>
-                    )}
+
                     <Button variant="ghost" size="sm" onClick={clearFilters} className="h-6 text-xs">
                         {t('clearAll')}
                     </Button>

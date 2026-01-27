@@ -64,6 +64,20 @@ Koda listens for specific events from Stripe at `/api/webhooks/stripe`.
 3. Start the proxy: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`.
 4. Use the provided **Webhook Signing Secret** (`whsec_...`) in your `.env.local`.
 
+### 🧪 Testing Webhooks (Simulation)
+
+To simulate a successful payment (`checkout.session.completed`) with valid data from your local database:
+
+1. **Start the Listener** (Terminal 1):
+   ```bash
+   stripe listen --forward-to localhost:3000/api/webhooks/stripe
+   ```
+2. **Trigger the Event** (Terminal 2):
+   ```bash
+   npx tsx scripts/trigger-payment-webhook.ts
+   ```
+   *This script fetches a real user/product from your local DB and executes `stripe trigger` with the correct metadata, ensuring the server can process the purchase logic.*
+
 ---
 
 ## 🛡️ Security & Compliance
