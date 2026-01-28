@@ -24,8 +24,6 @@ export default function FavoritesSheet() {
     const [favorites, setFavorites] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isPending, startTransition] = useTransition();
-    const [isAnimating, setIsAnimating] = useState(false);
-    const [prevCount, setPrevCount] = useState(0);
 
     const favoritesStore = useFavorites();
     const cart = useCart();
@@ -34,16 +32,6 @@ export default function FavoritesSheet() {
     useEffect(() => {
         setIsMounted(true);
     }, []);
-
-    // Animation when favorites count changes
-    useEffect(() => {
-        if (favoritesStore.favoriteIds.length !== prevCount && isMounted) {
-            setIsAnimating(true);
-            const timer = setTimeout(() => setIsAnimating(false), 400);
-            setPrevCount(favoritesStore.favoriteIds.length);
-            return () => clearTimeout(timer);
-        }
-    }, [favoritesStore.favoriteIds.length, prevCount, isMounted]);
 
     // Load favorites when sheet opens
     const loadFavorites = async () => {
@@ -91,11 +79,11 @@ export default function FavoritesSheet() {
             <SheetTrigger asChild>
                 <Button
                     variant="ghost"
-                    className={`relative hover:bg-secondary/50 active:scale-95 transition-all duration-200 ${isAnimating && favoritesStore.favoriteIds.length > 0 ? 'scale-125 text-red-500 rotate-12 bg-red-500/10' : ''}`}
+                    className="relative hover:bg-secondary/50 active:scale-95 transition-all duration-200"
                 >
                     <Heart
                         size={20}
-                        className={`transition-all ${isAnimating && favoritesStore.favoriteIds.length > 0 ? 'animate-bounce' : ''} ${favoritesStore.favoriteIds.length > 0 ? 'fill-red-500 text-red-500' : ''}`}
+                        className={`transition-all ${favoritesStore.favoriteIds.length > 0 ? 'fill-red-500 text-red-500' : ''}`}
                     />
                     {favoritesStore.favoriteIds.length > 0 && (
                         <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 text-[10px] font-bold text-white flex items-center justify-center animate-in zoom-in">

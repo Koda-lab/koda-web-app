@@ -11,7 +11,6 @@ import { ProductList } from "@/app/components/dashboard/ProductList";
 import { FavoritesList } from "@/app/components/dashboard/FavoritesList";
 import DashboardInbox from "@/app/components/dashboard/DashboardInbox";
 import DashboardModeSwitcher, { DashboardMode } from "@/app/components/dashboard/DashboardModeSwitcher";
-import { ProfileSettings } from "@/app/components/dashboard/ProfileSettings";
 
 interface DashboardContentProps {
     user: any;
@@ -56,11 +55,6 @@ export function DashboardContent({ user, balance, sales, products, orders, favor
                                 products={products}
                                 onDelete={onDelete}
                             />
-                        </div>
-                    ) : mode === "profile" ? (
-                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            {/* Profile Settings View */}
-                            <ProfileSettings user={user} />
                         </div>
                     ) : mode === "messages" ? (
                         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">

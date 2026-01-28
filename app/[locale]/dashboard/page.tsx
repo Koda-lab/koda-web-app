@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
-type DashboardMode = 'buyer' | 'seller' | 'profile' | 'messages';
+type DashboardMode = 'buyer' | 'seller' | 'messages';
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ mode?: string }> }) {
     const { userId } = await auth();
@@ -27,7 +27,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
     const resolvedParams = await searchParams;
     const mode = resolvedParams.mode;
-    const validModes: DashboardMode[] = ['buyer', 'seller', 'profile', 'messages'];
+    const validModes: DashboardMode[] = ['buyer', 'seller', 'messages'];
     const initialMode: DashboardMode = validModes.includes(mode as DashboardMode) ? (mode as DashboardMode) : 'buyer';
 
     // Parallel data fetching
