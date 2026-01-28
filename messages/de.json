@@ -1,0 +1,534 @@
+{
+    "Metadata": {
+        "title": "Koda - Der Marktplatz für Software-Automatisierung",
+        "description": "Kaufen und verkaufen Sie hochwertige Automatisierungs-Workflows für n8n, Make und Zapier."
+    },
+    "HomePage": {
+        "title": "Willkommen bei Koda",
+        "subtitle": "Automatisierung ist alles, was Sie brauchen",
+        "newArrivals": "Neuheiten",
+        "resultsFor": "Ergebnisse für",
+        "discoverLatest": "Entdecken Sie die neuesten Automatisierungen.",
+        "clearAll": "Alle löschen",
+        "noResults": "Keine Ergebnisse gefunden 🔍",
+        "noMatch": "Keine Automatisierung entspricht Ihren Filtern.",
+        "clearFilters": "Filter zurücksetzen"
+    },
+    "Navigation": {
+        "catalog": "Katalog",
+        "dashboard": "Dashboard",
+        "sell": "Verkaufen"
+    },
+    "Auth": {
+        "login": "Anmelden",
+        "signup": "Registrieren"
+    },
+    "ProductCard": {
+        "quickView": "Schnellansicht",
+        "offeredBy": "Angeboten von",
+        "yourProduct": "Ihr Produkt",
+        "alreadyPurchased": "Bereits gekauft",
+        "new": "Neu",
+        "certified": "Zertifiziert",
+        "unavailable": "Nicht verfügbar",
+        "addToCart": "In den Warenkorb",
+        "removeFromCart": "Aus dem Warenkorb entfernen",
+        "toast": {
+            "cannotAdd": "Dieses Produkt kann nicht zum Warenkorb hinzugefügt werden.",
+            "alreadyOwned": "Sie besitzen dieses Produkt bereits.",
+            "ownProduct": "Sie können Ihr eigenes Produkt nicht kaufen."
+        },
+        "description": "Beschreibung"
+    },
+    "Search": {
+        "placeholder": "Suche nach einer Automatisierung...",
+        "allPlatforms": "Alle Plattformen",
+        "allCategories": "Alle Kategorien",
+        "allSellers": "Alle Verkäufer",
+        "platform": "Plattform",
+        "category": "Kategorie",
+        "seller": "Verkäufer",
+        "other": "Andere",
+        "search": "Suche",
+        "activeFilters": "Aktive Filter:",
+        "clearAll": "Alle löschen"
+    },
+    "Categories": {
+        "socialMedia": "Soziale Medien",
+        "emailMarketing": "E-Mail-Marketing",
+        "productivity": "Produktivität",
+        "sales": "Vertrieb",
+        "other": "Andere"
+    },
+    "Catalog": {
+        "title": "Marktplatz",
+        "loading": "Lade Inhalte...",
+        "noResults": "Keine Ergebnisse gefunden",
+        "adjustFilters": "Passen Sie Ihre Filter an, um das Gesuchte zu finden.",
+        "filters": {
+            "title": "Filter",
+            "platform": "Plattform",
+            "category": "Kategorie",
+            "price": "Preis",
+            "reset": "Filter zurücksetzen"
+        },
+        "sort": {
+            "placeholder": "Sortieren nach",
+            "newest": "Neueste",
+            "priceAsc": "Preis: Aufsteigend",
+            "priceDesc": "Preis: Absteigend"
+        },
+        "searchPlaceholder": "Suchen..."
+    },
+    "Footer": {
+        "description": "Der vertrauenswürdige Marktplatz zur Automatisierung Ihres Unternehmens mit n8n, Make, Zapier usw...",
+        "marketplace": "Marktplatz",
+        "legal": "Rechtliches",
+        "support": "Support",
+        "links": {
+            "catalog": "Katalog",
+            "sellWorkflow": "Workflow verkaufen",
+            "myAccount": "Mein Konto",
+            "terms": "Allgemeine Geschäftsbedingungen",
+            "privacy": "Datenschutzerklärung",
+            "legalMentions": "Impressum",
+            "contactUs": "Kontakt",
+            "reportBug": "Fehler melden",
+            "faq": "FAQ"
+        },
+        "copyright": "© {year} Koda. Alle Rechte vorbehalten."
+    },
+    "Feedback": {
+        "success": {
+            "title": "Nachricht gesendet!",
+            "message": "Danke, dass Sie uns helfen, Koda zu verbessern. Wir melden uns in Kürze bei Ihnen.",
+            "back": "Zurück"
+        },
+        "form": {
+            "title": "Kontaktieren Sie das Koda-Team",
+            "description": "Ein Fehler? Ein Vorschlag? Oder einfach nur plaudern?",
+            "typeLabel": "Worum geht es?",
+            "typePlaceholder": "Wählen Sie ein Thema",
+            "types": {
+                "bug": "Fehler melden",
+                "feature": "Funktion vorschlagen",
+                "contact": "Allgemeine Frage / Kontakt"
+            },
+            "emailLabel": "Ihre E-Mail",
+            "emailPlaceholder": "sie@beispiel.de",
+            "subjectLabel": "Betreff",
+            "subjectPlaceholder": "Bsp: Zahlungsfehler...",
+            "messageLabel": "Nachricht",
+            "messagePlaceholder": "Erzählen Sie uns alles...",
+            "submit": "Nachricht senden",
+            "sending": "Sende..."
+        }
+    },
+    "Errors": {
+        "unauthorized": "Nicht autorisiert",
+        "userNotFound": "Benutzer nicht gefunden",
+        "cannotBanSelf": "Sie können sich nicht selbst sperren.",
+        "mustBeLoggedIn": "Sie müssen eingeloggt sein, um diese Aktion durchzuführen.",
+        "accountSuspended": "Zugriff verweigert: Ihr Konto wurde gesperrt.",
+        "configureStripe": "Bitte konfigurieren Sie Ihr Zahlungskonto im Dashboard, bevor Sie verkaufen.",
+        "productNotFound": "Produkt nicht gefunden",
+        "notAuthorizedToDelete": "Sie sind nicht berechtigt, dieses Produkt zu löschen",
+        "cartEmpty": "Der Warenkorb ist leer.",
+        "noValidProducts": "Keine gültigen Produkte in der Datenbank gefunden.",
+        "sellerStripeNotConfigured": "Der Verkäufer hat seine Zahlungen nicht konfiguriert.",
+        "checkFormFields": "Bitte überprüfen Sie die Formularfelder.",
+        "sendingError": "Fehler beim Senden. Bitte versuchen Sie es später erneut.",
+        "stripeError": "Stripe konnte momentan nicht konfiguriert werden.",
+        "stripeDashboardError": "Konnte nicht auf das Stripe-Dashboard zugreifen.",
+        "genericError": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+        "genericFormError": "Fehler beim Absenden des Formulars. Bitte versuchen Sie es erneut.",
+        "fileUploadFailed": "Datei-Upload fehlgeschlagen.",
+        "paymentError": "Fehler bei der Vorbereitung der Zahlung.",
+        "serverError": "Serverfehler.",
+        "mustPurchaseToReview": "Sie müssen dieses Produkt kaufen, um eine Bewertung abzugeben.",
+        "reviewNotFound": "Bewertung nicht gefunden.",
+        "notAuthorizedToDeleteReview": "Nicht autorisiert, diese Bewertung zu löschen."
+    },
+    "Notifications": {
+        "itemRemovedSingular": "\"{title}\" wurde entfernt (bereits im Besitz oder Ihr eigenes Produkt).",
+        "itemsRemovedPlural": "{count} Artikel entfernt, da Sie sie bereits besitzen oder es Ihre eigenen sind.",
+        "loginCheckout": "Bitte loggen Sie sich ein, um zur Kasse zu gehen. Ihr Warenkorb wird gespeichert.",
+        "fileUploadSuccess": "Datei erfolgreich hochgeladen!",
+        "productPublished": "Produkt erfolgreich veröffentlicht!",
+        "productUpdated": "Produkt erfolgreich aktualisiert!",
+        "messageReceived": "Danke! Ihre Nachricht wurde empfangen.",
+        "reviewSuccess": "Erfolgreich gesendet!",
+        "reviewDeleted": "Bewertung erfolgreich gelöscht.",
+        "roleUpdated": "Rolle erfolgreich auf {role} aktualisiert",
+        "userBanned": "Benutzer wurde gesperrt",
+        "userUnbanned": "Benutzer wurde entsperrt",
+        "articleAddedToCart": "Artikel zum Warenkorb hinzugefügt!",
+        "addedToCart": "Zum Warenkorb hinzugefügt!",
+        "articleRemoved": "Artikel aus dem Warenkorb entfernt.",
+        "alreadyInCart": "Dieser Artikel ist bereits in Ihrem Warenkorb.",
+        "inCart": "In Ihrem Warenkorb",
+        "syncResult": "{synced} synchronisiert, {deleted} gelöscht (Verwaiste).",
+        "profileUpdated": "Profil erfolgreich aktualisiert!",
+        "addedToFavorites": "Zu Favoriten hinzugefügt!",
+        "removedFromFavorites": "Aus Favoriten entfernt.",
+        "loginRequired": "Bitte loggen Sie sich ein, um Favoriten zu speichern.",
+        "userDeleted": "Benutzer und alle zugehörigen Daten wurden dauerhaft gelöscht."
+    },
+    "CartSheet": {
+        "title": "Mein Warenkorb",
+        "empty": "Ihr Warenkorb ist leer.",
+        "continue": "Einkauf fortsetzen",
+        "subtotal": "Zwischensumme",
+        "total": "Gesamt",
+        "loading": "Laden...",
+        "login": "Anmelden zur Kasse",
+        "checkout": "Zur Kasse",
+        "clearAll": "Alle löschen",
+        "promoCode": "Gutscheincode",
+        "apply": "Anwenden",
+        "discount": "Rabatt",
+        "codePlaceholder": "Code eingeben",
+        "youMightLike": "Das könnte Ihnen auch gefallen",
+        "add": "Hinzufügen"
+    },
+    "ProductPage": {
+        "verifiedSeller": "Verifizierter Verkäufer",
+        "backToCatalog": "Zurück zum Katalog",
+        "purchased": "Gekauft",
+        "certifiedByKoda": "Zertifiziert von Koda",
+        "reviews": "Bewertungen",
+        "discussion": "Diskussion",
+        "about": "Über",
+        "comingSoon": "Demnächst verfügbar",
+        "immediateAccess": "Sofortiger Zugriff",
+        "instantDownload": "Laden Sie Ihre Dateien sofort nach dem Kauf herunter",
+        "verifiedByKoda": "Verifiziert von Koda",
+        "validatedStructure": "Struktur und Qualität von unserem Team validiert",
+        "priceLicense": "Preis / Lizenz",
+        "download": "Herunterladen",
+        "alreadyOwn": "Sie besitzen dieses Produkt bereits ✅",
+        "satisfiedPurchase": "Zufrieden mit Ihrem Kauf?",
+        "leaveReview": "⭐ Hinterlassen Sie eine Bewertung im entsprechenden Tab!",
+        "yourProduct": "Ihr Produkt",
+        "loginToBuy": "Einloggen zum Kaufen",
+        "buyNow": "Jetzt kaufen",
+        "soldBy": "Verkauft von"
+    },
+    "Reviews": {
+        "title": "Kundenbewertungen",
+        "editReview": "Meine Bewertung bearbeiten",
+        "leaveReview": "Bewertung abgeben",
+        "cancel": "Abbrechen",
+        "yourRating": "Ihre Bewertung",
+        "yourComment": "Ihr Kommentar",
+        "placeholder": "Was halten Sie von dieser Automatisierung?",
+        "sending": "Senden...",
+        "update": "Aktualisieren",
+        "publish": "Bewertung veröffentlichen",
+        "noReviews": "Noch keine Bewertungen. Seien Sie der Erste!",
+        "user": "Benutzer",
+        "me": "Ich",
+        "confirmDelete": "Diese Bewertung löschen?"
+    },
+    "Favorites": {
+        "title": "Meine Favoriten",
+        "empty": "Noch keine Favoriten",
+        "emptyDesc": "Produkte, die Sie speichern, erscheinen hier.",
+        "save": "Speichern",
+        "saved": "Gespeichert",
+        "addToFavorites": "Zu Favoriten hinzufügen",
+        "removeFromFavorites": "Aus Favoriten entfernen",
+        "browse": "Katalog durchsuchen"
+    },
+    "Seller": {
+        "verified": "Verifizierter Verkäufer",
+        "products": "Produkte",
+        "sales": "Verkäufe",
+        "rating": "Bewertung",
+        "memberSince": "Mitglied seit",
+        "productsBy": "Produkte von {name}",
+        "noProducts": "Keine Produkte verfügbar",
+        "backToCatalog": "Zurück zum Katalog"
+    },
+    "Sell": {
+        "title": "Blueprint verkaufen",
+        "description": "Teilen Sie Ihr Fachwissen, helfen Sie der Community und generieren Sie passives Einkommen mit Ihren Automatisierungen.",
+        "badge": "Verkäuferbereich",
+        "stripe": {
+            "title": "Einrichtung erforderlich",
+            "description": "Um auf Koda zu verkaufen, müssen Sie ein Stripe-Konto verbinden, um Ihre Zahlungen sicher zu erhalten.",
+            "button": "Meine Zahlungen konfigurieren"
+        },
+        "form": {
+            "details": "Automatisierungs-Details",
+            "detailsDesc": "Füllen Sie die untenstehenden Informationen aus, um Ihren Blueprint auf dem Markt zu veröffentlichen.",
+            "title": "Produkttitel",
+            "titleRequired": "Produkttitel *",
+            "titlePlaceholder": "Bsp: LinkedIn Scraper Pro v2",
+            "titleHelp": "Geben Sie einen klaren und eingängigen Namen.",
+            "price": "Preis",
+            "priceRequired": "Preis (€) *",
+            "pricePlaceholder": "49",
+            "priceHelp": "Ihr Nettoeinkommen wird nach Abzug der Provision berechnet.",
+            "description": "Vollständige Beschreibung",
+            "descriptionRequired": "Vollständige Beschreibung *",
+            "descriptionPlaceholder": "Beschreiben Sie Funktionen, Voraussetzungen und das Wertversprechen Ihres Skripts...",
+            "classification": "Klassifizierung",
+            "platform": "Plattform",
+            "platformRequired": "Plattform *",
+            "category": "Kategorie",
+            "categoryRequired": "Kategorie *",
+            "choose": "Wählen...",
+            "version": "Version",
+            "versionPlaceholder": "Bsp: v1.0.0",
+            "optional": "(Optional)",
+            "tags": "Tags",
+            "tagsHelp": "(Suchbegriffe)",
+            "tagsPlaceholder": "Tag hinzufügen...",
+            "add": "Hinzufügen",
+            "upload": {
+                "cover": "Titelbild",
+                "source": "Quelldatei (JSON)",
+                "blueprint": "Automatisierungs-Datei",
+                "blueprintFormat": "Nur .json Format",
+                "drop": "Ziehen und ablegen oder klicken",
+                "dropDesc": "PNG, JPG, WEBP (Max 2MB)",
+                "choose": "Datei auswählen",
+                "select": "Datei wählen",
+                "change": "Bild ändern",
+                "ready": "Datei bereit!",
+                "replace": "Klicken zum Ersetzen"
+            },
+            "cancel": "Abbrechen",
+            "publish": "Auf Koda veröffentlichen",
+            "publishing": "Veröffentliche...",
+            "platforms": {
+                "n8n": "n8n",
+                "Make": "Make",
+                "Zapier": "Zapier",
+                "Python": "Python",
+                "Other": "Andere"
+            },
+            "categories": {
+                "Social Media": "Soziale Medien",
+                "Email Marketing": "E-Mail-Marketing",
+                "Productivity": "Produktivität",
+                "Sales": "Vertrieb",
+                "Other": "Andere"
+            }
+        }
+    },
+    "Terms": {
+        "title": "Allgemeine Geschäftsbedingungen",
+        "lastUpdated": "Zuletzt aktualisiert: 25. Januar 2026",
+        "s1": {
+            "title": "1. Annahme der Bedingungen",
+            "content": "Durch den Zugriff auf und die Nutzung von Koda (die \"Plattform\") erklären Sie sich mit diesen Allgemeinen Geschäftsbedingungen einverstanden. Wenn Sie diesen Bedingungen nicht zustimmen, nutzen Sie die Plattform bitte nicht."
+        },
+        "s2": {
+            "title": "2. Beschreibung des Dienstes",
+            "content": "Koda ist ein Marktplatz, der es Benutzern ermöglicht, Automatisierungs-Blueprints (Workflows für n8n, Make, Zapier usw.) zu verkaufen und zu kaufen."
+        },
+        "s3": {
+            "title": "3. Verpflichtungen des Verkäufers",
+            "content": "Verkäufer müssen sicherstellen, dass sie die Rechte an den von ihnen veröffentlichten Blueprints besitzen. Blueprints müssen funktionsfähig und korrekt beschrieben sein."
+        },
+        "s4": {
+            "title": "4. Zahlungen und Provisionen",
+            "content": "Zahlungen werden über Stripe abgewickelt. Koda behält eine Provision für jeden Verkauf ein, wie im Veröffentlichungsprozess angegeben."
+        },
+        "s5": {
+            "title": "5. Geistiges Eigentum",
+            "content": "Sofern nicht anders angegeben, erhalten Käufer eine nicht-exklusive Lizenz zur Nutzung des gekauften Blueprints für ihre eigenen Bedürfnisse."
+        }
+    },
+    "Privacy": {
+        "title": "Datenschutzerklärung",
+        "lastUpdated": "Zuletzt aktualisiert: 25. Januar 2026",
+        "s1": {
+            "title": "1. Datenerfassung",
+            "content": "Wir erfassen Informationen, die Sie uns direkt über Clerk (Authentifizierung) und Stripe (Zahlungen) zur Verfügung stellen."
+        },
+        "s2": {
+            "title": "2. Verwendung der Daten",
+            "content": "Ihre Daten werden verwendet, um Ihr Konto zu verwalten, Transaktionen zu verarbeiten und unsere Dienste zu verbessern."
+        },
+        "s3": {
+            "title": "3. Weitergabe von Daten",
+            "content": "Wir verkaufen Ihre persönlichen Daten nicht. Wir teilen Informationen nur mit unseren Dienstleistern (Clerk, Stripe), die für den Betrieb der Plattform erforderlich sind."
+        },
+        "s4": {
+            "title": "4. Cookies",
+            "content": "Wir verwenden Cookies, um Ihre Sitzung aufrechtzuerhalten und die Nutzung der Plattform zu analysieren."
+        }
+    },
+    "Legal": {
+        "title": "Impressum",
+        "lastUpdated": "Zuletzt aktualisiert: 25. Januar 2026",
+        "editor": {
+            "title": "Herausgeber der Website",
+            "content": "Koda wird herausgegeben von [Ihr Name / Firmenname], mit Sitz in [Adresse]."
+        },
+        "host": {
+            "title": "Hosting",
+            "content": "Die Website wird gehostet von [Name des Hosting-Anbieters]."
+        },
+        "contact": {
+            "title": "Kontakt",
+            "content": "Für Fragen können Sie uns unter [Ihre E-Mail] kontaktieren."
+        }
+    },
+    "Dashboard": {
+        "title": "Mein Dashboard",
+        "description": "Verwalten Sie Ihr Konto, sehen Sie Verkäufe ein und greifen Sie auf Ihre Produkte zu.",
+        "welcome": "Willkommen zurück,",
+        "modes": {
+            "buyer": "Käuferansicht",
+            "seller": "Verkäuferansicht",
+            "buyerDesc": "Verwalten Sie Ihre Einkäufe und Downloads.",
+            "sellerDesc": "Verfolgen Sie Ihre Verkäufe und verwalten Sie Ihr Inventar.",
+            "profile": "Profil"
+        },
+        "sections": {
+            "overview": "Übersicht",
+            "activity": "Letzte Aktivitäten",
+            "products": "Meine Produkte",
+            "orders": "Meine Einkäufe",
+            "sales": "Letzte Verkäufe",
+            "buyerInsights": "Käufer-Einblicke",
+            "buyerInsightsDesc": "Detaillierte Analysen für Ihre Einkäufe demnächst verfügbar."
+        },
+        "profile": {
+            "title": "Profileinstellungen",
+            "description": "Verwalten Sie Ihre öffentlichen Profilinformationen",
+            "avatar": {
+                "title": "Profilbild",
+                "description": "Ihr Avatar wird über die Clerk-Authentifizierung verwaltet.",
+                "changeButton": "Auf Clerk ändern"
+            },
+            "form": {
+                "username": "Benutzername",
+                "usernameHelp": "Eindeutiger Name für Ihre öffentliche Profil-URL (@benutzername)",
+                "firstName": "Vorname",
+                "lastName": "Nachname",
+                "bio": "Biografie",
+                "bioPlaceholder": "Erzählen Sie uns etwas über sich...",
+                "bioHelp": "Berechnet als Zeichenanzahl",
+                "save": "Änderungen speichern",
+                "saving": "Speichere..."
+            },
+            "errors": {
+                "usernameTaken": "Dieser Benutzername ist bereits vergeben.",
+                "updateFailed": "Profilaktualisierung fehlgeschlagen. Bitte versuchen Sie es erneut."
+            }
+        },
+        "stats": {
+            "balance": "Stripe-Guthaben",
+            "available": "Verfügbar",
+            "pending": "Ausstehend",
+            "commission": "Plattformgebühr",
+            "commissionDesc": "Koda Servicegebühr pro Verkauf.",
+            "stripeConfig": "Um Gelder zu erhalten, müssen Sie Ihre Zahlungen konfigurieren.",
+            "setupPayouts": "Auszahlung einrichten",
+            "openStripe": "Stripe-Dashboard öffnen",
+            "standard": "Standard",
+            "learnPremium": "Über Premium erfahren",
+            "conversionRate": "Konversionsrate",
+            "proPlan": "Verfügbar im Professional-Plan"
+        },
+        "account": {
+            "memberSince": "Mitglied seit",
+            "manageProfile": "Sicherheit & Profil verwalten",
+            "badge": "Koda Professional"
+        },
+        "products": {
+            "new": "Neues Produkt",
+            "noProducts": "Sie haben noch keine Produkte gelistet.",
+            "startSelling": "Mit dem Verkauf beginnen",
+            "edit": "Bearbeiten",
+            "delete": "Löschen",
+            "noImage": "Kein Bild",
+            "status": {
+                "active": "Aktiv",
+                "certified": "Zertifiziert"
+            },
+            "description": "Verwalten Sie Ihre Expertise und verfolgen Sie Ihre Leistung",
+            "emptyState": "Bereit, Ihren Workflow mit der Welt zu teilen? Ihr erster Blueprint ist nur einen Klick entfernt.",
+            "previewListing": "Vorschau",
+            "general": "Allgemein",
+            "tags": "Tags",
+            "confirmDelete": "Sind Sie sicher, dass Sie dieses Produkt löschen möchten?"
+        },
+        "orders": {
+            "noOrders": "Sie haben noch keine Einkäufe getätigt.",
+            "explore": "Katalog durchsuchen",
+            "boughtOn": "Gekauft am",
+            "access": "Zugriff"
+        },
+        "sales": {
+            "noSales": "Noch keine Verkäufe.",
+            "description": "Echtzeit-Einnahmequelle"
+        },
+        "feed": {
+            "productUnavailable": "Produkt nicht verfügbar",
+            "success": "Erfolg"
+        }
+    },
+    "Admin": {
+        "title": "Admin-Konsole",
+        "tabs": {
+            "users": "Benutzer",
+            "products": "Produkte"
+        },
+        "usersTable": {
+            "user": "Benutzer",
+            "email": "E-Mail",
+            "role": "Rolle",
+            "date": "Datum",
+            "actions": "Aktionen",
+            "noName": "Kein Name",
+            "missingEmail": "Fehlende E-Mail",
+            "seller": "Verkäufer",
+            "banned": "GESPERRT",
+            "banConfirm": "Möchten Sie diesen Benutzer wirklich sperren?",
+            "unbanConfirm": "Möchten Sie diesen Benutzer entsperren?",
+            "banLabel": "Sperren",
+            "unbanLabel": "Entsperren",
+            "promoteLabel": "Befördern",
+            "demoteLabel": "Herabstufen"
+        },
+        "productsTable": {
+            "title": "Produktzertifizierung",
+            "search": "Produkt suchen...",
+            "product": "Produkt",
+            "seller": "Verkäufer",
+            "price": "Preis",
+            "status": "Status",
+            "certified": "Zertifiziert",
+            "unverified": "Standard",
+            "notCertified": "Standard",
+            "actions": "Aktionen",
+            "view": "Ansicht",
+            "test": "Testen",
+            "download": "JSON herunterladen",
+            "certify": "Zertifizieren",
+            "decertify": "Zertifizierung entfernen",
+            "noProducts": "Keine Produkte gefunden.",
+            "toasts": {
+                "certified": "Produkt erfolgreich zertifiziert!",
+                "decertified": "Zertifizierung entfernt.",
+                "error": "Ein Fehler ist aufgetreten.",
+                "downloadError": "Download-Fehler."
+            }
+        },
+        "sync": {
+            "button": "Vollständige Datenbank-Synchronisation",
+            "loading": "Vollständige Synchronisation läuft...",
+            "confirm": "Dies wird ALLE Benutzer mit Clerk synchronisieren und lokale Benutzer LÖSCHEN, die in Clerk nicht mehr existieren. Fortfahren?"
+        },
+        "delete": {
+            "loading": "Vollständige Löschung läuft (Clerk + Stripe + DB)...",
+            "confirm": "WARNUNG: Dies wird das Clerk-Konto, das Stripe Connect-Konto, alle Produkte und den gesamten Verlauf für diesen Benutzer dauerhaft löschen. Diese Aktion ist irreversibel. Fortfahren?"
+        }
+    }
+}

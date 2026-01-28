@@ -18,7 +18,7 @@ export function LanguageSwitcher() {
     const pathname = usePathname();
     const [isPending, startTransition] = useTransition();
 
-    const onSelectChange = (nextLocale: "fr" | "en" | "es") => {
+    const onSelectChange = (nextLocale: "fr" | "en" | "es" | "de") => {
         startTransition(() => {
             router.replace(pathname, { locale: nextLocale });
         });
@@ -41,6 +41,9 @@ export function LanguageSwitcher() {
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onSelectChange("es")} className={locale === "es" ? "bg-accent" : ""}>
                     Español
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onSelectChange("de")} className={locale === "de" ? "bg-accent" : ""}>
+                    Deutsch
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
