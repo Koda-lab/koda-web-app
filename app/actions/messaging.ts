@@ -142,7 +142,9 @@ export async function sendMessage(conversationId: string, content: string) {
  * Récupère toutes les conversations de l'utilisateur connecté
  */
 export async function getMyConversations(): Promise<IConversation[]> {
-    const userId = await requireAuth();
+    const { userId } = await auth();
+    if (!userId) return [];
+
     await connectToDatabase();
 
     const conversations = await Conversation.find({ participants: userId })
