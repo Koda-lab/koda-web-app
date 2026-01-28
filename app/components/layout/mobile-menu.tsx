@@ -5,19 +5,28 @@ import { Menu, X, LayoutDashboard, ShieldCheck, Store, Package, Tag } from "luci
 import { Button } from "@/app/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/app/components/ui/sheet";
 import { Link } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
+// Link imported above
 import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
 import { LanguageSwitcher } from "@/app/components/layout/language-switcher";
 import { ModeToggle } from "@/app/components/layout/mode-toggle";
 
 interface MobileMenuProps {
     isAdmin: boolean;
+    translations: {
+        navigation: {
+            catalog: string;
+            sell: string;
+            dashboard: string;
+        };
+        auth: {
+            login: string;
+            signup: string;
+        };
+    };
 }
 
-export function MobileMenu({ isAdmin }: MobileMenuProps) {
+export function MobileMenu({ isAdmin, translations }: MobileMenuProps) {
     const [open, setOpen] = useState(false);
-    const t = useTranslations('Navigation');
-    const tAuth = useTranslations('Auth');
 
     const closeMenu = () => setOpen(false);
 
@@ -43,7 +52,7 @@ export function MobileMenu({ isAdmin }: MobileMenuProps) {
                         className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     >
                         <Package className="h-5 w-5" />
-                        <span className="font-medium">{t('catalog')}</span>
+                        <span className="font-medium">{translations.navigation.catalog}</span>
                     </Link>
 
                     <Link
@@ -52,7 +61,7 @@ export function MobileMenu({ isAdmin }: MobileMenuProps) {
                         className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     >
                         <Tag className="h-5 w-5" />
-                        <span className="font-medium">{t('sell')}</span>
+                        <span className="font-medium">{translations.navigation.sell}</span>
                     </Link>
 
                     <SignedIn>
@@ -64,7 +73,7 @@ export function MobileMenu({ isAdmin }: MobileMenuProps) {
                             className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                         >
                             <LayoutDashboard className="h-5 w-5" />
-                            <span className="font-medium">{t('dashboard')}</span>
+                            <span className="font-medium">{translations.navigation.dashboard}</span>
                         </Link>
 
                         {isAdmin && (
@@ -85,12 +94,12 @@ export function MobileMenu({ isAdmin }: MobileMenuProps) {
                         <div className="flex flex-col gap-2 px-4 pt-2">
                             <SignInButton mode="modal">
                                 <Button variant="outline" className="w-full" onClick={closeMenu}>
-                                    {tAuth('login')}
+                                    {translations.auth.login}
                                 </Button>
                             </SignInButton>
                             <SignUpButton mode="modal">
                                 <Button className="w-full bg-orange-600 hover:bg-orange-700 text-white" onClick={closeMenu}>
-                                    {tAuth('signup')}
+                                    {translations.auth.signup}
                                 </Button>
                             </SignUpButton>
                         </div>

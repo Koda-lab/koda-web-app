@@ -46,7 +46,20 @@ export default async function Header() {
             )}>
                 {/* Logo */}
                 <div className="flex items-center gap-2">
-                    <MobileMenu isAdmin={isAdmin} />
+                    <MobileMenu
+                        isAdmin={isAdmin}
+                        translations={{
+                            navigation: {
+                                catalog: t('catalog'),
+                                sell: t('sell'),
+                                dashboard: t('dashboard')
+                            },
+                            auth: {
+                                login: tAuth('login'),
+                                signup: tAuth('signup')
+                            }
+                        }}
+                    />
                     <Link href="/" className="text-2xl font-bold tracking-tight flex items-center gap-1">
                         Koda<span className="text-3xl text-orange-500">.</span>
                     </Link>
