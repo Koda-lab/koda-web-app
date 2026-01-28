@@ -78,6 +78,57 @@ export async function submitContent(prevState: any, formData: FormData) {
                     );
                 }
             }
+        } else if (type === 'reply') {
+            const parentId = formData.get("parentId");
+            const reviewId = formData.get("reviewId"); // ID of the reply itself if editing
+
+            if (!parentId) return { error: "missingParentId" };
+
+            // Verify that the user is the seller of the product
+            const product = await Product.findById(productId);
+            if (!product) return { error: "productNotFound" };
+
+            if (product.sellerId.toString() !== userId) {
+                return { error: "onlySellerCanReply" };
+            }
+
+            if (reviewId) {
+                // UPDATE existing reply
+                const updated = await Review.findOneAndUpdate(
+                    { _id: reviewId, userId, type: 'reply' },
+                    { comment },
+                    { new: true }
+                );
+                if (!updated) return { error: "reviewNotFound" };
+            } else {
+                // CREATE new reply
+                await Review.create({
+                    productId,
+                    userId,
+                    userName: user.firstName || "Seller",
+                    type: 'reply',
+                    parentId,
+                    comment
+                });
+
+                // Notify the original reviewer
+                const originalReview = await Review.findById(parentId);
+                if (originalReview) {
+                    await createNotification(
+                        originalReview.userId,
+                        "REVIEW",
+                        "Réponse du vendeur",
+                        `Le vendeur a répondu à votre avis sur ${product.title}`,
+                        `/product/${productId}`,
+                        'Notifications.replyReceivedTitle',
+                        'Notifications.replyReceivedBody',
+                        {
+                            productTitle: product.title
+                        }
+                    );
+                }
+            }
+
         } else {
             // Discussion logic could be added here
             await Review.create({

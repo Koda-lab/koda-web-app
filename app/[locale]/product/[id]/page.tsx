@@ -97,19 +97,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
         .sort({ createdAt: -1 })
         .lean();
 
-    // On filtre côté JS pour être sûr d'afficher les avis (et éviter les bugs si le champ type manque)
-    const filteredReviews = reviews.filter((r: any) => !r.type || r.type === 'review');
+    // On filtre côté JS pour être sûr d'afficher les avis et les réponses
+    const filteredReviews = reviews.filter((r: any) => !r.type || r.type === 'review' || r.type === 'reply');
 
     // VÉRIFICATION : A-T-IL DÉJÀ NOTÉ ?
-    const hasAlreadyReviewed = userId ? filteredReviews.some((r: any) => r.userId === userId) : false;
+    const hasAlreadyReviewed = userId ? filteredReviews.some((r: any) => r.userId === userId && r.type === 'review') : false;
 
     // Mise à jour de la permission :
-    const canReview = (!!purchase || isOwner) && !hasAlreadyReviewed;
+    const canReview = (hasPurchased || isOwner) && !hasAlreadyReviewed;
 
     const serializedReviews = filteredReviews.map((r: any) => ({
         ...r,
         _id: r._id.toString(),
         productId: r.productId.toString(),
+        parentId: r.parentId ? r.parentId.toString() : undefined,
         createdAt: r.createdAt.toISOString()
     }));
 
@@ -208,6 +209,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                             reviews={serializedReviews}
                                             canReview={canReview}
                                             currentUserId={userId}
+                                            isSeller={isOwner}
                                         />
                                     </TabsContent>
                                 </Tabs>

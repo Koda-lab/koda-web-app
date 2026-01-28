@@ -196,7 +196,9 @@
         "saleReceivedTitle": "Nouvelle Vente ! 💰",
         "saleReceivedBody": "Félicitations ! Vous avez vendu \"{productTitle}\" pour {price}",
         "orderConfirmedTitle": "Commande Confirmée ✅",
-        "orderConfirmedBody": "Votre commande pour \"{productTitle}\" a été validée."
+        "orderConfirmedBody": "Votre commande pour \"{productTitle}\" a été validée.",
+        "replyReceivedTitle": "Nouvelle réponse à votre avis",
+        "replyReceivedBody": "Le vendeur a répondu à votre avis sur \"{productTitle}\""
     },
     "CartSheet": {
         "title": "Mon Panier",
@@ -252,7 +254,11 @@
         "noReviews": "Aucun avis pour le moment. Soyez le premier à tester !",
         "user": "Utilisateur",
         "me": "Moi",
-        "confirmDelete": "Supprimer cet avis ?"
+        "confirmDelete": "Supprimer cet avis ?",
+        "reply": "Répondre",
+        "replyPlaceholder": "Écrivez votre réponse ici...",
+        "sendReply": "Publier la réponse",
+        "verifiedSeller": "Vendeur Vérifié"
     },
     "Favorites": {
         "title": "Mes Favoris",

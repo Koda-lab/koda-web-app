@@ -7,6 +7,7 @@ export interface IReview extends Document {
     type: 'review' | 'comment' | 'question';
     rating?: number;
     comment: string;
+    parentId?: mongoose.Types.ObjectId;
     createdAt: Date;
 }
 
@@ -18,10 +19,12 @@ const ReviewSchema = new Schema<IReview>(
 
         type: {
             type: String,
-            enum: ['review', 'comment', 'question'],
+            enum: ['review', 'comment', 'question', 'reply'],
             default: 'review',
             required: true
         },
+
+        parentId: { type: Schema.Types.ObjectId, ref: 'Review' },
 
         rating: { type: Number, min: 1, max: 5 },
 

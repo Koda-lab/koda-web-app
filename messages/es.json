@@ -81,7 +81,11 @@
         "noReviews": "Aún no hay reseñas. ¡Sé el primero en probar!",
         "user": "Usuario",
         "me": "Yo",
-        "confirmDelete": "¿Eliminar esta reseña?"
+        "confirmDelete": "¿Eliminar esta reseña?",
+        "reply": "Responder",
+        "replyPlaceholder": "Escribe tu respuesta aquí...",
+        "sendReply": "Publicar respuesta",
+        "verifiedSeller": "Vendedor Verificado"
     },
     "Favorites": {
         "title": "Mis Favoritos",
@@ -243,7 +247,9 @@
         "saleReceivedTitle": "¡Nueva Venta! 💰",
         "saleReceivedBody": "¡Felicidades! Vendiste \"{productTitle}\" por {price}",
         "orderConfirmedTitle": "Pedido Confirmado ✅",
-        "orderConfirmedBody": "Tu pedido de \"{productTitle}\" ha sido confirmado."
+        "orderConfirmedBody": "Tu pedido de \"{productTitle}\" ha sido confirmado.",
+        "replyReceivedTitle": "Nueva respuesta a tu reseña",
+        "replyReceivedBody": "El vendedor respondió a tu reseña sobre \"{productTitle}\""
     },
     "CartSheet": {
         "title": "Mi Carrito",

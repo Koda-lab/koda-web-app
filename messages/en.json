@@ -197,7 +197,9 @@
         "saleReceivedTitle": "New Sale! 💰",
         "saleReceivedBody": "Congratulations! You sold \"{productTitle}\" for {price}",
         "orderConfirmedTitle": "Order Confirmed ✅",
-        "orderConfirmedBody": "Your order for \"{productTitle}\" has been confirmed."
+        "orderConfirmedBody": "Your order for \"{productTitle}\" has been confirmed.",
+        "replyReceivedTitle": "New Reply to your Review",
+        "replyReceivedBody": "The seller responded to your review on \"{productTitle}\""
     },
     "CartSheet": {
         "title": "My Cart",
@@ -254,7 +256,11 @@
         "noReviews": "No reviews yet. Be the first to test it!",
         "user": "User",
         "me": "Me",
-        "confirmDelete": "Delete this review?"
+        "confirmDelete": "Delete this review?",
+        "reply": "Reply",
+        "replyPlaceholder": "Write your reply here...",
+        "sendReply": "Post Reply",
+        "verifiedSeller": "Verified Seller"
     },
     "Favorites": {
         "title": "My Favorites",
