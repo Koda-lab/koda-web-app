@@ -59,6 +59,10 @@ export async function getSellerProfile(sellerId: string): Promise<SellerProfile 
             ? productsWithRatings.reduce((acc, p) => acc + (p.averageRating || 0), 0) / productsWithRatings.length
             : 0;
 
+        const displayName = seller.username ||
+            `${seller.firstName || ''} ${seller.lastName || ''}`.trim() ||
+            'Vendeur';
+
         return {
             _id: (seller as any)._id.toString(),
             clerkId: seller.clerkId,
@@ -78,6 +82,9 @@ export async function getSellerProfile(sellerId: string): Promise<SellerProfile 
             products: products.map(p => ({
                 ...p,
                 _id: (p as any)._id.toString(),
+                seller: {
+                    username: displayName
+                }
             })),
         };
     } catch (error) {
