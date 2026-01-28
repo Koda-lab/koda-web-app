@@ -7,6 +7,7 @@ import User from "@/models/User";
 import { requireAuth } from "@/lib/auth-utils";
 import { resend } from "@/lib/resend";
 import { clerkClient } from "@clerk/nextjs/server";
+import { createNotification } from "@/app/actions/notifications";
 
 // --- Types ---
 export interface IMessage {
@@ -94,10 +95,24 @@ export async function sendMessage(conversationId: string, content: string) {
     conversation.lastMessageAt = new Date();
     await conversation.save();
 
-    // --- Notification Email (Async) ---
+    // --- Notification Email (Async) & In-App Notification ---
     // Trouver le destinataire
     const recipientId = conversation.participants.find((p: string) => p !== userId);
     if (recipientId) {
+        // Create In-App Notification
+        await createNotification(
+            recipientId,
+            'MESSAGE',
+            'Nouveau message',
+            `Vous avez reçu un message : "${content.substring(0, 30)}${content.length > 30 ? '...' : ''}"`,
+            `/dashboard?mode=messages&c=${conversationId}`,
+            'Notifications.messageReceivedTitle',
+            'Notifications.messageReceivedBody',
+            {
+                preview: content.substring(0, 30) + (content.length > 30 ? '...' : '')
+            }
+        );
+
         try {
             const recipient = await User.findOne({ clerkId: recipientId });
             if (recipient && recipient.email) {
@@ -191,4 +206,24 @@ export async function getConversationMessages(conversationId: string): Promise<I
         read: m.read,
         isMine: m.senderId === userId
     }));
+}
+
+/**
+ * Compte le nombre total de messages non lus pour l'utilisateur
+ */
+export async function getUnreadMessageCount(): Promise<number> {
+    const userId = await requireAuth();
+    await connectToDatabase();
+
+    const count = await Message.countDocuments({
+        senderId: { $ne: userId }, // Pas mes messages
+        read: false,               // Non lus
+        // Il faudrait idéalement vérifier que je suis dans la conversation
+        // Mais comme on ne stocke pas les participants dans le message, on suppose que
+        // si un message existe pour une conversation dont je suis membre, c'est bon.
+        // Pour être rigoureux :
+        conversationId: { $in: await Conversation.find({ participants: userId }).distinct('_id') }
+    });
+
+    return count;
 }

@@ -217,10 +217,26 @@
         "inCart": "En el carrito",
         "syncResult": "{synced} sincronizados, {deleted} eliminados (huérfanos).",
         "profileUpdated": "¡Perfil actualizado con éxito!",
+        "stripeVerified": "¡Cuenta de Stripe verificada!",
+        "stripeStatusUpdated": "Estado actualizado (aún pendiente).",
+        "discountApplied": "Descuento aplicado: {discount}",
         "addedToFavorites": "¡Añadido a favoritos!",
         "removedFromFavorites": "Eliminado de favoritos.",
         "loginRequired": "Inicia sesión para guardar favoritos.",
-        "userDeleted": "El usuario y todos los datos asociados han sido eliminados permanentemente."
+        "userDeleted": "El usuario y todos los datos asociados han sido eliminados permanentemente.",
+        "center": {
+            "title": "Notificaciones",
+            "markAllRead": "Marcar todo como leído",
+            "empty": "Sin notificaciones"
+        },
+        "messageReceivedTitle": "Nuevo Mensaje",
+        "messageReceivedBody": "Recibiste un mensaje: \"{preview}\"",
+        "reviewReceivedTitle": "Nueva Reseña Recibida",
+        "reviewReceivedBody": "{userName} dejó una reseña en {productTitle}",
+        "saleReceivedTitle": "¡Nueva Venta! 💰",
+        "saleReceivedBody": "¡Felicidades! Vendiste \"{productTitle}\" por {price}",
+        "orderConfirmedTitle": "Pedido Confirmado ✅",
+        "orderConfirmedBody": "Tu pedido de \"{productTitle}\" ha sido confirmado."
     },
     "CartSheet": {
         "title": "Mi Carrito",

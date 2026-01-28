@@ -13,6 +13,7 @@ import User from '@/models/User';
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "@/app/components/layout/language-switcher";
 import { MobileMenu } from "@/app/components/layout/mobile-menu";
+import NotificationBell from "@/app/components/dashboard/NotificationBell";
 
 export default async function Header() {
     const t = await getTranslations('Navigation');
@@ -101,6 +102,7 @@ export default async function Header() {
                         </SignedOut>
 
                         <SignedIn>
+                            <NotificationBell />
                             <UserButtonWrapper />
                         </SignedIn>
                     </div>

@@ -67,6 +67,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             orders={orders}
             favorites={favorites}
             onDelete={handleDelete}
+            initialMode={initialMode}
         />
     );
 }

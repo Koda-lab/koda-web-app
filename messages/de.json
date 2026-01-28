@@ -169,10 +169,26 @@
         "inCart": "In Ihrem Warenkorb",
         "syncResult": "{synced} synchronisiert, {deleted} gelöscht (Verwaiste).",
         "profileUpdated": "Profil erfolgreich aktualisiert!",
+        "stripeVerified": "Stripe-Konto verifiziert!",
+        "stripeStatusUpdated": "Status aktualisiert (noch ausstehend).",
+        "discountApplied": "Rabatt angewendet: {discount}",
         "addedToFavorites": "Zu Favoriten hinzugefügt!",
         "removedFromFavorites": "Aus Favoriten entfernt.",
         "loginRequired": "Bitte loggen Sie sich ein, um Favoriten zu speichern.",
-        "userDeleted": "Benutzer und alle zugehörigen Daten wurden dauerhaft gelöscht."
+        "userDeleted": "Benutzer und alle zugehörigen Daten wurden dauerhaft gelöscht.",
+        "center": {
+            "title": "Benachrichtigungen",
+            "markAllRead": "Alle als gelesen markieren",
+            "empty": "Keine Benachrichtigungen"
+        },
+        "messageReceivedTitle": "Neue Nachricht",
+        "messageReceivedBody": "Du hast eine Nachricht erhalten: \"{preview}\"",
+        "reviewReceivedTitle": "Neue Bewertung Erhalten",
+        "reviewReceivedBody": "{userName} hat eine Bewertung zu {productTitle} abgegeben",
+        "saleReceivedTitle": "Neuer Verkauf! 💰",
+        "saleReceivedBody": "Glückwunsch! Du hast \"{productTitle}\" für {price} verkauft",
+        "orderConfirmedTitle": "Bestellung Bestätigt ✅",
+        "orderConfirmedBody": "Deine Bestellung für \"{productTitle}\" wurde bestätigt."
     },
     "CartSheet": {
         "title": "Mein Warenkorb",

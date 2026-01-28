@@ -138,9 +138,9 @@ export default function CartSheet() {
     const handleApplyPromo = () => {
         if (promoCode.toUpperCase() === "KODA20") {
             setAppliedDiscount({ code: "KODA20", value: 0.20 });
-            showSuccess("Discount applied: -20%");
+            showSuccess("discountApplied", { discount: "-20%" });
         } else {
-            showError("Invalid promo code");
+            showError("invalidPromoCode");
         }
     };
 
@@ -157,7 +157,7 @@ export default function CartSheet() {
                 if (url) window.location.href = url;
             } catch (error: any) {
                 console.error(error);
-                showError(error.message || "An error occurred while preparing the payment.");
+                showError(error.message || "paymentError");
             }
         });
     };

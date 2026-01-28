@@ -8,6 +8,7 @@ import { Product } from "@/models/Product";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import mongoose from "mongoose";
+import { createNotification } from "@/app/actions/notifications";
 
 
 export async function submitContent(prevState: any, formData: FormData) {
@@ -56,6 +57,27 @@ export async function submitContent(prevState: any, formData: FormData) {
                 },
                 { upsert: true, new: true }
             );
+
+            // Notify Seller
+            const product = await Product.findById(productId);
+            if (product && product.sellerId) {
+                // If checking that reviewer != seller
+                if (product.sellerId.toString() !== userId) {
+                    await createNotification(
+                        product.sellerId,
+                        "REVIEW",
+                        "Nouvel avis reçue",
+                        `${user.firstName} a laissé un avis sur ${product.title}`,
+                        `/product/${productId}`,
+                        'Notifications.reviewReceivedTitle',
+                        'Notifications.reviewReceivedBody',
+                        {
+                            userName: user.firstName || 'User',
+                            productTitle: product.title
+                        }
+                    );
+                }
+            }
         } else {
             // Discussion logic could be added here
             await Review.create({

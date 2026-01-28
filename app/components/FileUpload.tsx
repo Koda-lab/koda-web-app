@@ -57,7 +57,7 @@ export default function FileUpload({ onUploadSuccess, accept, label = "Automatio
         } catch (error: any) {
             console.error("Upload process failed:", error);
             Sentry.captureException(error);
-            showError(error.message || "File upload failed.");
+            showError(error.message || "fileUploadFailed");
         } finally {
             setUploading(false);
             dismiss(toastId);

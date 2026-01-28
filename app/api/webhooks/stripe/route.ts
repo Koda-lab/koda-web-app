@@ -9,6 +9,7 @@ import User from "@/models/User";
 import Automation from "@/models/Automation";
 import { sendBuyerEmail, sendSellerEmail } from "@/lib/emails";
 import { clerkClient } from "@clerk/nextjs/server";
+import { createNotification } from "@/app/actions/notifications";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: "2025-12-15.clover",
@@ -25,7 +26,7 @@ export async function POST(req: Request) {
     try {
         event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
     } catch (error: any) {
-        return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 });
+        return new NextResponse(`Webhook Error: ${error.message} `, { status: 400 });
     }
 
     // On écoute l'événement "Session de paiement terminée"
@@ -70,7 +71,7 @@ export async function POST(req: Request) {
 
                 // On crée une preuve d'achat pour CHAQUE produit trouvé
                 if (productIds.length > 0) {
-                    console.log(`[WEBHOOK] Processing ${productIds.length} products for user ${userId}:`, productIds);
+                    console.log(`[WEBHOOK] Processing ${productIds.length} products for user ${userId}: `, productIds);
                     const buyerEmail = session.customer_details?.email;
                     const buyerOrderItems: { title: string, price: number }[] = [];
                     let orderTotal = 0;
@@ -88,7 +89,7 @@ export async function POST(req: Request) {
                                 orderTotal += product.price;
 
                                 if (!seller?.stripeConnectId) {
-                                    console.error(`Seller ${product.sellerId} has no Stripe Connect ID. Skipping transfer.`);
+                                    console.error(`Seller ${product.sellerId} has no Stripe Connect ID.Skipping transfer.`);
                                 }
 
                                 // 1. Create the purchase record locally
@@ -113,7 +114,39 @@ export async function POST(req: Request) {
                                         platform: (product as any).platform,
                                     });
                                     ordersCreated++;
-                                    console.log(`[WEBHOOK] Created purchase ${newPurchase._id} for product ${productId} (${product.title})`);
+                                    // 3. Create Notification for Seller (SALE)
+                                    if (seller?.clerkId) {
+                                        await createNotification(
+                                            seller.clerkId,
+                                            "SALE",
+                                            "Nouvelle Vente !",
+                                            "Félicitations, vous avez réalisé une vente. Cliquez pour voir les détails.",
+                                            "/dashboard?mode=seller",
+                                            'notifications.saleReceivedTitle',
+                                            'notifications.saleReceivedBody',
+                                            {
+                                                productTitle: product.title,
+                                                price: `${product.price}€`
+                                            }
+                                        );
+                                    }
+
+                                    // 4. Create Notification for Buyer (ORDER)
+                                    if (userId) {
+                                        await createNotification(
+                                            userId,
+                                            "ORDER",
+                                            "Commande Confirmée",
+                                            "Votre commande a été traitée avec succès.",
+                                            "/dashboard", // Or specific order link
+                                            'notifications.orderConfirmedTitle',
+                                            'notifications.orderConfirmedBody',
+                                            {
+                                                productTitle: product.title
+                                            }
+                                        );
+                                    }
+                                    console.log(`[WEBHOOK] Created purchase ${newPurchase._id} for product ${productId}(${product.title})`);
                                 } else {
                                     console.log(`[WEBHOOK] Purchase already exists for product ${productId}, skipping`);
                                 }
@@ -154,12 +187,12 @@ export async function POST(req: Request) {
                                         });
                                         console.log(`Transfer of ${transferAmount} cents of ${product.price} to seller ${seller.stripeConnectId} successful.`);
                                     } catch (transferError) {
-                                        console.error(`Failed to transfer funds to seller ${seller.stripeConnectId}:`, transferError);
+                                        console.error(`Failed to transfer funds to seller ${seller.stripeConnectId}: `, transferError);
                                     }
                                 }
                             }
                         } catch (innerError) {
-                            console.error(`[WEBHOOK] Error processing product ${productId}:`, innerError);
+                            console.error(`[WEBHOOK] Error processing product ${productId}: `, innerError);
                         }
                     }
 
@@ -183,7 +216,7 @@ export async function POST(req: Request) {
             }
         } catch (err: any) {
             console.error("CRITICAL ERROR inside checkout.session.completed:", err);
-            return new NextResponse(`Webhook Error: ${err.message}`, { status: 500 });
+            return new NextResponse(`Webhook Error: ${err.message} `, { status: 500 });
         }
     }
 
@@ -204,7 +237,7 @@ export async function POST(req: Request) {
                 if (user.onboardingComplete !== isComplete) {
                     user.onboardingComplete = isComplete;
                     await user.save();
-                    console.log(`Updated user ${user.clerkId} onboarding status to: ${isComplete}`);
+                    console.log(`Updated user ${user.clerkId} onboarding status to: ${isComplete} `);
 
                     // Revalidate to update UI immediately
                     const { revalidatePath } = await import('next/cache');

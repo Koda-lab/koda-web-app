@@ -67,10 +67,10 @@ export function StripeOnboardingButton({ className }: { className?: string }) {
             const res = await forceStripeSync();
             if (res.success) {
                 if (res.isComplete) {
-                    showSuccess("Stripe account verified!");
+                    showSuccess("stripeVerified");
                     window.location.reload(); // Refresh to update UI state
                 } else {
-                    showSuccess("Status updated (still pending).");
+                    showSuccess("stripeStatusUpdated");
                 }
             } else {
                 if (res.error) throw new Error(res.error);

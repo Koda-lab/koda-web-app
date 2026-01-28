@@ -143,6 +143,8 @@
         "genericError": "Une erreur inattendue est survenue. Veuillez réessayer.",
         "fileUploadFailed": "Échec de l'envoi du fichier.",
         "paymentError": "Une erreur est survenue lors de la préparation du paiement.",
+        "messageSendError": "Erreur lors de l'envoi du message.",
+        "invalidPromoCode": "Code promo invalide.",
         "serverError": "Erreur serveur.",
         "mustPurchaseToReview": "Vous devez acheter ce produit pour laisser un avis.",
         "reviewNotFound": "Avis introuvable.",
@@ -168,10 +170,26 @@
         "inCart": "Dans le panier",
         "syncResult": "{synced} synchronisés, {deleted} supprimés (orphelins).",
         "profileUpdated": "Profil mis à jour avec succès !",
+        "stripeVerified": "Compte Stripe vérifié !",
+        "stripeStatusUpdated": "Statut mis à jour (toujours en attente).",
+        "discountApplied": "Réduction appliquée : {discount}",
         "addedToFavorites": "Ajouté aux favoris !",
         "removedFromFavorites": "Retiré des favoris.",
         "loginRequired": "Connectez-vous pour sauvegarder des favoris.",
-        "userDeleted": "L'utilisateur et toutes ses données associées ont été supprimés définitivement."
+        "userDeleted": "L'utilisateur et toutes ses données associées ont été supprimés définitivement.",
+        "center": {
+            "title": "Notifications",
+            "markAllRead": "Tout marquer comme lu",
+            "empty": "Aucune notification"
+        },
+        "messageReceivedTitle": "Nouveau message",
+        "messageReceivedBody": "Vous avez reçu un message : \"{preview}\"",
+        "reviewReceivedTitle": "Nouvel avis reçu",
+        "reviewReceivedBody": "{userName} a laissé un avis sur {productTitle}",
+        "saleReceivedTitle": "Nouvelle Vente ! 💰",
+        "saleReceivedBody": "Félicitations ! Vous avez vendu \"{productTitle}\" pour {price}",
+        "orderConfirmedTitle": "Commande Confirmée ✅",
+        "orderConfirmedBody": "Votre commande pour \"{productTitle}\" a été validée."
     },
     "CartSheet": {
         "title": "Mon Panier",

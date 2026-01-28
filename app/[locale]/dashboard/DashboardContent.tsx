@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 
 // Components
@@ -21,11 +21,19 @@ interface DashboardContentProps {
     orders: any[];
     favorites: any[];
     onDelete: (productId: string) => Promise<void>;
+    initialMode?: DashboardMode;
 }
 
-export function DashboardContent({ user, balance, sales, products, orders, favorites, onDelete }: DashboardContentProps) {
-    const [mode, setMode] = useState<DashboardMode>("buyer");
+export function DashboardContent({ user, balance, sales, products, orders, favorites, onDelete, initialMode = "buyer" }: DashboardContentProps) {
+    const [mode, setMode] = useState<DashboardMode>(initialMode);
     const t = useTranslations('Dashboard');
+
+    // Sync mode when initialMode changes (e.g. navigation from Link)
+    useEffect(() => {
+        if (initialMode) {
+            setMode(initialMode);
+        }
+    }, [initialMode]);
 
     return (
         <div className="min-h-screen bg-background/50">

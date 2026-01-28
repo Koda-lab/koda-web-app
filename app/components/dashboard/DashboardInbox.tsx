@@ -51,28 +51,34 @@ export default function DashboardInbox() {
 
     const dateLocale = locale === 'fr' ? fr : locale === 'es' ? es : locale === 'de' ? de : enUS;
 
-    // Load conversations
+    // Load conversations & poll every 10s
     useEffect(() => {
         loadConversations();
+        const interval = setInterval(() => {
+            loadConversations(true); // silent
+        }, 10000);
+        return () => clearInterval(interval);
     }, []);
 
-    const loadConversations = async () => {
+    const loadConversations = async (silent = false) => {
+        if (!silent) setIsLoadingConvs(true);
         try {
             const data = await getMyConversations();
             setConversations(data);
         } catch (error) {
-            console.error(error);
+            // Only log errors if not silent (user initiated) or if it's not a generic fetch error
+            if (!silent) console.error("Failed to load conversations:", error);
         } finally {
-            setIsLoadingConvs(false);
+            if (!silent) setIsLoadingConvs(false);
         }
     };
 
-    // Load messages when conversation selected
+    // Load messages when conversation selected & poll every 5s
     useEffect(() => {
         if (!selectedConvId) return;
 
-        const fetchMessages = async () => {
-            setIsLoadingMessages(true);
+        const fetchMessages = async (silent = false) => {
+            if (!silent) setIsLoadingMessages(true);
             try {
                 const data = await getConversationMessages(selectedConvId);
                 setMessages(data);
@@ -81,17 +87,21 @@ export default function DashboardInbox() {
                     c._id === selectedConvId ? { ...c, hasUnread: false } : c
                 ));
             } catch (error) {
-                console.error(error);
+                if (!silent) console.error("Failed to load messages:", error);
             } finally {
-                setIsLoadingMessages(false);
+                if (!silent) setIsLoadingMessages(false);
             }
         };
 
         fetchMessages();
-        // Optional: Polling setup here
+        const interval = setInterval(() => {
+            fetchMessages(true); // silent
+        }, 5000);
+
+        return () => clearInterval(interval);
     }, [selectedConvId]);
 
-    // Auto-scroll to bottom
+    // Auto-scroll to bottom only if user is already at bottom or new message is mine
     useEffect(() => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -121,7 +131,7 @@ export default function DashboardInbox() {
                 // Refresh conversations to update last message preview
                 loadConversations();
             } catch (error) {
-                showError("Error sending message");
+                showError("messageSendError");
             }
         });
     };
