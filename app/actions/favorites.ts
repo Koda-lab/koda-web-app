@@ -1,6 +1,6 @@
 "use server";
 
-import { requireAuth } from "@/lib/auth-utils";
+import { requireUser } from "@/lib/auth-utils";
 import { connectToDatabase } from "@/lib/db";
 import User from "@/models/User";
 import Automation from "@/models/Automation";
@@ -10,11 +10,12 @@ import { revalidatePath } from "next/cache";
  * Add a product to the user's favorites
  */
 export async function addToFavorites(productId: string) {
-    const userId = await requireAuth();
+    const user = await requireUser();
+    // const userId = user.clerkId; // Not needed as we have user object
     await connectToDatabase();
 
-    const user = await User.findOne({ clerkId: userId });
-    if (!user) throw new Error("User not found");
+    // const user = await User.findOne({ clerkId: userId }); // Already fetched by requireUser
+    // if (!user) throw new Error("User not found");
 
     // Check if already in favorites
     const alreadyFavorited = user.favorites?.some(
@@ -39,11 +40,11 @@ export async function addToFavorites(productId: string) {
  * Remove a product from the user's favorites
  */
 export async function removeFromFavorites(productId: string) {
-    const userId = await requireAuth();
+    const user = await requireUser();
     await connectToDatabase();
 
     await User.updateOne(
-        { clerkId: userId },
+        { clerkId: user.clerkId },
         { $pull: { favorites: productId } }
     );
 
@@ -55,11 +56,11 @@ export async function removeFromFavorites(productId: string) {
  * Toggle a product in favorites (add if not present, remove if present)
  */
 export async function toggleFavorite(productId: string) {
-    const userId = await requireAuth();
+    const user = await requireUser();
     await connectToDatabase();
 
-    const user = await User.findOne({ clerkId: userId });
-    if (!user) throw new Error("User not found");
+    // const user = await User.findOne({ clerkId: userId }); // Already fetched
+    // if (!user) throw new Error("User not found");
 
     const isFavorited = user.favorites?.some(
         (id: any) => id.toString() === productId
@@ -67,14 +68,14 @@ export async function toggleFavorite(productId: string) {
 
     if (isFavorited) {
         await User.updateOne(
-            { clerkId: userId },
+            { clerkId: user.clerkId },
             { $pull: { favorites: productId } }
         );
         revalidatePath("/");
         return { success: true, action: "removed", message: "Removed from favorites" };
     } else {
         await User.updateOne(
-            { clerkId: userId },
+            { clerkId: user.clerkId },
             { $addToSet: { favorites: productId } }
         );
         revalidatePath("/");
@@ -86,10 +87,11 @@ export async function toggleFavorite(productId: string) {
  * Get the user's favorite products with full details
  */
 export async function getMyFavorites() {
-    const userId = await requireAuth();
+    const user = await requireUser();
     await connectToDatabase();
 
-    const user = await User.findOne({ clerkId: userId })
+    // Re-fetch to populate
+    const populatedUser = await User.findOne({ clerkId: user.clerkId })
         .populate({
             path: "favorites",
             model: Automation,
@@ -97,9 +99,11 @@ export async function getMyFavorites() {
         })
         .lean();
 
-    if (!user || !user.favorites) return [];
+        .lean();
 
-    return user.favorites.map((product: any) => ({
+    if (!populatedUser || !populatedUser.favorites) return [];
+
+    return populatedUser.favorites.map((product: any) => ({
         _id: product._id.toString(),
         title: product.title,
         price: product.price,
@@ -116,11 +120,19 @@ export async function getMyFavorites() {
  * Get the user's favorite product IDs (lightweight)
  */
 export async function getFavoriteIds(): Promise<string[]> {
-    const userId = await requireAuth();
+    const user = await requireUser();
     await connectToDatabase();
 
-    const user = await User.findOne({ clerkId: userId }).select("favorites").lean();
-    if (!user || !user.favorites) return [];
+    // favorites is already present in the user object returned by requireUser if selected, 
+    // but requireUser returns the whole document. Let's rely on the returned user object
+    // IF the user object has favorites populated. 
+    // SAFEST: Re-query to be sure we get the latest array or use the one from requireUser if we trust it.
+    // requireUser does findOne, so it has favorites.
+
+    // Actually, let's just refresh it to be safe or use the returned object.
+    // user from requireUser is a mongoose document.
+
+    if (!user.favorites) return [];
 
     return user.favorites.map((id: any) => id.toString());
 }
