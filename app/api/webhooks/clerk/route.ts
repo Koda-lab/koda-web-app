@@ -73,6 +73,12 @@ export async function POST(req: Request) {
             );
             console.log(`User ${id} synced to DB`);
 
+            // Send welcome email for new users only
+            if (eventType === 'user.created' && email) {
+                const { sendWelcomeEmail } = await import('@/lib/emails');
+                await sendWelcomeEmail(email, first_name);
+            }
+
             // Revalidate admin dashboard to show new/updated users immediately
             revalidatePath('/admin');
         } catch (error) {

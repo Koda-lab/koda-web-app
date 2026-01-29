@@ -1,7 +1,76 @@
 import { resend } from './resend';
+import { emailTemplate, primaryButton, secondaryButton, infoBox } from './email-template';
 
 const APP_NAME = "Koda Market";
 const FROM_EMAIL = "Koda Market <onboarding@resend.dev>";
+
+/**
+ * Sends a welcome email to new users
+ */
+export async function sendWelcomeEmail(email: string, firstName?: string | null) {
+    try {
+        const name = firstName || 'there';
+
+        const content = `
+            <h1 style="margin: 0 0 16px 0; font-size: 28px; color: #1a1a1a; font-weight: 700;">Welcome to Koda! 🚀</h1>
+            
+            <p style="margin: 0 0 16px 0; font-size: 16px; color: #444; line-height: 1.6;">
+                Hi ${name},
+            </p>
+            
+            <p style="margin: 0 0 24px 0; font-size: 16px; color: #444; line-height: 1.6;">
+                Thanks for joining <strong>Koda</strong> - the marketplace for premium automation workflows! 
+                We're excited to have you in our community of automation enthusiasts.
+            </p>
+            
+            ${infoBox(`
+                <p style="margin: 0 0 12px 0; font-weight: 600; font-size: 15px;">🎯 What you can do on Koda:</p>
+                <ul style="margin: 0; padding-left: 20px; line-height: 1.8;">
+                    <li>Browse premium n8n, Make, and Zapier workflows</li>
+                    <li>Purchase ready-to-use automation blueprints</li>
+                    <li>Sell your own workflows and earn passive income</li>
+                    <li>Connect with automation experts worldwide</li>
+                </ul>
+            `, 'success')}
+            
+            <p style="margin: 24px 0 20px 0; font-size: 16px; color: #444; line-height: 1.6;">
+                Ready to get started?
+            </p>
+            
+            <div style="margin: 24px 0;">
+                ${primaryButton('Browse Catalog', `${process.env.NEXT_PUBLIC_APP_URL}/catalog`)}
+                ${secondaryButton('Start Selling', `${process.env.NEXT_PUBLIC_APP_URL}/sell`)}
+            </div>
+            
+            <p style="margin: 24px 0 0 0; font-size: 14px; color: #666; line-height: 1.6;">
+                Need help getting started? Check out your <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard" style="color: #6366f1; text-decoration: none; font-weight: 600;">Dashboard</a> or explore the marketplace.
+            </p>
+        `;
+
+        const html = emailTemplate({
+            title: `Welcome to ${APP_NAME}!`,
+            preheader: 'Start automating your workflow today',
+            content,
+            footerText: 'You received this email because you created an account on Koda. If this wasn\'t you, please contact us immediately.'
+        });
+
+        const { data, error } = await resend.emails.send({
+            from: FROM_EMAIL,
+            to: [email],
+            subject: `Welcome to ${APP_NAME}! 🚀`,
+            html,
+        });
+
+        if (error) {
+            console.error("Resend Error (Welcome):", error);
+        } else {
+            console.log(`Welcome email sent to ${email}`);
+        }
+        return { data, error };
+    } catch (err) {
+        console.error("Failed to send welcome email:", err);
+    }
+}
 
 interface OrderItem {
     title: string;
