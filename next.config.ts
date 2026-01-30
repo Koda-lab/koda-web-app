@@ -65,7 +65,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;",
               "img-src 'self' data: https://clerk.kodas.works https://*.kodas.works https://koda-marketplace-storage.s3.eu-west-3.amazonaws.com https://*.s3.eu-west-3.amazonaws.com https://*.s3.amazonaws.com https://img.clerk.com https://*.stripe.com https://images.unsplash.com;",
               "font-src 'self' https://fonts.gstatic.com;",
-              "connect-src 'self' https://clerk.kodas.works https://*.kodas.works https://clerk.com https://*.clerk.accounts.dev https://*.clerk.com https://clerk-telemetry.com https://api.stripe.com https://*.sentry.io https://*.ingest.sentry.io https://challenges.cloudflare.com https://*.hcaptcha.com https://hcaptcha.com https://koda-marketplace-storage.s3.eu-west-3.amazonaws.com;",
+              "connect-src 'self' https://clerk.kodas.works https://*.kodas.works https://clerk.com https://*.clerk.accounts.dev https://*.clerk.com https://clerk-telemetry.com https://api.stripe.com https://*.sentry.io https://*.ingest.sentry.io https://challenges.cloudflare.com https://*.hcaptcha.com https://hcaptcha.com https://koda-marketplace-storage.s3.eu-west-3.amazonaws.com wss://ws-eu.pusher.com https://*.pusher.com;",
               "frame-src 'self' https://clerk.kodas.works https://*.kodas.works https://clerk.com https://*.clerk.accounts.dev https://*.clerk.com https://js.stripe.com https://hooks.stripe.com https://challenges.cloudflare.com https://*.hcaptcha.com https://hcaptcha.com;",
               "object-src 'none';",
               "base-uri 'self';",
