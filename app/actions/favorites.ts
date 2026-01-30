@@ -28,7 +28,7 @@ export async function addToFavorites(productId: string) {
 
     // Add to favorites
     await User.updateOne(
-        { clerkId: userId },
+        { clerkId: user.clerkId },
         { $addToSet: { favorites: productId } }
     );
 
@@ -97,8 +97,6 @@ export async function getMyFavorites() {
             model: Automation,
             select: "title price previewImageUrl category platform averageRating reviewCount sellerId"
         })
-        .lean();
-
         .lean();
 
     if (!populatedUser || !populatedUser.favorites) return [];
