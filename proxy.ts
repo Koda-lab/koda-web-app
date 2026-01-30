@@ -4,7 +4,13 @@ import { routing } from './i18n/routing';
 
 const intlMiddleware = createMiddleware(routing);
 
-const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)', '/api(.*)']);
+const isPublicRoute = createRouteMatcher([
+    '/sign-in(.*)',
+    '/sign-up(.*)',
+    '/api(.*)',
+    '/stripe/return(.*)',  // Stripe OAuth callback
+    '/stripe/refresh(.*)'  // Stripe OAuth refresh
+]);
 
 export default clerkMiddleware(async (auth, req) => {
     if (isPublicRoute(req)) {
