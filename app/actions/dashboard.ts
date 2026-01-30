@@ -15,7 +15,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
  * Récupère les produits mis en vente par le vendeur connecté.
  */
 export async function getMyProducts(): Promise<IProduct[]> {
-    const userId = await requireAuth();
+    const user = await requireUser();
+    const userId = user.clerkId;
 
 
     // On convertit en objets JS simples avec lean() pour éviter les problèmes de sérialisation
@@ -33,7 +34,8 @@ export async function getMyProducts(): Promise<IProduct[]> {
  * Récupère l'historique des ventes du vendeur.
  */
 export async function getSalesHistory() {
-    const userId = await requireAuth();
+    const user = await requireUser();
+    const userId = user.clerkId;
 
 
     await connectToDatabase();
@@ -93,7 +95,8 @@ export async function getSellerBalance() {
  * Récupère le montant total des ventes (brut) via la base de données.
  */
 export async function getTotalEarnings(): Promise<number> {
-    const userId = await requireAuth();
+    const user = await requireUser();
+    const userId = user.clerkId;
     await connectToDatabase();
 
     const result = await Purchase.aggregate([
@@ -108,7 +111,8 @@ export async function getTotalEarnings(): Promise<number> {
  * Récupère les achats de l'utilisateur (en tant qu'acheteur).
  */
 export async function getMyOrders() {
-    const userId = await requireAuth();
+    const user = await requireUser();
+    const userId = user.clerkId;
 
 
     await connectToDatabase();
