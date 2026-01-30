@@ -32,18 +32,37 @@ export async function requireAuth() {
 
             if (clerkUser) {
                 const email = clerkUser.emailAddresses[0]?.emailAddress;
-                // Create and return the user (we only need isBanned here)
-                const newUser = await User.create({
-                    clerkId: userId!,
-                    email: email,
-                    firstName: clerkUser.firstName ?? undefined,
-                    lastName: clerkUser.lastName ?? undefined,
-                    imageUrl: clerkUser.imageUrl,
-                    username: clerkUser.username ?? undefined,
-                    role: 'user',
-                    onboardingComplete: false
-                });
-                user = newUser as any;
+
+                // Check if a user with this email already exists
+                const existingUserByEmail = await User.findOne({ email }).select('isBanned').lean();
+
+                if (existingUserByEmail) {
+                    // Update the clerkId for the existing user
+                    user = await User.findOneAndUpdate(
+                        { email },
+                        {
+                            clerkId: userId!,
+                            firstName: clerkUser.firstName ?? undefined,
+                            lastName: clerkUser.lastName ?? undefined,
+                            imageUrl: clerkUser.imageUrl,
+                            username: clerkUser.username ?? undefined,
+                        },
+                        { new: true }
+                    ).select('isBanned').lean();
+                } else {
+                    // Create and return the user (we only need isBanned here)
+                    const newUser = await User.create({
+                        clerkId: userId!,
+                        email: email,
+                        firstName: clerkUser.firstName ?? undefined,
+                        lastName: clerkUser.lastName ?? undefined,
+                        imageUrl: clerkUser.imageUrl,
+                        username: clerkUser.username ?? undefined,
+                        role: 'user',
+                        onboardingComplete: false
+                    });
+                    user = newUser as any;
+                }
             }
         } catch (error) {
             console.error("Failed to lazy-sync user in requireAuth:", error);
@@ -75,27 +94,77 @@ export async function requireUser() {
 
     // Lazy sync: If user is authenticated in Clerk but not in DB, create them now.
     if (!user) {
+        console.log("[requireUser] User not found in DB, attempting lazy sync for userId:", userId);
         try {
             const { clerkClient } = await import("@clerk/nextjs/server");
             const client = await clerkClient();
+            console.log("[requireUser] ClerkClient initialized, fetching user data...");
+
             const clerkUser = await client.users.getUser(userId!);
+            console.log("[requireUser] ClerkUser fetched:", {
+                id: clerkUser.id,
+                email: clerkUser.emailAddresses[0]?.emailAddress,
+                username: clerkUser.username,
+                firstName: clerkUser.firstName,
+                lastName: clerkUser.lastName
+            });
 
             if (clerkUser) {
                 const email = clerkUser.emailAddresses[0]?.emailAddress;
-                user = await User.create({
-                    clerkId: userId!,
-                    email: email,
-                    firstName: clerkUser.firstName ?? undefined,
-                    lastName: clerkUser.lastName ?? undefined,
-                    imageUrl: clerkUser.imageUrl,
-                    username: clerkUser.username ?? undefined,
-                    role: 'user',
-                    onboardingComplete: false
-                });
+
+                if (!email) {
+                    console.error("[requireUser] No email found for user, cannot create user");
+                    throw new Error("noEmail");
+                }
+
+                // Check if a user with this email already exists
+                const existingUserByEmail = await User.findOne({ email });
+
+                if (existingUserByEmail) {
+                    console.log("[requireUser] User with email already exists, updating clerkId for user:", existingUserByEmail._id);
+
+                    // Update the existing user's clerkId and other info
+                    user = await User.findOneAndUpdate(
+                        { email },
+                        {
+                            clerkId: userId!,
+                            firstName: clerkUser.firstName ?? undefined,
+                            lastName: clerkUser.lastName ?? undefined,
+                            imageUrl: clerkUser.imageUrl,
+                            username: clerkUser.username ?? undefined,
+                        },
+                        { new: true }
+                    );
+
+                    console.log("[requireUser] User updated successfully:", user!._id);
+                } else {
+                    console.log("[requireUser] Creating new user in MongoDB with email:", email);
+
+                    user = await User.create({
+                        clerkId: userId!,
+                        email: email,
+                        firstName: clerkUser.firstName ?? undefined,
+                        lastName: clerkUser.lastName ?? undefined,
+                        imageUrl: clerkUser.imageUrl,
+                        username: clerkUser.username ?? undefined,
+                        role: 'user',
+                        onboardingComplete: false
+                    });
+
+                    console.log("[requireUser] User created successfully:", user._id);
+                }
             }
         } catch (error) {
-            console.error("Failed to lazy-sync user:", error);
-            throw new Error("userNotFound");
+            console.error("=".repeat(80));
+            console.error("[requireUser] FAILED TO LAZY-SYNC USER");
+            console.error("Error type:", error instanceof Error ? error.constructor.name : typeof error);
+            console.error("Error message:", error instanceof Error ? error.message : String(error));
+            console.error("Full error:", error);
+            if (error instanceof Error && error.stack) {
+                console.error("Stack trace:", error.stack);
+            }
+            console.error("=".repeat(80));
+            throw new Error(`userSyncFailed: ${error instanceof Error ? error.message : String(error)}`);
         }
     }
 
